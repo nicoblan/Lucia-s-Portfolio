@@ -57,8 +57,8 @@
     <nav aria-label="Secciones">
       <ul class="nav__list">
         <!-- data-menu: js/common.js agrega el desplegable con cada sección -->
-        <li><a href="#recent-projects">Recent<span class="nav__more-word"> projects</span></a></li>
         <li data-menu="areas"><a href="#areas">Áreas</a></li>
+        <li><a href="#recent-projects">Recent<span class="nav__more-word"> projects</span></a></li>
         <li data-menu="about"><a href="#about">About</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
@@ -101,17 +101,6 @@
       </h1>
     </section>
 
-    <!-- ===================== RECENT PROJECTS ===================== -->
-    <!-- Rectángulos que se abren y cierran solos (js/main.js §11).
-         Las imágenes salen de SITE_CONFIG.destacados -->
-    <section class="highlights" id="recent-projects" aria-labelledby="recent-projects-title">
-      <div class="highlights__head" data-reveal>
-        <p class="label">R E C E N T &nbsp; P R O J E C T S &nbsp; .</p>
-        <h2 class="visually-hidden" id="recent-projects-title">Recent projects</h2>
-      </div>
-      <ul class="highlights__list" data-highlights role="list"></ul>
-    </section>
-
     <!-- ===================== B. ÁREAS ===================== -->
     <section class="areas" id="areas" aria-labelledby="areas-title">
       <h2 class="visually-hidden" id="areas-title">Áreas</h2>
@@ -124,11 +113,26 @@
       </footer>
     </section>
 
+    <!-- ===================== RECENT PROJECTS ===================== -->
+    <!-- Rectángulos que se abren y cierran solos (js/main.js §11).
+         Las imágenes salen de SITE_CONFIG.destacados -->
+    <section class="highlights" id="recent-projects" aria-labelledby="recent-projects-title">
+      <div class="highlights__head" data-reveal>
+        <p class="label">R E C E N T &nbsp; P R O J E C T S &nbsp; .</p>
+        <h2 class="visually-hidden" id="recent-projects-title">Recent projects</h2>
+      </div>
+      <ul class="highlights__list" data-highlights role="list"></ul>
+    </section>
+
     <!-- ===================== C. ABOUT ===================== -->
     <section class="about" id="about" aria-labelledby="about-title">
 
-      <!-- Bloque de texto grande y justificado (energía del panel amarillo de la referencia) -->
-      <div class="about__statement" data-reveal="wipe">
+      <!-- Bloque "Quién soy": al hacer clic se despliega la imagen creativa (js/main.js §14) -->
+      <div class="about__statement" id="quien-soy" data-reveal="wipe">
+        <button type="button" class="statement__toggle" aria-expanded="false" aria-controls="about-photo" data-photo-toggle>
+          <span class="visually-hidden">Ver la imagen creativa</span>
+        </button>
+        <span class="statement__hint" aria-hidden="true">Ver imagen creativa <span class="statement__plus">+</span></span>
         <h2 class="label" id="about-title">Q U I É N &nbsp; S O Y &nbsp; .</h2>
         <p class="statement">Yo soy mi nombre. Soy Lucía. Parece obvio, pero justamente por eso me gusta.</p>
         <footer class="panel-foot panel-foot--light" aria-hidden="true">
@@ -137,7 +141,7 @@
       </div>
 
       <div class="about__grid">
-        <figure class="about__photo" data-reveal="clip" data-tilt>
+        <figure class="about__photo" id="about-photo" data-tilt hidden>
           <img src="assets/img/lucia-imagen-creativa.webp" alt="Imagen creativa: Lucía hoy señala con el dedo una foto suya de cuando era chica, con la misma remera blanca" width="981" height="787" loading="lazy">
           <figcaption class="label">Imagen creativa . Antes / ahora. La misma pregunta.</figcaption>
         </figure>
@@ -160,7 +164,7 @@
         </div>
 
         <div class="manifesto__body" data-manifesto-panel="summary">
-          <p class="manifesto__text">Lo evidente me interesa demasiado. Nada me alcanza ni me cierra del todo. Volvamos a las bases, porque ahí, por alguna razón bastante sospechosa, suele empezar todo.</p>
+          <p class="manifesto__text">Volvamos a las bases, porque ahí, por alguna razón bastante sospechosa, suele empezar todo. Lo evidente me interesa demasiado. Nada me alcanza ni me cierra del todo.</p>
         </div>
         <div class="manifesto__body" data-manifesto-panel="full" hidden>
           <p class="manifesto__text" data-split>Yo soy mi nombre, soy Lucía, parece obvio pero justamente por eso me gusta. Porque todos lo dan por hecho y yo lo hice un nuevo discurso. A partir de ahí me pregunté, ¿por qué nunca me alcanza con la primera vista de las cosas? Y, como la ironía me destaca, no me respondí nada útil.</p>

@@ -545,8 +545,10 @@
         : `<span class="weekly__icon"><span class="sign ${i % 2 ? "sign--square" : "sign--circle"}"></span></span>`;
       const body = `${icon}<span class="weekly__text"><span class="weekly__type">${esc(it.tipo)}</span><span class="weekly__title">${esc(it.titulo)}</span>${it.detalle ? `<span class="weekly__detail">${esc(it.detalle)}</span>` : ""}</span>`;
       // Canción con video de YouTube: la ficha es el botón de play/pausa (§13)
+      // y, mientras suena, el ícono se reemplaza por la portada
       if (isSong && it.youtube) {
-        return `<li class="weekly__item"><button type="button" class="weekly__play" data-music-toggle aria-pressed="false">${body}<span class="visually-hidden" data-music-sr>Reproducir</span></button></li>`;
+        const cover = `<span class="weekly__cover" aria-hidden="true"><img src="${esc(songCover(it))}" alt="" loading="lazy"></span>`;
+        return `<li class="weekly__item"><button type="button" class="weekly__play" data-music-toggle aria-pressed="false">${cover}${body}<span class="visually-hidden" data-music-sr>Reproducir</span></button></li>`;
       }
       return `<li class="weekly__item">${it.url
         ? `<a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${body}<span class="visually-hidden">(se abre en una pestaña nueva)</span></a>`
@@ -554,6 +556,12 @@
     }).join("");
     list.hidden = false;
     matchWeeklyWidth();
+  }
+
+  // Portada de la canción: `portada` en config.js; si no hay, la miniatura
+  // del video de YouTube
+  function songCover(it) {
+    return it.portada || `https://i.ytimg.com/vi/${encodeURIComponent(it.youtube)}/hqdefault.jpg`;
   }
 
   // El bloque "de la semana" mide lo mismo que la píldora roja de abajo y
@@ -597,18 +605,32 @@
     box.setAttribute("aria-label", "Canción de la semana");
     box.innerHTML = `
       <div class="music__head">
-        <span class="music__eq" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="music__cover" aria-hidden="true"><img alt="" src=""><span class="music__eq"><i></i><i></i><i></i></span></span>
         <span class="music__text"><span class="music__type">Canción de la semana</span><span class="music__title"></span></span>
         <button type="button" class="music__btn" data-music-pause aria-label="Pausar">❚❚</button>
         <button type="button" class="music__btn" data-music-close aria-label="Cerrar y apagar la música">×</button>
       </div>
       <div class="music__player"><div id="lu-music-player"></div></div>`;
     $(".music__title", box).textContent = `${song.titulo}${song.detalle ? " — " + song.detalle : ""}`;
+    $(".music__cover img", box).src = songCover(song);
     document.body.appendChild(box);
 
     let player = null, ready = false, playing = false, wantPlay = false;
     const toggles = $$("[data-music-toggle]");
     const pauseBtn = $("[data-music-pause]", box);
+
+    // El botón amarillo de la barra pasa a ser play / pausa de la canción.
+    // (Se clona para sacarle la función anterior de pausar el fondo.)
+    let navBtn = $("[data-backstage-toggle]");
+    if (navBtn) {
+      const clone = navBtn.cloneNode(true);
+      // deja de ser el botón del fondo (initBackstage busca [data-backstage-toggle])
+      clone.removeAttribute("data-backstage-toggle");
+      clone.setAttribute("data-music-nav", "");
+      navBtn.replaceWith(clone);
+      navBtn = clone;
+      document.documentElement.classList.remove("backstage-paused");
+    }
 
     const sync = () => {
       document.documentElement.classList.toggle("music-playing", playing);
@@ -618,11 +640,18 @@
       });
       pauseBtn.textContent = playing ? "❚❚" : "▶";
       pauseBtn.setAttribute("aria-label", playing ? "Pausar" : "Reproducir");
+      if (navBtn) {
+        // aria-pressed="true" dibuja el ▶ (está en pausa); "false" dibuja ❚❚
+        navBtn.setAttribute("aria-pressed", String(!playing));
+        $(".visually-hidden", navBtn).textContent = playing ? "Pausar la canción de la semana" : "Reproducir la canción de la semana";
+      }
     };
+    sync();
     const play = () => {
       off = false;
       try { sessionStorage.removeItem("lu-music-off"); } catch (e) {}
       box.classList.add("is-on");
+      document.documentElement.classList.add("music-on"); // la portada aparece apenas se pide play
       if (ready) { player.unMute(); player.playVideo(); } else wantPlay = true;
     };
     const pause = () => { if (ready) player.pauseVideo(); };
@@ -644,7 +673,7 @@
 
     // Primer clic / toque / tecla en cualquier lado → empieza a sonar
     const first = (e) => {
-      if (e.target.closest && e.target.closest("[data-music-close], [data-music-toggle], [data-music-pause]")) return;
+      if (e.target.closest && e.target.closest("[data-music-close], [data-music-toggle], [data-music-pause], [data-music-nav]")) return;
       window.removeEventListener("pointerdown", first, true);
       window.removeEventListener("keydown", first, true);
       if (!off) play();
@@ -655,10 +684,53 @@
     // La ficha de la canción y el botón del reproductor: play / pausa
     toggles.forEach(t => t.addEventListener("click", () => (playing ? pause() : play())));
     pauseBtn.addEventListener("click", () => (playing ? pause() : play()));
+    if (navBtn) navBtn.addEventListener("click", () => (playing ? pause() : play()));
     $("[data-music-close]", box).addEventListener("click", () => {
       pause(); off = true; box.classList.remove("is-on");
+      document.documentElement.classList.remove("music-on");
       try { sessionStorage.setItem("lu-music-off", "1"); } catch (e) {}
     });
+  }
+
+  /* ------------------------------------------------------------------------
+     14. QUIÉN SOY → IMAGEN CREATIVA
+     La imagen creativa empieza oculta. Clic en el bloque azul "Quién soy"
+     (o en "Quién soy" del menú About) la despliega de arriba hacia abajo;
+     otro clic en el bloque la vuelve a guardar.
+     ------------------------------------------------------------------------ */
+  function initAboutPhoto() {
+    const btn = $("[data-photo-toggle]"), fig = $("#about-photo"), grid = $(".about__grid");
+    if (!btn || !fig) return;
+    const hint = $(".statement__hint", $("#quien-soy"));
+    const set = (open) => {
+      btn.setAttribute("aria-expanded", String(open));
+      $(".visually-hidden", btn).textContent = open ? "Ocultar la imagen creativa" : "Ver la imagen creativa";
+      if (hint) hint.firstChild.textContent = open ? "Ocultar imagen creativa " : "Ver imagen creativa ";
+      $("#quien-soy").classList.toggle("is-open", open);
+    };
+    const open = () => {
+      if (!fig.hidden) return;
+      fig.hidden = false; grid.classList.add("has-photo"); set(true);
+      if (!reduceMotion) {
+        fig.animate([{ clipPath: "inset(0 0 100% 0 round 24px)", opacity: .4 }, { clipPath: "inset(0 0 0 0 round 24px)", opacity: 1 }],
+          { duration: 900, easing: "cubic-bezier(.45,0,.15,1)" });
+      }
+      fig.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+    };
+    const close = () => {
+      if (fig.hidden) return;
+      set(false);
+      const done = () => { fig.hidden = true; grid.classList.remove("has-photo"); };
+      if (reduceMotion) return done();
+      fig.animate([{ clipPath: "inset(0 0 0 0 round 24px)" }, { clipPath: "inset(0 0 100% 0 round 24px)" }],
+        { duration: 600, easing: "cubic-bezier(.45,0,.15,1)" }).finished.then(done);
+    };
+    btn.addEventListener("click", () => (fig.hidden ? open() : close()));
+    // Desde el menú About o un link a #quien-soy
+    const fromHash = () => { if (location.hash === "#quien-soy") open(); };
+    window.addEventListener("hashchange", fromHash);
+    $$('a[href$="#quien-soy"]').forEach(a => a.addEventListener("click", () => setTimeout(open, 400)));
+    fromHash();
   }
 
   /* ------------------------------------------------------------------------
@@ -681,6 +753,7 @@
   initTilt();
   initVariants();
   initForm();
+  initAboutPhoto();
 
   if (!reduceMotion) {
     animateLogo();

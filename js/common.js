@@ -202,9 +202,9 @@
      La apertura es CSS (:hover / :focus-within); en celular no se muestra.
      ------------------------------------------------------------------------ */
   const ABOUT_ITEMS = [
-    { href: "#about",      title: "Quién soy",   subtitle: "Yo soy mi nombre" },
-    { href: "#manifiesto", title: "Manifiesto",  subtitle: "Lo evidente me interesa demasiado" },
-    { href: "#conceptos",  title: "Conceptos",   subtitle: "Volver a lo básico · Ironía · Sistema" }
+    { href: "#quien-soy",  title: "Quién soy",   subtitle: "Yo soy mi nombre",                   color: "red" },
+    { href: "#manifiesto", title: "Manifiesto",  subtitle: "Lo evidente me interesa demasiado",  color: "yellow" },
+    { href: "#conceptos",  title: "Conceptos",   subtitle: "Volver a lo básico · Ironía · Sistema", color: "green" }
   ];
 
   function initNavMenus() {
@@ -216,7 +216,7 @@
       sub.className = "nav__sub";
       sub.innerHTML = `<ul aria-label="${label}">${items.map((it, i) => `
         <li style="--i:${i}">
-          <a href="${it.href}"${it.color ? ` data-color="${it.color}"` : ""}>
+          <a href="${it.href}"${it.color && it.wipe ? ` data-color="${it.color}"` : ""}>
             <span class="nav__sub-dot" aria-hidden="true"${it.color ? ` style="background:${PALETTE[it.color]}"` : ""}></span>
             <span class="nav__sub-text"><span class="nav__sub-title">${esc(it.title)}</span><span class="nav__sub-subtitle">${esc(it.subtitle)}</span></span>
           </a>
@@ -229,7 +229,7 @@
     const areasLi = $('[data-menu="areas"]');
     if (areasLi) {
       const sub = build(areasLi, (CONFIG.services || []).map(s => ({
-        href: `area.html?a=${s.id}`, title: s.title, subtitle: s.subtitle || "", color: s.color
+        href: `area.html?a=${s.id}`, title: s.title, subtitle: s.subtitle || "", color: s.color, wipe: true
       })), "Áreas");
       $$("a[data-color]", sub).forEach(a => a.addEventListener("click", (e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
