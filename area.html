@@ -22,7 +22,10 @@
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/area.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('lu-theme') === 'dark') document.documentElement.classList.add('theme-dark'); } catch (e) {}
+  </script>
 </head>
 <body class="page-area">
   <a class="skip-link" href="#main">Saltar al contenido</a>

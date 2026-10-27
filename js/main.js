@@ -699,8 +699,9 @@
      otro clic en el bloque la vuelve a guardar.
      ------------------------------------------------------------------------ */
   function initAboutPhoto() {
-    const btn = $("[data-photo-toggle]"), fig = $("#about-photo"), grid = $(".about__grid");
-    if (!btn || !fig) return;
+    const btn = $("[data-photo-toggle]"), grid = $("#about-reveal");
+    if (!btn || !grid) return;
+    const fig = $("#about-photo", grid), bio = $(".about__bio", grid);
     const hint = $(".statement__hint", $("#quien-soy"));
     const set = (open) => {
       btn.setAttribute("aria-expanded", String(open));
@@ -708,29 +709,57 @@
       if (hint) hint.firstChild.textContent = open ? "Ocultar imagen creativa " : "Ver imagen creativa ";
       $("#quien-soy").classList.toggle("is-open", open);
     };
+    // La imagen se descubre de arriba hacia abajo y el texto la acompaña:
+    // mismo recorte (clip) y la misma curva, el texto con un pequeño retraso.
+    const REVEAL = [{ clipPath: "inset(0 0 100% 0 round 24px)", opacity: .4 }, { clipPath: "inset(0 0 0 0 round 24px)", opacity: 1 }];
     const open = () => {
-      if (!fig.hidden) return;
-      fig.hidden = false; grid.classList.add("has-photo"); set(true);
+      if (!grid.hidden) return;
+      grid.hidden = false; set(true);
       if (!reduceMotion) {
-        fig.animate([{ clipPath: "inset(0 0 100% 0 round 24px)", opacity: .4 }, { clipPath: "inset(0 0 0 0 round 24px)", opacity: 1 }],
-          { duration: 900, easing: "cubic-bezier(.45,0,.15,1)" });
+        fig.animate(REVEAL, { duration: 900, easing: "cubic-bezier(.45,0,.15,1)" });
+        bio.animate(REVEAL, { duration: 900, delay: 160, easing: "cubic-bezier(.45,0,.15,1)", fill: "backwards" });
       }
-      fig.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+      grid.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
     };
     const close = () => {
-      if (fig.hidden) return;
+      if (grid.hidden) return;
       set(false);
-      const done = () => { fig.hidden = true; grid.classList.remove("has-photo"); };
+      const done = () => { grid.hidden = true; };
       if (reduceMotion) return done();
-      fig.animate([{ clipPath: "inset(0 0 0 0 round 24px)" }, { clipPath: "inset(0 0 100% 0 round 24px)" }],
-        { duration: 600, easing: "cubic-bezier(.45,0,.15,1)" }).finished.then(done);
+      const back = [...REVEAL].reverse();
+      bio.animate(back, { duration: 500, easing: "cubic-bezier(.45,0,.15,1)", fill: "forwards" });
+      fig.animate(back, { duration: 600, delay: 80, easing: "cubic-bezier(.45,0,.15,1)", fill: "forwards" })
+        .finished.then(() => { done(); fig.getAnimations().forEach(a => a.cancel()); bio.getAnimations().forEach(a => a.cancel()); });
     };
-    btn.addEventListener("click", () => (fig.hidden ? open() : close()));
+    btn.addEventListener("click", () => (grid.hidden ? open() : close()));
     // Desde el menú About o un link a #quien-soy
     const fromHash = () => { if (location.hash === "#quien-soy") open(); };
     window.addEventListener("hashchange", fromHash);
     $$('a[href$="#quien-soy"]').forEach(a => a.addEventListener("click", () => setTimeout(open, 400)));
     fromHash();
+  }
+
+  /* ------------------------------------------------------------------------
+     15. MODO BRIGHT / DARK
+     El modo oscuro es el NEGATIVO exacto de la paleta (filter: invert en
+     css/styles.css): el azul pasa a amarillo verdoso, el rojo a cian, el
+     blanco a negro, etc. Las fotos y videos se vuelven a invertir para que
+     se vean normales. La elección se guarda en este navegador
+     (localStorage "lu-theme") y vale también en las páginas de área.
+     ------------------------------------------------------------------------ */
+  function initTheme() {
+    const btn = $("[data-theme-toggle]");
+    if (!btn) return;
+    const root = document.documentElement;
+    const sync = () => btn.setAttribute("aria-checked", String(root.classList.contains("theme-dark")));
+    btn.addEventListener("click", () => {
+      const dark = !root.classList.contains("theme-dark");
+      const apply = () => { root.classList.toggle("theme-dark", dark); sync(); };
+      // Fundido suave entre modos donde el navegador lo permite
+      if (document.startViewTransition && !reduceMotion) document.startViewTransition(apply); else apply();
+      try { localStorage.setItem("lu-theme", dark ? "dark" : "bright"); } catch (e) {}
+    });
+    sync();
   }
 
   /* ------------------------------------------------------------------------
@@ -754,6 +783,7 @@
   initVariants();
   initForm();
   initAboutPhoto();
+  initTheme();
 
   if (!reduceMotion) {
     animateLogo();

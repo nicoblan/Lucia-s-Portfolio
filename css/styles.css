@@ -320,6 +320,36 @@ button { font: inherit; color: inherit; }
 /* Columna a la derecha del logo: js/main.js le da el mismo ancho que la
    píldora roja de abajo ("CONCEPT ━━━"), así los bordes quedan alineados */
 .hero__side { display: flex; flex-direction: column; gap: 14px; margin: 0 0 .9em auto; }
+
+/* Botón Bright / Dark (js/main.js §15) */
+.theme-switch {
+  align-self: flex-end; display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(10,10,10,.12); background: rgba(255,255,255,.8);
+  padding: 6px 10px; border-radius: var(--radius-pill); cursor: pointer;
+  font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+.theme-switch:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.theme-switch__opt { opacity: .4; transition: opacity .3s; }
+.theme-switch[aria-checked="false"] .theme-switch__opt:first-child,
+.theme-switch[aria-checked="true"] .theme-switch__opt:nth-child(3) { opacity: 1; }
+.theme-switch__track { position: relative; width: 34px; height: 18px; border-radius: 9px; background: var(--black); }
+.theme-switch__knob {
+  position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--yellow); transition: translate .45s var(--ease-organic);
+}
+.theme-switch[aria-checked="true"] .theme-switch__knob { translate: 16px 0; }
+
+/* ==========================================================================
+   MODO DARK = NEGATIVO de la paleta
+   invert(1) sobre todo el documento: cada color pasa a su opuesto exacto
+   (azul #1800ad → #e7ff52, rojo #ff3131 → #00cece, blanco → negro...).
+   Fotos, videos y el reproductor se vuelven a invertir para verse normales.
+   ========================================================================== */
+html.theme-dark { filter: invert(1); background: #000; }
+html.theme-dark :is(img, video, iframe) { filter: invert(1); }
+html.theme-dark .highlight__frame img { filter: invert(1) grayscale(.35); }
+html.theme-dark .highlight.is-open .highlight__frame img { filter: invert(1); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .5s; }
 .hero__side .hero__tagline { margin: 0; }
 
 /* De la semana (js/main.js §12): filas chicas, como fichas */
@@ -594,13 +624,13 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 }
 .panel-foot--light { padding-left: 0; padding-right: 0; margin-top: clamp(20px, 4vh, 48px); }
 
-/* Sin imagen (estado inicial) la bio va sola; con la imagen abierta, dos columnas */
+/* Imagen creativa + bio: ocultas hasta hacer clic en "Quién soy" (js/main.js §14) */
 .about__grid {
-  display: grid; grid-template-columns: 1fr; gap: clamp(24px, 5vw, 80px);
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(24px, 5vw, 80px);
   padding: clamp(48px, 10vh, 120px) var(--gutter);
   align-items: center;
 }
-.about__grid.has-photo { grid-template-columns: 1.15fr 1fr; }
+.about__grid[hidden] { display: none; }
 .about__photo img { transition: transform .8s var(--ease-out); }
 .about__photo { margin: 0; background: var(--paper); border-radius: var(--radius); overflow: hidden; will-change: transform; }
 .about__photo figcaption { padding: 12px 16px 16px; color: rgba(10,10,10,.65); }
@@ -621,10 +651,10 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 }
 .toggle__btn[aria-pressed="true"] { background: var(--yellow); color: var(--black); }
 .manifesto__text {
-  font-size: clamp(1.1rem, 2.2vw, 2.2rem); font-weight: 400; line-height: 1.15; letter-spacing: -.02em;
-  max-width: 30ch; margin: 0 0 .7em;
+  font-size: clamp(1rem, 1.55vw, 1.6rem); font-weight: 400; line-height: 1.25; letter-spacing: -.015em;
+  max-width: 40ch; margin: 0 0 .7em;
 }
-.manifesto__body[data-manifesto-panel="full"] .manifesto__text { max-width: 40ch; font-size: clamp(1rem, 1.6vw, 1.6rem); }
+.manifesto__body[data-manifesto-panel="full"] .manifesto__text { max-width: 52ch; font-size: clamp(.95rem, 1.2vw, 1.25rem); line-height: 1.45; }
 
 /* Tarjetas del partido conceptual */
 .concepts {
@@ -820,7 +850,7 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .panel__body > div, .panel__media { grid-column: auto; grid-row: auto; }
   .panel__media { aspect-ratio: 4/3; height: auto; }
 
-  .about__grid, .about__grid.has-photo { grid-template-columns: 1fr; }
+  .about__grid { grid-template-columns: 1fr; }
   .statement__hint { position: static; margin-bottom: 14px; }
   .concepts { grid-template-columns: 1fr; }
   .concept, .concept:nth-child(3) { grid-column: auto; min-height: 0; }

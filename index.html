@@ -28,6 +28,8 @@
        nunca con movimiento reducido) antes de pintar, para que no parpadee -->
   <script>
     document.documentElement.classList.add('js');
+    // Modo oscuro guardado (js/main.js §15)
+    try { if (localStorage.getItem('lu-theme') === 'dark') document.documentElement.classList.add('theme-dark'); } catch (e) {}
     try {
       if (!/intro-frame=/.test(location.search) &&
           (sessionStorage.getItem('lu-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches))
@@ -79,6 +81,13 @@
           <span class="logo__br logo__br--l" data-piece="bl">[</span><span class="logo__lu" data-piece="lu">Lu</span><span class="logo__dash" data-piece="dash">-</span><span class="logo__cia" data-piece="cia">cía</span><span class="logo__br logo__br--r" data-piece="br">]</span><sup class="logo__r" data-piece="r">®</sup>
         </span>
         <div class="hero__side">
+          <!-- Bright / Dark: invierte los colores de todo el sitio (js/main.js §15) -->
+          <button type="button" class="theme-switch" role="switch" aria-checked="false" data-theme-toggle>
+            <span class="theme-switch__opt">Bright</span>
+            <span class="theme-switch__track" aria-hidden="true"><span class="theme-switch__knob"></span></span>
+            <span class="theme-switch__opt">Dark</span>
+            <span class="visually-hidden">Modo oscuro</span>
+          </button>
           <!-- Canción / película de la semana: sale de SITE_CONFIG.semana (js/main.js §12) -->
           <ul class="weekly" data-weekly data-hero-fade aria-label="De la semana" hidden></ul>
         </div>
@@ -129,7 +138,7 @@
 
       <!-- Bloque "Quién soy": al hacer clic se despliega la imagen creativa (js/main.js §14) -->
       <div class="about__statement" id="quien-soy" data-reveal="wipe">
-        <button type="button" class="statement__toggle" aria-expanded="false" aria-controls="about-photo" data-photo-toggle>
+        <button type="button" class="statement__toggle" aria-expanded="false" aria-controls="about-reveal" data-photo-toggle>
           <span class="visually-hidden">Ver la imagen creativa</span>
         </button>
         <span class="statement__hint" aria-hidden="true">Ver imagen creativa <span class="statement__plus">+</span></span>
@@ -140,13 +149,14 @@
         </footer>
       </div>
 
-      <div class="about__grid">
-        <figure class="about__photo" id="about-photo" data-tilt hidden>
+      <!-- Imagen creativa + bio: ocultas hasta hacer clic en "Quién soy" -->
+      <div class="about__grid" id="about-reveal" hidden>
+        <figure class="about__photo" id="about-photo" data-tilt>
           <img src="assets/img/lucia-imagen-creativa.webp" alt="Imagen creativa: Lucía hoy señala con el dedo una foto suya de cuando era chica, con la misma remera blanca" width="981" height="787" loading="lazy">
           <figcaption class="label">Imagen creativa . Antes / ahora. La misma pregunta.</figcaption>
         </figure>
 
-        <div class="about__bio" data-reveal>
+        <div class="about__bio">
           <p class="lead">PR producer y <em>Concept &amp; Vision translator</em>. Traduzco ideas a cosas que existen: sesiones, eventos, films, marcas.</p>
           <p>Estudio Diseño y Gestión de Estéticas para la Moda, con un minor en Relaciones Públicas e Institucionales. Vengo de la producción de eventos y de la experiencia del cliente, que es una forma elegante de decir que sé qué pasa cuando algo sale mal y cómo hacer que no se note.</p>
           <p>¿Por qué nunca me alcanza con la primera vista de las cosas? No tengo una respuesta útil. Tengo un método: volver a las bases.</p>

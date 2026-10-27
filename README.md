@@ -131,7 +131,9 @@ Mientras falten los archivos, la consola del navegador muestra un 404 por cada u
 10. **Formulario** (`initForm`): sin `formspreeEndpoint` abre el cliente de correo con `mailto:`; con endpoint envía a Formspree sin salir de la página.
 11. **Recent projects** (`initHighlights`, sección `#recent-projects`): imágenes en `config.js` → `destacados`; cada cuánto se abre la siguiente en `destacadosInterval`.
 12. **De la semana** (`renderWeekly`): canción y película al lado del logo, en `config.js` → `semana`. Se cambia a mano cada semana; si un título queda vacío, esa ficha no se muestra.
-13. **Canción de fondo** (`initMusic`): si la canción tiene `youtube` (ID del video), suena desde el primer clic, toque o tecla en la página y aparece un mini reproductor en la esquina (pausa / cerrar). La ficha de la canción es el botón de play. Los navegadores no permiten que suene sola sin ese primer gesto, y YouTube exige que el reproductor esté visible (200×200 px como mínimo).
+13. **Canción de fondo** (`initMusic`): si la canción tiene `youtube` (ID del video), suena desde el primer clic, toque o tecla en la página y aparece un mini reproductor en la esquina (pausa / cerrar). La ficha de la canción es el botón de play. Los navegadores no permiten que suene sola sin ese primer gesto, y YouTube exige que el reproductor esté visible (200×200 px como mínimo). Al sonar se ve la portada (`portada` en `config.js`; si no hay, la miniatura del video). El botón amarillo de la barra es play / pausa de la canción.
+14. **Quién soy** (`initAboutPhoto`): la imagen creativa y la bio aparecen al hacer clic en el bloque azul "Quién soy" (o en "Quién soy" del menú About).
+15. **Bright / Dark** (`initTheme`): el botón del home invierte todos los colores (negativo exacto de la paleta); las fotos y videos se vuelven a invertir para verse normales. La elección queda guardada en el navegador.
 
 **`js/area.js`** (página de área): visor (`initLightbox`), entrada de la portada (`animateHero`) y links con transición (`initWipeLinks`).
 
