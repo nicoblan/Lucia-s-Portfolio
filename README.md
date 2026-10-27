@@ -144,4 +144,4 @@ Con `prefers-reduced-motion` activado no se ejecuta ninguna animación de despla
 2. Settings → Pages → Source: *Deploy from a branch* → `main` / `root`.
 3. Al minuto queda en `https://USUARIO.github.io/REPO/`.
 
-Recordá actualizar la `og:image` en `index.html` con la URL absoluta del sitio una vez publicado (las redes no leen rutas relativas).
+**Imagen para redes:** `assets/img/og-image.jpg` (1200×630). Está referenciada con la URL completa (`https://lucia-s-portfolio.vercel.app/...`) en `index.html` y `area.html`; si cambiás de dominio, actualizá esas URLs.
