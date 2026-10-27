@@ -141,6 +141,7 @@
    js/area.js muestra una sola por vez, en corte seco. */
 .book { margin-top: clamp(8px, 2vh, 20px); }
 .book__stage {
+  touch-action: pan-y; /* el dedo puede hojear en horizontal sin trabar el scroll */
   position: relative; display: grid; place-items: center;
   background: #0d0d0d; border-radius: var(--radius);
   height: min(76vh, 58vw); padding: clamp(28px, 6%, 64px) clamp(28px, 8%, 96px);
@@ -196,6 +197,7 @@
 .book__tab--orange { --c: var(--orange); }
 
 .book__controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 14px; }
+.book__hint { margin: 8px 0 0; text-align: center; font-size: 11px; letter-spacing: .04em; color: rgba(10,10,10,.55); }
 .book__btn {
   width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--black); background: var(--white);
   font-size: 16px; font-weight: 700; cursor: pointer; transition: background .3s, color .3s;

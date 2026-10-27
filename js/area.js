@@ -110,6 +110,7 @@
           <span class="book__count" data-book-count aria-live="polite">Tapa</span>
           <button type="button" class="book__btn" data-book-next aria-label="Página siguiente">→</button>
         </div>
+        <p class="book__hint">Deslizá sobre el libro: ← abre · cierra →</p>
       </div>`;
   }
 
@@ -256,9 +257,10 @@
   /* ------------------------------------------------------------------------
      3c. LIBRO: se hojea solo, en cortes secos como la referencia
      Tapa (quieta un rato) → dobles páginas cada `PAGE_MS` → contratapa →
-     vuelve a empezar. Con el mouse encima se pausa; las flechas pasan
-     página a mano. Solo corre mientras está en pantalla. Con movimiento
-     reducido no se hojea solo (las flechas siguen andando).
+     vuelve a empezar. Con el mouse encima se pausa y se hojea moviendo el
+     cursor (derecha → izquierda abre, izquierda → derecha cierra); las
+     flechas también pasan página. Solo corre mientras está en pantalla.
+     Con movimiento reducido no se hojea solo.
      ------------------------------------------------------------------------ */
   function initBooks() {
     const PAGE_MS = 420, COVER_MS = 1300, BACK_MS = 1000;
@@ -295,6 +297,28 @@
 
       $("[data-book-prev]", book).addEventListener("click", () => { show(i - 1); });
       $("[data-book-next]", book).addEventListener("click", () => { show(i + 1); });
+
+      /* Hojear con el cursor (o el dedo): mover de DERECHA a IZQUIERDA abre
+         (avanza páginas); de IZQUIERDA a DERECHA cierra (vuelve hacia la
+         tapa). Cuenta el desplazamiento acumulado: cada `step` píxeles es
+         una página. No da la vuelta: frena en la tapa y en la contratapa. */
+      const stage = $(".book__stage", book);
+      let lastX = null, acc = 0;
+      const step = () => Math.max(36, stage.clientWidth / (states.length + 2));
+      stage.addEventListener("pointermove", (e) => {
+        if (e.pointerType === "mouse" && !finePointer.matches) return;
+        if (lastX === null) { lastX = e.clientX; return; }
+        acc += lastX - e.clientX; // positivo = hacia la izquierda
+        lastX = e.clientX;
+        const s = step();
+        while (acc >= s && i < last) { acc -= s; show(i + 1); }
+        while (acc <= -s && i > 0) { acc += s; show(i - 1); }
+        if ((i === last && acc > 0) || (i === 0 && acc < 0)) acc = 0;
+      });
+      const resetDrag = () => { lastX = null; acc = 0; };
+      stage.addEventListener("pointerleave", resetDrag);
+      stage.addEventListener("pointerup", resetDrag);
+      stage.addEventListener("pointercancel", resetDrag);
       book.addEventListener("mouseenter", () => { hover = true; clearTimeout(timer); });
       book.addEventListener("mouseleave", () => { hover = false; tick(); });
       book.addEventListener("focusin", () => { hover = true; clearTimeout(timer); });

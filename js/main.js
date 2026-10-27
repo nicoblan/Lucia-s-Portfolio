@@ -553,6 +553,26 @@
         : `<span class="weekly__static">${body}</span>`}</li>`;
     }).join("");
     list.hidden = false;
+    matchWeeklyWidth();
+  }
+
+  // El bloque "de la semana" mide lo mismo que la píldora roja de abajo y
+  // termina en el mismo borde derecho. Si no entra al lado del logo (celular),
+  // baja y ocupa todo el ancho.
+  function matchWeeklyWidth() {
+    const side = $(".hero__side"), pill = $(".pill--red"), row = $(".hero__logo"), logo = $(".logo--hero");
+    if (!side || !pill || !row || !logo) return;
+    const sync = () => {
+      const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+      const free = row.clientWidth - logo.offsetWidth - gap;
+      const w = pill.offsetWidth; // offsetWidth ignora el scaleX de la animación de entrada
+      // si por pocos píxeles no entra (según el ancho de pantalla), usa el
+      // espacio libre: el borde derecho sigue alineado con la píldora
+      side.style.width = w > 0 && w <= free ? `${w}px` : w > 0 && w - free <= 24 ? `${Math.floor(free)}px` : "";
+    };
+    sync();
+    window.addEventListener("resize", sync);
+    if (document.fonts) document.fonts.ready.then(sync);
   }
 
   /* ------------------------------------------------------------------------
