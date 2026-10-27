@@ -8,8 +8,8 @@
 (function () {
   "use strict";
 
-  const { CONFIG, $, $$, reduceMotion, EASE_OUT,
-          initReveal, initBackstage, initCursor, wipeTo, wipeIn } = window.LU; // js/common.js
+  const { CONFIG, $, $$, reduceMotion, finePointer, EASE_OUT,
+          initReveal, initBackstage, initCursor, initNavMenus, wipeTo, wipeIn } = window.LU; // js/common.js
 
   const services = CONFIG.services || [];
   const id = new URLSearchParams(location.search).get("a");
@@ -56,16 +56,33 @@
   let flatIndex = 0; // índice global de imagen para el visor
   const allImages = [];
 
+  /* Collage: las imágenes se superponen como piezas impresas apoyadas
+     unas sobre otras (inspiración: collage de estampillas). Cada grupo de 5
+     usa este molde sobre una grilla de 12 columnas; el grupo siguiente se
+     apila debajo. [columna, ancho, fila, alto, giro en grados] */
+  const COLLAGE = [
+    [1, 6, 1, 6, -3],
+    [6, 4, 2, 5, 4],
+    [9, 4, 1, 4, -2.5],
+    [2, 4, 6, 5, 2.5],
+    [7, 5, 6, 5, -3.5]
+  ];
+  const BLOCK_ROWS = 10;
+
   const projectsHTML = projects.map((p, pi) => {
     const items = (p.images || []).map((img, ii) => {
       const k = flatIndex++;
       allImages.push({ ...img, project: p.title });
+      const [col, span, row, rows, rot] = COLLAGE[ii % COLLAGE.length];
+      const r0 = row + Math.floor(ii / COLLAGE.length) * BLOCK_ROWS;
       const inner = img.src
         ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">`
         : placeholder(img.caption || `Imagen ${ii + 1}`);
-      return `<li class="gallery__cell" data-reveal="clip">
-          <button type="button" class="gallery__item" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || img.caption || `imagen ${ii + 1}`)}">${inner}</button>
-          ${img.caption ? `<span class="gallery__caption">${esc(img.caption)}</span>` : ""}
+      return `<li class="collage__cell" data-reveal style="grid-column:${col} / span ${span};grid-row:${r0} / span ${rows};--rot:${rot}deg;--z:${ii + 1}">
+          <button type="button" class="collage__card" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || img.caption || `imagen ${ii + 1}`)}">
+            <span class="collage__img">${inner}</span>
+            ${img.caption ? `<span class="collage__caption">${esc(img.caption)}</span>` : ""}
+          </button>
         </li>`;
     }).join("");
 
@@ -77,7 +94,7 @@
         </header>
         ${p.description ? `<p class="project__desc" data-reveal>${esc(p.description)}</p>` : ""}
         ${p.video ? `<div class="project__video-wrap" data-reveal>${videoHTML(p.video, p.title)}</div>` : ""}
-        ${items ? `<ul class="gallery" role="list">${items}</ul>` : ""}
+        ${items ? `<ul class="collage" role="list">${items}</ul>` : ""}
       </article>`;
   }).join("");
 
@@ -169,6 +186,29 @@
   }
 
   /* ------------------------------------------------------------------------
+     3b. COLLAGE 3D: cada pieza se inclina hacia el cursor (perspectiva) y
+     pasa al frente. `TILT` = grados máximos. El giro de reposo (--rot) y
+     la profundidad están en css/area.css (.collage__card).
+     ------------------------------------------------------------------------ */
+  function initCollageTilt() {
+    if (reduceMotion || !finePointer.matches) return;
+    const TILT = 12;
+    $$(".collage__card").forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.setProperty("--ry", `${(px * TILT).toFixed(2)}deg`);
+        card.style.setProperty("--rx", `${(-py * TILT).toFixed(2)}deg`);
+        card.style.setProperty("--gx", `${((px + 0.5) * 100).toFixed(1)}%`);
+        card.style.setProperty("--gy", `${((py + 0.5) * 100).toFixed(1)}%`);
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.removeProperty("--rx"); card.style.removeProperty("--ry");
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------------
      4. ENTRADA DE LA PORTADA: el título sube desde una máscara
      ------------------------------------------------------------------------ */
   function animateHero() {
@@ -199,8 +239,10 @@
   wipeIn(area.color);
   initBackstage();
   initCursor();
+  initNavMenus();
   initReveal();
   initLightbox();
+  initCollageTilt();
   initWipeLinks();
   animateHero();
 })();

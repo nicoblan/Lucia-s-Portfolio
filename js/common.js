@@ -192,11 +192,69 @@
       { duration: IN_MS + 300, delay: 60, easing: EASE_ORGANIC, fill: "backwards" });
   }
 
+  /* ------------------------------------------------------------------------
+     5. MENÚS DESPLEGABLES DEL NAV (Áreas y About)
+     Al pasar el cursor (o llegar con Tab) por "Áreas" o "About" se
+     despliega hacia abajo la lista de sus secciones con un subtítulo.
+     - Áreas: sale de SITE_CONFIG.services (title + subtitle) y lleva a la
+       página de cada área con la transición de color.
+     - About: lista fija de abajo (ABOUT_ITEMS), con anclas del index.
+     La apertura es CSS (:hover / :focus-within); en celular no se muestra.
+     ------------------------------------------------------------------------ */
+  const ABOUT_ITEMS = [
+    { href: "#about",      title: "Quién soy",   subtitle: "Yo soy mi nombre" },
+    { href: "#manifiesto", title: "Manifiesto",  subtitle: "Lo evidente me interesa demasiado" },
+    { href: "#conceptos",  title: "Conceptos",   subtitle: "Volver a lo básico · Ironía · Sistema" }
+  ];
+
+  function initNavMenus() {
+    const onIndex = !!document.getElementById("about"); // en area.html las anclas van a index.html
+    const esc = (str = "") => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+    const build = (li, items, label) => {
+      const sub = document.createElement("div");
+      sub.className = "nav__sub";
+      sub.innerHTML = `<ul aria-label="${label}">${items.map((it, i) => `
+        <li style="--i:${i}">
+          <a href="${it.href}"${it.color ? ` data-color="${it.color}"` : ""}>
+            <span class="nav__sub-dot" aria-hidden="true"${it.color ? ` style="background:${PALETTE[it.color]}"` : ""}></span>
+            <span class="nav__sub-text"><span class="nav__sub-title">${esc(it.title)}</span><span class="nav__sub-subtitle">${esc(it.subtitle)}</span></span>
+          </a>
+        </li>`).join("")}</ul>`;
+      li.classList.add("has-sub");
+      li.appendChild(sub);
+      return sub;
+    };
+
+    const areasLi = $('[data-menu="areas"]');
+    if (areasLi) {
+      const sub = build(areasLi, (CONFIG.services || []).map(s => ({
+        href: `area.html?a=${s.id}`, title: s.title, subtitle: s.subtitle || "", color: s.color
+      })), "Áreas");
+      $$("a[data-color]", sub).forEach(a => a.addEventListener("click", (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        wipeTo(a.getAttribute("href"), a.dataset.color, a);
+      }));
+    }
+    const aboutLi = $('[data-menu="about"]');
+    if (aboutLi) {
+      build(aboutLi, ABOUT_ITEMS.map(it => ({ ...it, href: (onIndex ? "" : "index.html") + it.href })), "About");
+    }
+    // Al elegir una opción, el menú se cierra aunque el cursor siga encima
+    $$(".nav__sub a").forEach(a => a.addEventListener("click", () => {
+      const li = a.closest(".has-sub");
+      li.classList.add("is-closing");
+      a.blur();
+      li.addEventListener("mouseleave", () => li.classList.remove("is-closing"), { once: true });
+    }));
+  }
+
   // Si se vuelve con el botón "atrás" (bfcache), sacamos máscaras viejas
   window.addEventListener("pageshow", (e) => {
     if (e.persisted) $$(".page-wipe").forEach(w => w.remove());
   });
 
   window.LU = { CONFIG, $, $$, reduceMotion, finePointer, EASE_OUT, EASE_BACK, PALETTE,
-                initReveal, initBackstage, initCursor, wipeTo, wipeIn };
+                initReveal, initBackstage, initCursor, initNavMenus, wipeTo, wipeIn };
 })();

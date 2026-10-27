@@ -9,7 +9,7 @@
   "use strict";
 
   const { CONFIG, $, $$, reduceMotion, finePointer, EASE_OUT, EASE_BACK,
-          initReveal, initBackstage, initCursor, wipeTo } = window.LU; // js/common.js
+          initReveal, initBackstage, initCursor, initNavMenus, wipeTo } = window.LU; // js/common.js
 
   /* ------------------------------------------------------------------------
      1. LOGO: las piezas entran por separado y se ensamblan
@@ -239,7 +239,7 @@
      6. NAV: marca la sección visible
      ------------------------------------------------------------------------ */
   function initNav() {
-    const links = $$(".nav__list a");
+    const links = $$(".nav__list > li > a");
     const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -307,35 +307,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     8. MARQUEE: títulos display que se desplazan en horizontal con el scroll
-     data-marquee="-1" va hacia la izquierda; "1" hacia la derecha.
-     `DISTANCE` = cuántos anchos de pantalla recorre mientras la línea
-     cruza la pantalla (0.6 = 60% del viewport).
-     ------------------------------------------------------------------------ */
-  function initMarquee() {
-    const tracks = $$("[data-marquee]");
-    if (!tracks.length) return;
-    // Repetimos el texto para que nunca se vea el final de la línea
-    tracks.forEach(t => { t.textContent = (t.textContent.trim() + " ").repeat(4); });
-    if (reduceMotion) return;
-
-    const DISTANCE = 0.6;
-    onScrollFrame(() => {
-      const vh = window.innerHeight;
-      tracks.forEach((t) => {
-        const r = t.parentElement.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > vh) return;
-        const progress = (vh - r.top) / (vh + r.height); // 0 → 1 mientras cruza
-        const w = window.innerWidth * DISTANCE;
-        const dir = parseFloat(t.dataset.marquee) || -1;
-        const x = dir < 0 ? -progress * w : -w + progress * w;
-        t.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`;
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------------
-     9. INCLINACIÓN con el mouse para [data-tilt]
+     8. INCLINACIÓN con el mouse para [data-tilt]
      `MAX_TILT` = grados máximos. La imagen interior se corre un poco en
      sentido contrario para dar profundidad.
      ------------------------------------------------------------------------ */
@@ -361,7 +333,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     10. LOGO EN VARIANTES (tarjeta identitaria, comienzo de Contacto)
+     9. LOGO EN VARIANTES (tarjeta identitaria, comienzo de Contacto)
      Pasa sola a la siguiente variante del PDF cada `AUTO_MS` ms: negro con
      logo a color, y azul / rojo / verde con logo blanco. Un clic también
      la cambia (y reinicia el reloj). El nuevo color entra como un círculo
@@ -445,7 +417,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     11. FORMULARIO DE CONTACTO
+     10. FORMULARIO DE CONTACTO
      Si config.contact.formspreeEndpoint tiene valor → envía con fetch a
      Formspree. Si no → arma un mailto: y abre el cliente de correo.
      ------------------------------------------------------------------------ */
@@ -507,19 +479,69 @@
   }
 
   /* ------------------------------------------------------------------------
+     11. DESTACADOS: rectángulos que se abren y cierran solos
+     Uno está abierto (ancho) y el resto cerrados (angostos). Cada
+     `destacadosInterval` ms se abre el siguiente. Con el mouse encima se
+     abre el rectángulo que está debajo del cursor y el automático se pausa;
+     al salir, sigue desde ahí. La transición la hace el CSS (flex-grow con
+     --ease-organic), así que el ritmo se ajusta en .highlight.
+     ------------------------------------------------------------------------ */
+  function initHighlights() {
+    const list = $("[data-highlights]");
+    const items = CONFIG.destacados || [];
+    if (!list || !items.length) return;
+
+    list.innerHTML = items.map((d, i) => {
+      const tag = d.href ? "a" : "div";
+      const href = d.href ? ` href="${d.href}"` : "";
+      return `<li class="highlight" data-reveal>
+        <${tag} class="highlight__frame"${href}>
+          <img src="${d.src}" alt="${d.alt || ""}" loading="lazy" decoding="async">
+          <span class="highlight__caption"><span>${String(i + 1).padStart(2, "0")}</span>${d.caption || ""}</span>
+        </${tag}>
+      </li>`;
+    }).join("");
+
+    const cells = $$(".highlight", list);
+    let current = 0, timer = null, hovering = false;
+    const open = (k) => {
+      current = (k + cells.length) % cells.length;
+      cells.forEach((c, i) => c.classList.toggle("is-open", i === current));
+    };
+    const play = () => {
+      clearInterval(timer);
+      if (reduceMotion) return;
+      timer = setInterval(() => { if (!hovering && !document.hidden) open(current + 1); }, CONFIG.destacadosInterval || 2600);
+    };
+
+    cells.forEach((c, i) => {
+      // mousemove (y no mouseenter) para no abrir en cadena cuando los
+      // rectángulos se corren solos debajo de un cursor quieto
+      c.addEventListener("mousemove", () => { if (finePointer.matches && i !== current) open(i); });
+      c.addEventListener("focusin", () => open(i));
+    });
+    list.addEventListener("mouseenter", () => { hovering = true; });
+    list.addEventListener("mouseleave", () => { hovering = false; play(); });
+
+    open(0);
+    play();
+  }
+
+  /* ------------------------------------------------------------------------
      INIT
      ------------------------------------------------------------------------ */
   renderPanels();
   renderSocials();
+  initHighlights();
   const year = $("[data-year]"); if (year) year.textContent = new Date().getFullYear();
 
   initBackstage();
   initAccordion();
+  initNavMenus();
   initNav();
   initReveal();
   initCursor();
   initManifesto();
-  initMarquee();
   initTilt();
   initVariants();
   initForm();

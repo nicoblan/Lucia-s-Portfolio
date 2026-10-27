@@ -77,7 +77,7 @@ projects: [
 ```
 
 - Las imágenes van en una carpeta por área, por ejemplo `assets/img/fotografia/`.
-- La **primera imagen** de cada proyecto se muestra grande; el resto, en grilla. Clic en cualquiera abre el visor (flechas del teclado o deslizar con el dedo).
+- Las imágenes se arman como un **collage 3D**: piezas superpuestas y apenas giradas, con marco tipo impresión; con el mouse se enderezan, se inclinan hacia el cursor y pasan al frente. El molde de posiciones es `COLLAGE` en `js/area.js`. Clic en cualquiera abre el visor (flechas del teclado o deslizar con el dedo).
 - `year`, `client` y `role` son opcionales: si quedan vacíos, no se muestran.
 - Para YouTube usá el link "embed" (`https://www.youtube.com/embed/ID`); para Vimeo, `https://player.vimeo.com/video/ID`.
 - Hoy hay proyectos de ejemplo con placeholders (`src: null`) para que veas cómo queda. Branding & Marketing ya tiene el proyecto real de la identidad [Lu - cía]® con los mockups del PDF.
@@ -107,13 +107,15 @@ Mientras falten los archivos, la consola del navegador muestra un 404 por cada u
 1. **Reveal**: agregá `data-reveal`, `data-reveal="clip"` o `data-reveal="wipe"` a cualquier elemento.
 2. **Backstage**: intervalo en `config.js` → `backstageInterval`; opacidad y blur en `.backstage__slide` (CSS).
 3. **Cursor** (`initCursor`): tamaño en `.cursor__dot` (CSS), seguimiento con `LERP`. Usa `mix-blend-mode: difference` para mostrar el negativo del color de abajo. Solo aparece con mouse.
-4. **Transición entre páginas** (`wipeTo` / `wipeIn`): el color del área crece desde el panel clickeado y se retira al entrar. Duración en `WIPE_MS`.
+4. **Transición entre páginas** (`wipeTo` / `wipeIn`): un círculo del color del área crece desde donde se hizo clic; al llegar, el color se desvanece. Duración en `WIPE_MS` / `IN_MS`.
+5. **Menús desplegables** (`initNavMenus`): "Áreas" lista cada área con su `subtitle` (en `config.js`); "About" usa `ABOUT_ITEMS`.
 
 **`js/intro.js`** (intro de entrada, solo en `index.html`): réplica de la referencia de círculos, dibujada en un `<canvas>` con una única timeline. La secuencia completa está documentada al principio del archivo.
 
 - **Colores**: objeto `C` (hoy mapeado a la paleta; los originales de la referencia están anotados al lado).
 - **Movimiento**: listas `RHO` (distancia al centro), `ANGLE` (giro), `SPLIT` (división en cuatro) y `EXIT` (salida), como `[segundo, valor]` medidos del video.
-- **Ver un instante quieto** para ajustar: `index.html?intro-frame=2.4`.
+- **Duración**: `DURATION` (hoy 2 s, con el fundido final). La coreografía del video se reproduce comprimida a ese tiempo.
+- **Ver un instante quieto** para ajustar: `index.html?intro-frame=2.4` (el número es el segundo del video original, de 0 a 5,2).
 - Se ve una vez por sesión; con movimiento reducido no aparece; clic o tecla la saltean.
 
 **`js/main.js`** (página principal):
@@ -123,10 +125,10 @@ Mientras falten los archivos, la consola del navegador muestra un 404 por cada u
 3. **Parallax**: la intensidad se define en el HTML con `data-speed` (ej. `0.12`, negativo = va en contra).
 4. **Áreas**: los paneles se abren con hover (mouse) o clic/toque; clic en el panel abierto o en "Ver todo" lleva a su página.
 7. **Manifiesto** (`initManifesto`): ritmo del revelado con `WORD_DELAY` y `MAX_TOTAL`.
-8. **Marquee** (`initMarquee`): recorrido con `DISTANCE`. Los textos están en el HTML (`data-marquee`).
-9. **Inclinación de la foto** (`initTilt`): grados máximos en `MAX_TILT`.
-10. **Tarjeta identitaria** (`initVariants`): cambia sola cada `AUTO_MS` ms y también con clic. Lista `VARIANTS` (fondo, logo a color o blanco, color del texto chico).
-11. **Formulario** (`initForm`): sin `formspreeEndpoint` abre el cliente de correo con `mailto:`; con endpoint envía a Formspree sin salir de la página.
+8. **Inclinación de la foto** (`initTilt`): grados máximos en `MAX_TILT`.
+9. **Tarjeta identitaria** (`initVariants`): cambia sola cada `AUTO_MS` ms y también con clic. Lista `VARIANTS` (fondo, logo a color o blanco, color del texto chico).
+10. **Formulario** (`initForm`): sin `formspreeEndpoint` abre el cliente de correo con `mailto:`; con endpoint envía a Formspree sin salir de la página.
+11. **Destacados** (`initHighlights`): imágenes en `config.js` → `destacados`; cada cuánto se abre la siguiente en `destacadosInterval`.
 
 **`js/area.js`** (página de área): visor (`initLightbox`), entrada de la portada (`animateHero`) y links con transición (`initWipeLinks`).
 

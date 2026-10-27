@@ -232,12 +232,54 @@ button { font: inherit; color: inherit; }
 }
 .nav__logo { text-decoration: none; display: flex; }
 .nav__list { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
-.nav__list a {
+.nav__list > li { position: relative; }
+.nav__list > li > a {
   display: block; text-decoration: none; font-weight: 700; font-size: 14px;
   padding: 9px 14px; border-radius: var(--radius-pill);
   transition: background .3s var(--ease-out), color .3s var(--ease-out);
 }
-.nav__list a:hover, .nav__list a.is-current { background: var(--blue); color: var(--white); }
+.nav__list > li > a:hover, .nav__list > li > a.is-current,
+.nav__list > .has-sub:hover > a { background: var(--blue); color: var(--white); }
+
+/* Desplegables de Áreas y About (js/common.js §5): se abren hacia abajo */
+.nav__sub {
+  position: absolute; top: 100%; left: 50%; translate: -50% 0;
+  padding-top: 16px;              /* puente invisible: el hover no se corta */
+  visibility: hidden; pointer-events: none;
+  transition: visibility 0s .45s;
+}
+.nav__sub ul {
+  list-style: none; margin: 0; padding: 8px; min-width: 300px;
+  background: rgba(255,255,255,.97); border-radius: 22px;
+  border: 1px solid rgba(10,10,10,.08);
+  box-shadow: 0 18px 50px -12px rgba(24,0,173,.25);
+  clip-path: inset(0 0 100% 0 round 22px);
+  transition: clip-path .45s var(--ease-organic);
+}
+.nav__sub li { opacity: 0; translate: 0 -8px; transition: opacity .25s, translate .25s; }
+.nav__sub a {
+  display: flex; align-items: center; gap: 12px; text-decoration: none;
+  padding: 10px 12px; border-radius: 14px;
+  transition: background .25s var(--ease-out);
+}
+.nav__sub a:hover, .nav__sub a:focus-visible { background: rgba(24,0,173,.07); }
+.nav__sub-dot { width: 12px; height: 12px; border-radius: 50%; flex: none; background: var(--blue); transition: scale .3s var(--ease-out); }
+.nav__sub a:hover .nav__sub-dot { scale: 1.4; }
+.nav__sub-text { display: flex; flex-direction: column; gap: 2px; }
+.nav__sub-title { font-weight: 700; font-size: 14px; line-height: 1.1; }
+.nav__sub-subtitle { font-size: 12px; color: rgba(10,10,10,.6); line-height: 1.2; }
+/* Abierto: con el cursor encima o con foco de teclado */
+.has-sub:hover > .nav__sub, .has-sub:focus-within > .nav__sub {
+  visibility: visible; pointer-events: auto; transition-delay: 0s;
+}
+.has-sub:hover > .nav__sub ul, .has-sub:focus-within > .nav__sub ul { clip-path: inset(0 0 0 0 round 22px); }
+.has-sub:hover > .nav__sub li, .has-sub:focus-within > .nav__sub li {
+  opacity: 1; translate: 0 0;
+  transition: opacity .4s var(--ease-organic), translate .5s var(--ease-organic);
+  transition-delay: calc(.08s + var(--i) * .05s);
+}
+/* Después de elegir una opción se cierra aunque el cursor siga encima */
+.has-sub.is-closing > .nav__sub { visibility: hidden; pointer-events: none; }
 
 .backstage-toggle {
   width: 36px; height: 36px; border-radius: 50%; border: 0;
@@ -264,12 +306,20 @@ button { font: inherit; color: inherit; }
    ========================================================================== */
 .hero {
   position: relative;
-  min-height: 100vh;
-  padding: 112px var(--gutter) 0;
+  padding: 112px var(--gutter) clamp(48px, 10vh, 120px);
+  overflow-x: clip; /* los corchetes del logo entran desde afuera: que no ensanchen la página */
 }
-.hero__label { margin-bottom: clamp(16px, 3vh, 36px); }
-.hero__logo { margin-bottom: clamp(12px, 3vh, 40px); }
+/* Logo + frase al lado, alineados por la base */
+.hero__logo {
+  display: flex; align-items: flex-end; flex-wrap: wrap; gap: 8px clamp(16px, 3vw, 48px);
+  margin-bottom: clamp(12px, 3vh, 40px);
+}
 .logo--hero { font-size: clamp(3.4rem, 15vw, 15rem); }
+.hero__tagline {
+  margin: 0 0 .9em;
+  font-size: clamp(15px, 1.7vw, 26px); font-weight: 400; font-style: italic;
+  letter-spacing: -.01em; line-height: 1.1; color: var(--blue);
+}
 
 .hero__title {
   margin: 0;
@@ -303,20 +353,42 @@ button { font: inherit; color: inherit; }
 }
 .pill--red .pill__text { color: var(--black); }
 
-.hero__gallery {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1.7fr 1fr;
-  gap: var(--gutter);
-  align-items: start;
-  margin-top: clamp(40px, 8vh, 96px);
-  padding-bottom: 12vh;
+/* ==========================================================================
+   DESTACADOS — rectángulos que se abren y cierran solos (js/main.js §11)
+   ========================================================================== */
+.highlights { padding: clamp(24px, 4vh, 48px) 0 0; overflow-x: clip; }
+.highlights__head { padding: 0 var(--gutter); margin-bottom: 18px; }
+.highlights__list {
+  list-style: none; margin: 0; padding: 0 var(--gutter);
+  display: flex; gap: 10px;
+  height: clamp(380px, 68vh, 720px);
 }
-.shot { margin: 0; overflow: hidden; border-radius: var(--radius); will-change: transform; }
-.shot img { width: 100%; height: 100%; object-fit: cover; }
-.shot--a { aspect-ratio: 3/4; margin-top: 8vh; }
-.shot--b { aspect-ratio: 4/3; border-radius: var(--radius-pill); }
-.shot--c { aspect-ratio: 5/6; margin-top: 18vh; }
+.highlight {
+  position: relative; flex: 1 1 0; min-width: 0;
+  /* mismo movimiento orgánico que los paneles de Áreas */
+  transition: flex-grow 1.1s var(--ease-organic);
+}
+.highlight.is-open { flex-grow: 5; }
+.highlight__frame {
+  position: absolute; inset: 0; display: block; overflow: hidden;
+  border-radius: 6px; color: inherit; text-decoration: none; background: var(--paper);
+}
+a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.highlight__frame img {
+  width: 100%; height: 100%; object-fit: cover;
+  scale: 1.18; filter: grayscale(.35);
+  transition: scale 1.6s var(--ease-organic), filter 1.1s var(--ease-organic);
+}
+.highlight.is-open .highlight__frame img { scale: 1; filter: none; }
+.highlight__caption {
+  position: absolute; left: 14px; bottom: 14px; display: flex; gap: 8px; align-items: baseline;
+  font-size: 12px; font-weight: 700; background: rgba(255,255,255,.92); color: var(--black);
+  padding: 6px 12px; border-radius: var(--radius-pill); white-space: nowrap;
+  opacity: 0; translate: 0 10px;
+  transition: opacity .5s var(--ease-organic), translate .7s var(--ease-organic);
+}
+.highlight__caption span { font-size: 10px; letter-spacing: .08em; }
+.highlight.is-open .highlight__caption { opacity: 1; translate: 0 0; transition-delay: .35s; }
 
 
 /* ==========================================================================
@@ -335,21 +407,11 @@ button { font: inherit; color: inherit; }
    ========================================================================== */
 .areas { padding: clamp(80px, 14vh, 160px) 0 0; }
 
-.marquee { overflow: hidden; margin-bottom: clamp(24px, 4vh, 48px); }
-.marquee__track {
-  white-space: nowrap;
-  font-weight: 700; letter-spacing: -.05em; line-height: .95;
-  font-size: clamp(3rem, 11vw, 11rem);
-  will-change: transform;
-}
-.marquee__track--outline {
-  color: transparent; -webkit-text-stroke: 2px var(--blue);
-}
-
+/* Sin títulos arriba: los paneles ocupan casi toda la pantalla */
 .panels {
   display: flex; gap: 10px;
   padding: 0 var(--gutter);
-  height: clamp(420px, 72vh, 760px);
+  height: clamp(520px, 88vh, 960px);
 }
 .panel {
   --bg: var(--red); --fg: var(--black);
@@ -521,7 +583,7 @@ button { font: inherit; color: inherit; }
   display: flex; flex-direction: column; justify-content: center; gap: 18px;
   position: relative; overflow: hidden; isolation: isolate;
 }
-/* Círculo que trae el color de la variante siguiente (js/main.js §10) */
+/* Círculo que trae el color de la variante siguiente (js/main.js §9) */
 .variant-card__wipe { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .variant-card .logo { transition: color .3s; }
 .variant-card .logo > *, .variant-card .logo__r { transition: color .35s var(--ease-out); }
@@ -658,15 +720,14 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 760px) {
   .nav { left: 12px; right: 12px; transform: none; justify-content: space-between; padding-left: 16px; }
-  .nav__list a { padding: 8px 10px; font-size: 13px; }
+  .nav__list > li > a { padding: 8px 10px; font-size: 13px; }
+  .nav__sub { display: none; } /* en celular: navegación simple */
 
   .hero { padding-top: 88px; }
   .row { gap: .08em; }
   .pill__text { display: none; }
-  .hero__gallery { grid-template-columns: 1fr 1fr; }
-  .shot--b { grid-column: 1 / -1; order: -1; }
-  .shot--a { margin-top: 0; }
-  .shot--c { margin-top: 6vh; }
+  /* Destacados en columna: se abren hacia abajo */
+  .highlights__list { flex-direction: column; height: 82vh; }
 
   /* Paneles apilados */
   .panels { flex-direction: column; height: auto; }

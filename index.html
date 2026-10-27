@@ -56,8 +56,9 @@
     </a>
     <nav aria-label="Secciones">
       <ul class="nav__list">
-        <li><a href="#areas">Áreas</a></li>
-        <li><a href="#about">About</a></li>
+        <!-- data-menu: js/common.js agrega el desplegable con cada sección -->
+        <li data-menu="areas"><a href="#areas">Áreas</a></li>
+        <li data-menu="about"><a href="#about">About</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
     </nav>
@@ -76,6 +77,7 @@
         <span class="logo logo--hero" role="img" aria-label="[Lu - cía]®" data-logo>
           <span class="logo__br logo__br--l" data-piece="bl">[</span><span class="logo__lu" data-piece="lu">Lu</span><span class="logo__dash" data-piece="dash">-</span><span class="logo__cia" data-piece="cia">cía</span><span class="logo__br logo__br--r" data-piece="br">]</span><sup class="logo__r" data-piece="r">®</sup>
         </span>
+        <p class="hero__tagline" data-hero-fade>mi portfolio creativo</p>
       </div>
 
       <h1 class="hero__title" id="hero-title">
@@ -93,30 +95,22 @@
         </span>
         <span class="visually-hidden"> — Lucía Deregibus Mongardi</span>
       </h1>
+    </section>
 
-      <!-- Imágenes de presentación con parallax (data-speed = intensidad) -->
-      <div class="hero__gallery" aria-label="Aplicaciones de la marca">
-        <figure class="shot shot--a" data-speed="0.12">
-          <img src="assets/img/mockup-tote.webp" alt="Bolsa de tela con el logo [Lu-] estampado" width="506" height="759" loading="eager">
-        </figure>
-        <figure class="shot shot--b" data-speed="-0.06">
-          <img src="assets/img/mockup-subte.webp" alt="Afiche azul con el logo [Lu-] en un vagón de subte" width="957" height="717" loading="lazy">
-        </figure>
-        <figure class="shot shot--c" data-speed="0.2">
-          <img src="assets/img/mockup-medias.webp" alt="Medias azules con etiqueta [Lu-]" width="567" height="675" loading="lazy">
-        </figure>
+    <!-- ===================== DESTACADOS ===================== -->
+    <!-- Rectángulos que se abren y cierran solos (js/main.js §11).
+         Las imágenes salen de SITE_CONFIG.destacados -->
+    <section class="highlights" id="destacados" aria-labelledby="destacados-title">
+      <div class="highlights__head" data-reveal>
+        <p class="label">D E S T A C A D O S &nbsp; .</p>
+        <h2 class="visually-hidden" id="destacados-title">Destacados</h2>
       </div>
+      <ul class="highlights__list" data-highlights role="list"></ul>
     </section>
 
     <!-- ===================== B. ÁREAS ===================== -->
     <section class="areas" id="areas" aria-labelledby="areas-title">
       <h2 class="visually-hidden" id="areas-title">Áreas</h2>
-
-      <!-- Títulos display que se desplazan en horizontal con el scroll -->
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee__track" data-marquee="-1">Fotografía · Fashion Films · Tendencias · Diseño Editorial · Branding &amp; Marketing ·</div>
-        <div class="marquee__track marquee__track--outline" data-marquee="1">Volver a lo básico · Ironía + básico · Sistema ·</div>
-      </div>
 
       <!-- Paneles: los genera js/main.js desde SITE_CONFIG.services -->
       <div class="panels" data-panels></div>
@@ -152,7 +146,7 @@
       </div>
 
       <!-- Manifiesto: toggle Resumen / Completo (js/main.js §7) -->
-      <div class="manifesto" data-reveal>
+      <div class="manifesto" id="manifiesto" data-reveal>
         <div class="manifesto__head">
           <h3 class="display display--md">Manifiesto<span class="dot">.</span></h3>
           <div class="toggle" role="group" aria-label="Versión del manifiesto">
@@ -172,7 +166,7 @@
       </div>
 
       <!-- Bloques del partido conceptual (textos literales del PDF) -->
-      <div class="concepts">
+      <div class="concepts" id="conceptos">
         <article class="concept concept--red" data-reveal>
           <span class="sign sign--tri" aria-hidden="true"></span>
           <h3>Volver a lo básico.</h3>
@@ -196,7 +190,7 @@
       <h2 class="visually-hidden" id="contact-title">Contacto</h2>
 
       <div class="contact__grid">
-        <!-- Tarjeta identitaria: cambia de variante sola (js/main.js §10) y también con clic -->
+        <!-- Tarjeta identitaria: cambia de variante sola (js/main.js §9) y también con clic -->
         <div class="variants" data-reveal>
           <p class="label">C O N T A C T &nbsp; M E &nbsp; .</p>
           <button type="button" class="variant-card" data-variant="0" aria-label="Cambiar variante de color del logo">

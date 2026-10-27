@@ -70,26 +70,55 @@
 .project__video-wrap { margin-bottom: 10px; border-radius: var(--radius); overflow: hidden; background: var(--black); aspect-ratio: 16/9; }
 .project__video { display: block; width: 100%; height: 100%; border: 0; object-fit: cover; }
 
-/* ---------- Galería: la primera imagen grande, el resto en grilla ---------- */
-.gallery {
+/* ---------- Collage 3D: piezas superpuestas, apenas giradas ----------
+   Inspiración: collage de estampillas/impresos apoyados unos sobre otros.
+   Cada pieza tiene marco blanco tipo impresión, sombra en capas y un giro
+   de reposo (--rot, lo define js/area.js). Con el mouse se endereza, se
+   inclina hacia el cursor (--rx/--ry), se levanta y pasa al frente. */
+.collage {
   list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: clamp(140px, 17vw, 260px);
-  gap: 10px;
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: clamp(34px, 4.2vw, 64px);
+  gap: 0;
+  perspective: 1400px;
 }
-.gallery__cell { grid-column: span 2; position: relative; min-width: 0; }
-.gallery__cell:first-child { grid-column: span 4; grid-row: span 2; }
-.gallery__cell:nth-child(5n + 4), .gallery__cell:nth-child(5n + 5) { grid-column: span 3; }
-.gallery__item {
-  all: unset; box-sizing: border-box; cursor: zoom-in; display: block; width: 100%; height: 100%;
-  border-radius: var(--radius); overflow: hidden; background: var(--paper);
+.collage__cell { position: relative; min-width: 0; z-index: var(--z); }
+.collage__cell:hover, .collage__cell:focus-within { z-index: 50; }
+.collage__card {
+  all: unset; box-sizing: border-box; cursor: zoom-in;
+  position: absolute; inset: 0;
+  display: block; padding: clamp(6px, .7vw, 10px);
+  background: #fffdf8; border-radius: 6px;
+  /* sombra en capas: contacto + caída larga = sensación de objeto */
+  box-shadow: 0 1px 1px rgba(10,10,10,.08), 0 6px 12px -4px rgba(10,10,10,.18), 0 24px 40px -18px rgba(10,10,10,.35);
+  transform-style: preserve-3d;
+  transform: rotate(var(--rot)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .9s var(--ease-organic), box-shadow .9s var(--ease-organic);
+  will-change: transform;
 }
-.gallery__item:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
-.gallery__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease-out); }
-.gallery__item:hover img { transform: scale(1.04); }
-.gallery__caption {
-  position: absolute; left: 12px; bottom: 12px; pointer-events: none;
-  font-size: 11px; font-weight: 700; background: rgba(255,255,255,.88); padding: 4px 10px; border-radius: var(--radius-pill);
+.collage__card:hover, .collage__card:focus-visible {
+  transform: rotate(0deg) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(40px) scale(1.04);
+  box-shadow: 0 2px 2px rgba(10,10,10,.06), 0 18px 30px -10px rgba(10,10,10,.25), 0 50px 80px -30px rgba(10,10,10,.45);
+  transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out);
 }
+.collage__card:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+.collage__img { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 3px; background: var(--paper); }
+.collage__img img { width: 100%; height: 100%; object-fit: cover; }
+/* brillo que sigue al cursor: refuerza el volumen */
+.collage__img::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(255,255,255,.35), transparent 55%);
+  transition: opacity .5s;
+}
+.collage__card:hover .collage__img::after { opacity: 1; }
+.collage__caption {
+  position: absolute; left: clamp(12px, 1.2vw, 18px); bottom: clamp(12px, 1.2vw, 18px);
+  font-size: 11px; font-weight: 700; background: rgba(255,255,255,.9); padding: 4px 10px; border-radius: var(--radius-pill);
+  transform: translateZ(20px);
+}
+/* Entrada: cada pieza "cae" en su lugar (el giro vive en .collage__card) */
+.js .collage__cell[data-reveal] { transform: translateY(60px) rotate(var(--rot)); }
+.js .collage__cell[data-reveal].is-in { transform: none; }
 
 /* Placeholder de imagen: color del área en versión clara + signos */
 .page-area[data-color="red"]    { --area-c: var(--red); }
@@ -163,9 +192,8 @@
   .area-hero__tags { justify-content: flex-start; }
   .project__head { grid-template-columns: auto minmax(0, 1fr); }
   .project__meta { grid-column: 1 / -1; flex-wrap: wrap; padding-top: 0; }
-  .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 42vw; }
-  .gallery__cell, .gallery__cell:nth-child(5n + 4), .gallery__cell:nth-child(5n + 5) { grid-column: span 1; }
-  .gallery__cell:first-child { grid-column: 1 / -1; grid-row: span 2; }
+  .collage { grid-auto-rows: 8.5vw; }
+  .collage__card { padding: 5px; }
   .area-pager { grid-template-columns: 1fr; }
   .area-pager__link:last-child { text-align: left; }
   .lightbox__frame { padding: 64px 12px 96px; }

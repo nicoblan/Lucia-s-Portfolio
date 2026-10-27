@@ -4,7 +4,8 @@
    Réplica de la referencia "Circle transition" (Pinterest, 5,4 s). Los
    tiempos y posiciones salen de medir el video cuadro por cuadro.
 
-   SECUENCIA (segundos del video = segundos de la intro)
+   SECUENCIA (en segundos del video; la intro la reproduce comprimida en
+   DURATION = 2 s: misma coreografía y mismas curvas, ~3 veces más rápido)
    0.00–0.20  Dos círculos asoman en los bordes izquierdo (blanco) y
               derecho (oscuro), a media altura. Quietos.
    0.20–0.73  Avanzan hacia el centro acelerando (ease-in) y se cruzan.
@@ -76,7 +77,10 @@
   const T_SPLIT = 1.985;    // s: el par se divide en cuatro
   const T_EXIT = 4.53;      // s: colapso final; empiezan las salidas
   const T_EMPTY = 5.2;      // s: pantalla vacía (fin del video)
-  const FADE = 0.45;        // s: el fondo se desvanece y aparece el hero
+  const DURATION = 2.0;     // s reales que dura toda la intro (con el fundido)
+  const FADE = 0.3;         // s reales: el fondo se desvanece y aparece el hero
+  // Velocidad: los 5,2 s del video entran en (DURATION - FADE) s reales
+  const SPEED = T_EMPTY / (DURATION - FADE);
 
   /* ------------------------------------------------------------------------
      PISTAS (keyframes medidos en el video: [segundo, valor])
@@ -243,7 +247,7 @@
   let start = null, raf = 0, finished = false;
   function frame(now) {
     if (start === null) start = now;
-    const t = (now - start) / 1000;
+    const t = (now - start) / 1000 * SPEED; // tiempo "del video"
     draw(Math.min(t, T_EMPTY));
     if (t >= T_EMPTY) { reveal(); return; }
     raf = requestAnimationFrame(frame);

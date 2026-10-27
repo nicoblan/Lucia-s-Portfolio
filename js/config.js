@@ -39,6 +39,20 @@ window.SITE_CONFIG = {
   ],
   backstageInterval: 7000, // ms entre imágenes
 
+  /* ---------- Destacados (sección debajo del inicio) ----------
+     Rectángulos que se abren y cierran solos; con el mouse se abre el que
+     está debajo del cursor. Recomendado: entre 4 y 7 imágenes verticales.
+     href: link opcional al hacer clic (ej. "area.html?a=fotografia") */
+  destacados: [
+    { src: "assets/img/mockup-tote.webp",      alt: "Bolsa de tela con el logo [Lu-] estampado",                   caption: "Tote bag",        href: "area.html?a=branding-marketing" },
+    { src: "assets/img/mockup-subte.webp",     alt: "Afiche azul con el logo [Lu-] en un vagón de subte",          caption: "Vía pública",     href: "area.html?a=branding-marketing" },
+    { src: "assets/img/lucia-imagen-creativa.webp", alt: "Imagen creativa: Lucía hoy señala una foto suya de chica", caption: "Imagen creativa", href: "" },
+    { src: "assets/img/mockup-tarjeta.webp",   alt: "Tarjeta amarilla con el logo [Lu - cía] en la mano",          caption: "Tarjeta",         href: "area.html?a=branding-marketing" },
+    { src: "assets/img/mockup-medias.webp",    alt: "Medias azules con etiqueta [Lu-]",                            caption: "Packaging",       href: "area.html?a=branding-marketing" },
+    { src: "assets/img/mockup-caballete.webp", alt: "Cartel caballete con una persona y el logo [Lu-]",            caption: "Cartel",          href: "area.html?a=branding-marketing" }
+  ],
+  destacadosInterval: 2600, // ms entre aperturas automáticas
+
   /* ---------- Áreas / servicios ----------
      Cada área tiene su página (area.html?a=ID) con todos sus proyectos.
      projects[]: title, year, client, role, description,
@@ -53,6 +67,7 @@ window.SITE_CONFIG = {
       title: "Fotografía",
       color: "red",
       kicker: "01",
+      subtitle: "Concepto, equipo y set",   // se ve en el menú desplegable de "Áreas"
       text: "Producción de sesiones de principio a fin: concepto, equipo, locación y set. La foto dura un instante; lo que la sostiene lleva semanas. ¿Quién se acuerda de eso? Yo.",
       tags: ["Concepto", "Casting", "Locación", "Set", "Equipo"],
       image: null,
@@ -104,6 +119,7 @@ window.SITE_CONFIG = {
       title: "Fashion Films",
       color: "blue",
       kicker: "02",
+      subtitle: "Visiones que se mueven",   // se ve en el menú desplegable de "Áreas"
       text: "Traduzco una visión en algo que se mueve. Ordeno ideas, tiempos y personas para que la pieza diga lo que tiene que decir, y no un poco más.",
       tags: ["Preproducción", "Guion", "Rodaje", "Dirección de arte", "Postproducción"],
       image: null,
@@ -142,6 +158,7 @@ window.SITE_CONFIG = {
       title: "Tendencias",
       color: "green",
       kicker: "03",
+      subtitle: "Lo evidente, dos veces",   // se ve en el menú desplegable de "Áreas"
       text: "Miro donde aparentemente no hay nada que mirar. Leo lo evidente dos veces, porque la segunda lectura suele ser la interesante.",
       tags: ["Investigación", "Moodboards", "Lectura cultural", "Forecasting", "Referencias"],
       image: null,
@@ -179,6 +196,7 @@ window.SITE_CONFIG = {
       title: "Diseño Editorial",
       color: "orange",
       kicker: "04",
+      subtitle: "El vacío también construye",   // se ve en el menú desplegable de "Áreas"
       text: "Dejo espacio para que los elementos respiren. Si todo llama la atención, nada realmente destaca. El vacío también construye ritmo, jerarquía y tensión.",
       tags: ["Retícula", "Tipografía", "Composición", "Jerarquía", "Ritmo"],
       image: null,
@@ -217,6 +235,7 @@ window.SITE_CONFIG = {
       title: "Branding & Marketing",
       color: "yellow",
       kicker: "05",
+      subtitle: "Sistema, signos y comunicación",   // se ve en el menú desplegable de "Áreas"
       text: "Construyo algo complejo a partir de recursos simples. Color, tipografía, signos y composición funcionando como un mismo lenguaje. Esta marca es la prueba.",
       tags: ["Identidad", "Sistema", "Comunicación", "RR.PP.", "Estrategia"],
       image: "assets/img/mockup-tarjeta.webp",
