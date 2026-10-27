@@ -142,13 +142,21 @@
 
   /* ------------------------------------------------------------------------
      4. TRANSICIÓN ENTRE PÁGINAS (inicio ↔ áreas)
-     Al salir: una máscara del color del área crece desde el panel (o el
-     link) clickeado hasta cubrir la pantalla, y recién ahí se navega.
-     Al entrar: la página arranca tapada con ese color y la máscara se
-     retira hacia arriba. `WIPE_MS` controla la duración de cada mitad.
+     Al salir: un círculo del color del área crece desde donde se hizo
+     clic (o desde el centro del panel/link) hasta cubrir la pantalla, y
+     recién ahí se navega.
+     Al entrar: el color se desvanece (sin cortina) mientras el contenido
+     sube apenas y aparece. Se siente más liviano que un barrido.
+     `WIPE_MS` = salida; `IN_MS` = entrada; `EASE_ORGANIC` = curva suave
+     (igual que --ease-organic en CSS).
      ------------------------------------------------------------------------ */
   const PALETTE = { red: "#ff3131", blue: "#1800ad", yellow: "#ffde59", green: "#7ed957", orange: "#ff751f" };
-  const WIPE_MS = 650;
+  const WIPE_MS = 700, IN_MS = 650;
+  const EASE_ORGANIC = "cubic-bezier(.45,0,.15,1)";
+
+  // Último punto donde se hizo clic/toque: de ahí nace el círculo
+  let lastPoint = null;
+  window.addEventListener("pointerdown", (e) => { lastPoint = { x: e.clientX, y: e.clientY, t: performance.now() }; }, { passive: true });
 
   function makeWipe(color) {
     const el = document.createElement("div");
@@ -159,24 +167,29 @@
     return el;
   }
 
-  // fromEl: elemento desde donde crece la máscara (opcional)
+  // fromEl: elemento clickeado (si no hubo clic reciente, el círculo sale de su centro)
   function wipeTo(href, color, fromEl) {
     if (reduceMotion) { window.location.href = href; return; }
     const wipe = makeWipe(color);
-    const r = fromEl ? fromEl.getBoundingClientRect()
-                     : { top: innerHeight / 2, left: innerWidth / 2, right: innerWidth / 2, bottom: innerHeight / 2 };
-    const start = `inset(${r.top}px ${innerWidth - r.right}px ${innerHeight - r.bottom}px ${r.left}px round 48px)`;
-    wipe.animate([{ clipPath: start }, { clipPath: "inset(0px 0px 0px 0px round 0px)" }],
-      { duration: WIPE_MS, easing: "cubic-bezier(.76,0,.24,1)", fill: "forwards" })
+    let x = innerWidth / 2, y = innerHeight / 2;
+    if (lastPoint && performance.now() - lastPoint.t < 800) { x = lastPoint.x; y = lastPoint.y; }
+    else if (fromEl) { const r = fromEl.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top + r.height / 2; }
+    // radio hasta la esquina más lejana: cubre toda la pantalla justo al final
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    wipe.animate([{ clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(${radius}px at ${x}px ${y}px)` }],
+      { duration: WIPE_MS, easing: EASE_ORGANIC, fill: "forwards" })
       .finished.then(() => { window.location.href = href; });
   }
 
   function wipeIn(color) {
     if (reduceMotion) return;
     const wipe = makeWipe(color);
-    wipe.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 100% 0)" }],
-      { duration: WIPE_MS, delay: 80, easing: "cubic-bezier(.76,0,.24,1)", fill: "forwards" })
+    wipe.animate([{ opacity: 1 }, { opacity: 0 }],
+      { duration: IN_MS, delay: 60, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" })
       .finished.then(() => wipe.remove());
+    const main = $("main");
+    if (main) main.animate([{ opacity: 0, transform: "translateY(24px)" }, { opacity: 1, transform: "none" }],
+      { duration: IN_MS + 300, delay: 60, easing: EASE_ORGANIC, fill: "backwards" });
   }
 
   // Si se vuelve con el botón "atrás" (bfcache), sacamos máscaras viejas

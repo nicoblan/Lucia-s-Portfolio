@@ -196,7 +196,7 @@
       let hoverTimer;
       p.addEventListener("mousemove", () => {
         if (!finePointer.matches || p.classList.contains("is-open") || hoverTimer) return;
-        hoverTimer = setTimeout(() => { hoverTimer = null; open(p); }, 90);
+        hoverTimer = setTimeout(() => { hoverTimer = null; open(p); }, 140);
       });
       p.addEventListener("mouseleave", () => { clearTimeout(hoverTimer); hoverTimer = null; });
     });

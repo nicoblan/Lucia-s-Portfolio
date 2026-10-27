@@ -63,6 +63,7 @@
   /* Curvas de movimiento: una sola familia para todo el sitio */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-in-out: cubic-bezier(.76, 0, .24, 1);
+  --ease-organic: cubic-bezier(.45, 0, .15, 1); /* suave al arrancar, frenado largo */
 }
 
 /* ---------- Base ---------- */
@@ -356,7 +357,10 @@ button { font: inherit; color: inherit; }
   background: var(--bg); color: var(--fg);
   border-radius: clamp(28px, 4vw, 64px);
   overflow: hidden;
-  transition: flex-grow .7s var(--ease-out), border-radius .7s var(--ease-out);
+  /* Movimiento orgánico: arranque y frenado suaves, sin golpe al final.
+     --panel-dur / --ease-organic controlan el "peso" de la apertura. */
+  --panel-dur: 1.1s;
+  transition: flex-grow var(--panel-dur) var(--ease-organic), border-radius var(--panel-dur) var(--ease-organic);
 }
 .panel--red    { --bg: var(--red); }
 .panel--blue   { --bg: var(--blue); --fg: var(--white); }
@@ -390,8 +394,30 @@ button { font: inherit; color: inherit; }
 .panel__body > div { grid-column: 1; grid-row: 1; align-self: end; }
 .panel__body[hidden] { display: none; }
 /* Panel abierto: crece y muestra el detalle; el título pasa a horizontal */
-.panel.is-open { flex-grow: 5; }
-.panel.is-open .panel__body { opacity: 1; visibility: visible; transition: opacity .5s .25s var(--ease-out); }
+.panel.is-open { flex-grow: 5; border-radius: clamp(24px, 3vw, 48px); }
+.panel.is-open .panel__body { opacity: 1; visibility: visible; }
+
+/* El título cambia de vertical a horizontal: en vez de saltar, se disuelve
+   y vuelve a aparecer (dos nombres de animación para que se reinicie
+   tanto al abrir como al cerrar). */
+.panel__title { animation: panel-title-closed .7s .15s var(--ease-organic) both; }
+.panel.is-open .panel__title { animation: panel-title-open .8s .3s var(--ease-organic) both; }
+@keyframes panel-title-closed { from { opacity: 0; filter: blur(6px); } }
+@keyframes panel-title-open { from { opacity: 0; filter: blur(8px); translate: 0 16px; } }
+
+/* El contenido entra en cascada: texto, tags, "Ver todo" */
+.panel.is-open .panel__body > div > * { animation: panel-rise .9s var(--ease-organic) both; }
+.panel.is-open .panel__body > div > :nth-child(1) { animation-delay: .38s; }
+.panel.is-open .panel__body > div > :nth-child(2) { animation-delay: .46s; }
+.panel.is-open .panel__body > div > :nth-child(3) { animation-delay: .54s; }
+@keyframes panel-rise { from { opacity: 0; translate: 0 18px; } }
+
+/* La imagen se abre desde adentro y se asienta */
+.panel.is-open .panel__media { animation: panel-media .2s .1s both, panel-media-open 1.2s .25s var(--ease-organic) both; }
+.panel.is-open .panel__media > * { animation: panel-media-zoom 1.6s .25s var(--ease-organic) both; }
+@keyframes panel-media { from { opacity: 0; } }
+@keyframes panel-media-open { from { clip-path: inset(12% 10% 12% 10% round 40px); } to { clip-path: inset(0 round 0); } }
+@keyframes panel-media-zoom { from { scale: 1.12; } }
 .panel.is-open .panel__title {
   writing-mode: horizontal-tb; transform: none;
   top: clamp(44px, 4.5vw, 64px); bottom: auto;
