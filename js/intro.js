@@ -224,6 +224,8 @@
     if (pairs) {
       // Antes de dividirse: dos discos (blanco, oscuro) y su cruce amarillo
       const white = live.find(c => c.bit === N), dark = live.find(c => c.bit === W);
+      // ventana de tamaño 0 (p. ej. pestaña abierta en segundo plano): nada que dibujar
+      if (!white || !dark) return;
       disc(white, C.white); disc(dark, C.dark);
       ctx.save(); clipTo(white); disc(dark, C.yellow); ctx.restore();
       return;

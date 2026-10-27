@@ -57,7 +57,7 @@
     <nav aria-label="Secciones">
       <ul class="nav__list">
         <!-- data-menu: js/common.js agrega el desplegable con cada sección -->
-        <li><a href="#destacados">Destacados</a></li>
+        <li><a href="#recent-projects">Recent<span class="nav__more-word"> projects</span></a></li>
         <li data-menu="areas"><a href="#areas">Áreas</a></li>
         <li data-menu="about"><a href="#about">About</a></li>
         <li><a href="#contacto">Contacto</a></li>
@@ -79,7 +79,6 @@
           <span class="logo__br logo__br--l" data-piece="bl">[</span><span class="logo__lu" data-piece="lu">Lu</span><span class="logo__dash" data-piece="dash">-</span><span class="logo__cia" data-piece="cia">cía</span><span class="logo__br logo__br--r" data-piece="br">]</span><sup class="logo__r" data-piece="r">®</sup>
         </span>
         <div class="hero__side">
-          <p class="hero__tagline" data-hero-fade>mi portfolio creativo</p>
           <!-- Canción / película de la semana: sale de SITE_CONFIG.semana (js/main.js §12) -->
           <ul class="weekly" data-weekly data-hero-fade aria-label="De la semana" hidden></ul>
         </div>
@@ -102,13 +101,13 @@
       </h1>
     </section>
 
-    <!-- ===================== DESTACADOS ===================== -->
+    <!-- ===================== RECENT PROJECTS ===================== -->
     <!-- Rectángulos que se abren y cierran solos (js/main.js §11).
          Las imágenes salen de SITE_CONFIG.destacados -->
-    <section class="highlights" id="destacados" aria-labelledby="destacados-title">
+    <section class="highlights" id="recent-projects" aria-labelledby="recent-projects-title">
       <div class="highlights__head" data-reveal>
-        <p class="label">D E S T A C A D O S &nbsp; .</p>
-        <h2 class="visually-hidden" id="destacados-title">Destacados</h2>
+        <p class="label">R E C E N T &nbsp; P R O J E C T S &nbsp; .</p>
+        <h2 class="visually-hidden" id="recent-projects-title">Recent projects</h2>
       </div>
       <ul class="highlights__list" data-highlights role="list"></ul>
     </section>

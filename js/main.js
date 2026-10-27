@@ -544,11 +544,101 @@
         ? '<span class="weekly__icon"><span class="sign sign--tri"></span><span class="weekly__eq"><i></i><i></i><i></i></span></span>'
         : `<span class="weekly__icon"><span class="sign ${i % 2 ? "sign--square" : "sign--circle"}"></span></span>`;
       const body = `${icon}<span class="weekly__text"><span class="weekly__type">${esc(it.tipo)}</span><span class="weekly__title">${esc(it.titulo)}</span>${it.detalle ? `<span class="weekly__detail">${esc(it.detalle)}</span>` : ""}</span>`;
+      // Canción con video de YouTube: la ficha es el botón de play/pausa (§13)
+      if (isSong && it.youtube) {
+        return `<li class="weekly__item"><button type="button" class="weekly__play" data-music-toggle aria-pressed="false">${body}<span class="visually-hidden" data-music-sr>Reproducir</span></button></li>`;
+      }
       return `<li class="weekly__item">${it.url
         ? `<a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${body}<span class="visually-hidden">(se abre en una pestaña nueva)</span></a>`
         : `<span class="weekly__static">${body}</span>`}</li>`;
     }).join("");
     list.hidden = false;
+  }
+
+  /* ------------------------------------------------------------------------
+     13. CANCIÓN DE LA SEMANA DE FONDO (YouTube)
+     Límites que no se pueden saltear:
+     - Los navegadores no dejan que una página suene sola al abrir: la
+       música arranca con el PRIMER clic, toque o tecla en la página.
+     - YouTube pide que su reproductor esté visible (mín. 200×200 px), así
+       que al sonar aparece un mini reproductor en la esquina, con pausa y
+       cerrar. Si se cierra, no vuelve a arrancar en esa visita.
+     El reproductor se prepara apenas carga la página (quieto y oculto),
+     para poder darle play dentro del mismo clic.
+     ------------------------------------------------------------------------ */
+  function initMusic() {
+    const song = (CONFIG.semana || []).find(it => it.youtube && it.titulo);
+    if (!song) return;
+    let off = false;
+    try { off = sessionStorage.getItem("lu-music-off") === "1"; } catch (e) {}
+
+    const box = document.createElement("aside");
+    box.className = "music";
+    box.setAttribute("aria-label", "Canción de la semana");
+    box.innerHTML = `
+      <div class="music__head">
+        <span class="music__eq" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="music__text"><span class="music__type">Canción de la semana</span><span class="music__title"></span></span>
+        <button type="button" class="music__btn" data-music-pause aria-label="Pausar">❚❚</button>
+        <button type="button" class="music__btn" data-music-close aria-label="Cerrar y apagar la música">×</button>
+      </div>
+      <div class="music__player"><div id="lu-music-player"></div></div>`;
+    $(".music__title", box).textContent = `${song.titulo}${song.detalle ? " — " + song.detalle : ""}`;
+    document.body.appendChild(box);
+
+    let player = null, ready = false, playing = false, wantPlay = false;
+    const toggles = $$("[data-music-toggle]");
+    const pauseBtn = $("[data-music-pause]", box);
+
+    const sync = () => {
+      document.documentElement.classList.toggle("music-playing", playing);
+      toggles.forEach(t => {
+        t.setAttribute("aria-pressed", String(playing));
+        const sr = $("[data-music-sr]", t); if (sr) sr.textContent = playing ? "Pausar" : "Reproducir";
+      });
+      pauseBtn.textContent = playing ? "❚❚" : "▶";
+      pauseBtn.setAttribute("aria-label", playing ? "Pausar" : "Reproducir");
+    };
+    const play = () => {
+      off = false;
+      try { sessionStorage.removeItem("lu-music-off"); } catch (e) {}
+      box.classList.add("is-on");
+      if (ready) { player.unMute(); player.playVideo(); } else wantPlay = true;
+    };
+    const pause = () => { if (ready) player.pauseVideo(); };
+
+    // Carga la API de YouTube y deja el reproductor listo
+    window.onYouTubeIframeAPIReady = () => {
+      player = new window.YT.Player("lu-music-player", {
+        width: 200, height: 200, videoId: song.youtube,
+        playerVars: { playsinline: 1, loop: 1, playlist: song.youtube, rel: 0, modestbranding: 1 },
+        events: {
+          onReady: () => { ready = true; if (wantPlay) { player.unMute(); player.playVideo(); } },
+          onStateChange: (e) => { playing = e.data === 1; sync(); }
+        }
+      });
+    };
+    const api = document.createElement("script");
+    api.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(api);
+
+    // Primer clic / toque / tecla en cualquier lado → empieza a sonar
+    const first = (e) => {
+      if (e.target.closest && e.target.closest("[data-music-close], [data-music-toggle], [data-music-pause]")) return;
+      window.removeEventListener("pointerdown", first, true);
+      window.removeEventListener("keydown", first, true);
+      if (!off) play();
+    };
+    window.addEventListener("pointerdown", first, true);
+    window.addEventListener("keydown", first, true);
+
+    // La ficha de la canción y el botón del reproductor: play / pausa
+    toggles.forEach(t => t.addEventListener("click", () => (playing ? pause() : play())));
+    pauseBtn.addEventListener("click", () => (playing ? pause() : play()));
+    $("[data-music-close]", box).addEventListener("click", () => {
+      pause(); off = true; box.classList.remove("is-on");
+      try { sessionStorage.setItem("lu-music-off", "1"); } catch (e) {}
+    });
   }
 
   /* ------------------------------------------------------------------------
@@ -558,6 +648,7 @@
   renderSocials();
   initHighlights();
   renderWeekly();
+  initMusic();
   const year = $("[data-year]"); if (year) year.textContent = new Date().getFullYear();
 
   initBackstage();

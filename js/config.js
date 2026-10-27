@@ -43,7 +43,9 @@ window.SITE_CONFIG = {
      Se actualiza a mano cada semana. Si un título queda vacío, esa fila
      no se muestra. url: link opcional (Spotify, YouTube, Letterboxd…). */
   semana: [
-    { tipo: "Canción de la semana",  titulo: "HOUSEWIFE", detalle: "Tate McRae", url: "https://share.google/9JxN08hXVbgbTkjpz" }, // detalle: artista
+    // youtube: ID del video (lo que va después de "watch?v="). Con eso la canción
+    // suena de fondo desde el primer clic en la página (ver README).
+    { tipo: "Canción de la semana",  titulo: "HOUSEWIFE", detalle: "Tate McRae", url: "https://www.youtube.com/watch?v=DPEodkHzH-s", youtube: "DPEodkHzH-s" }, // detalle: artista
     { tipo: "Película de la semana", titulo: "Obsession", detalle: "Curry Barker, 2025", url: "" }  // detalle: director, año
   ],
 
