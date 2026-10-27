@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-label="[Lu - cía]®">
+  <!-- Logo [Lu - cía]® — versión estática para redes, OG o impresión.
+       En el sitio el logo está armado con HTML/CSS para poder animarlo. -->
+  <style>
+    text { font-family: "Helvetica World", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  </style>
+  <text x="0" y="140" font-size="170" fill="#1800ad" transform="scale(1 1.12) translate(0 -15)">[</text>
+  <text x="58" y="140" font-size="150" font-weight="700" fill="#ff3131" letter-spacing="-6">Lu</text>
+  <text x="250" y="140" font-size="150" font-weight="700" fill="#ffde59">-</text>
+  <text x="320" y="140" font-size="150" font-style="italic" fill="#1800ad" letter-spacing="-6" transform="skewX(-6)" dx="15">cía</text>
+  <text x="560" y="140" font-size="170" fill="#1800ad" transform="scale(1 1.12) translate(0 -15)">]</text>
+  <text x="608" y="52" font-size="40" font-weight="700" fill="#1800ad">®</text>
+</svg>

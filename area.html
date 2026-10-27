@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- El título y la descripción se completan con js/area.js según el área -->
+  <title>Áreas — [Lu - cía]® Lucía Deregibus Mongardi</title>
+  <meta name="description" content="Proyectos de Lucía Deregibus Mongardi — PR producer · Concept & Vision translator.">
+  <meta name="theme-color" content="#1800ad">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:title" content="[Lu - cía]® — Áreas">
+  <meta property="og:description" content="Proyectos de Lucía Deregibus Mongardi — PR producer · Concept & Vision translator.">
+  <meta property="og:image" content="assets/img/mockup-subte.webp">
+
+  <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/area.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="page-area">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- Fondo de tonalidades / backstage (igual que en el inicio) -->
+  <div class="backstage" aria-hidden="true">
+    <div class="backstage__stage"></div>
+    <div class="backstage__veil"></div>
+  </div>
+
+  <header class="nav" data-nav>
+    <a class="nav__logo" href="index.html" aria-label="[Lu - cía], volver al inicio">
+      <span class="logo logo--mini" aria-hidden="true"><span class="logo__br">[</span><span class="logo__lu">Lu</span><span class="logo__dash">-</span><span class="logo__br">]</span><sup class="logo__r">®</sup></span>
+    </a>
+    <nav aria-label="Secciones">
+      <ul class="nav__list">
+        <li><a href="index.html#areas" class="is-current" aria-current="true">Áreas</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <button class="backstage-toggle" type="button" aria-pressed="false" data-backstage-toggle>
+      <span class="visually-hidden">Pausar fondo de backstage</span>
+      <span aria-hidden="true" class="backstage-toggle__icon"></span>
+    </button>
+  </header>
+
+  <!-- Todo el contenido lo arma js/area.js a partir de SITE_CONFIG.services -->
+  <main id="main" class="area" data-area-root>
+    <noscript>
+      <p class="area-noscript">Esta página necesita JavaScript para mostrar los proyectos. <a href="index.html#areas">Volver a las áreas</a>.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-foot">
+    <span>Lucía Deregibus Mongardi</span>
+    <span>PR producer — Concept &amp; Vision translator</span>
+    <span>[Lu - cía]® <span data-year></span></span>
+  </footer>
+
+  <!-- Visor de imágenes a pantalla completa -->
+  <dialog class="lightbox" aria-label="Visor de imágenes" data-lightbox>
+    <div class="lightbox__frame">
+      <figure class="lightbox__figure">
+        <div class="lightbox__media" data-lb-media></div>
+        <figcaption class="lightbox__caption"><span data-lb-caption></span><span class="lightbox__count" data-lb-count></span></figcaption>
+      </figure>
+      <button type="button" class="lightbox__btn lightbox__btn--prev" data-lb-prev aria-label="Imagen anterior">←</button>
+      <button type="button" class="lightbox__btn lightbox__btn--next" data-lb-next aria-label="Imagen siguiente">→</button>
+      <button type="button" class="lightbox__btn lightbox__btn--close" data-lb-close aria-label="Cerrar visor">×</button>
+    </div>
+  </dialog>
+
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/area.js" defer></script>
+</body>
+</html>

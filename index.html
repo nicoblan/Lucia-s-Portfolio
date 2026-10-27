@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Lu - cía]® — Lucía Deregibus Mongardi · PR producer</title>
+  <meta name="description" content="Lucía Deregibus Mongardi — PR producer · Concept & Vision translator. Fotografía, fashion films, tendencias, diseño editorial y branding. Volver a lo básico para llegar a un lugar menos básico.">
+  <meta name="theme-color" content="#1800ad">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:title" content="[Lu - cía]® — Lucía Deregibus Mongardi">
+  <meta property="og:description" content="PR producer · Concept & Vision translator. Lo evidente me interesa demasiado.">
+  <meta property="og:image" content="assets/img/mockup-subte.webp">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Marca que hay JS antes de pintar, para que los estados iniciales de las animaciones no parpadeen -->
+  <!-- Marca que hay JS y decide si se muestra la intro (una vez por sesión,
+       nunca con movimiento reducido) antes de pintar, para que no parpadee -->
+  <script>
+    document.documentElement.classList.add('js');
+    try {
+      if (!/intro-frame=/.test(location.search) &&
+          (sessionStorage.getItem('lu-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches))
+        document.documentElement.classList.add('intro-seen');
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <!-- Intro de entrada (js/intro.js). Decorativa: clic o tecla la saltean -->
+  <canvas class="intro" data-intro aria-hidden="true"></canvas>
+  <script src="js/intro.js"></script>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- ================= FONDO GLOBAL DE BACKSTAGE =================
+       Lo llena js/main.js a partir de SITE_CONFIG.backstage -->
+  <div class="backstage" aria-hidden="true">
+    <div class="backstage__stage"></div>
+    <div class="backstage__veil"></div>
+  </div>
+
+  <!-- ================= NAVEGACIÓN FLOTANTE ================= -->
+  <header class="nav" data-nav>
+    <a class="nav__logo" href="#inicio" aria-label="[Lu - cía], volver al inicio">
+      <span class="logo logo--mini" aria-hidden="true"><span class="logo__br">[</span><span class="logo__lu">Lu</span><span class="logo__dash">-</span><span class="logo__br">]</span><sup class="logo__r">®</sup></span>
+    </a>
+    <nav aria-label="Secciones">
+      <ul class="nav__list">
+        <li><a href="#areas">Áreas</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <button class="backstage-toggle" type="button" aria-pressed="false" data-backstage-toggle>
+      <span class="visually-hidden">Pausar fondo de backstage</span>
+      <span aria-hidden="true" class="backstage-toggle__icon"></span>
+    </button>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== A. HERO ===================== -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <!-- Logo armado con HTML/CSS: cada pieza es animable por separado -->
+      <div class="hero__logo">
+        <span class="logo logo--hero" role="img" aria-label="[Lu - cía]®" data-logo>
+          <span class="logo__br logo__br--l" data-piece="bl">[</span><span class="logo__lu" data-piece="lu">Lu</span><span class="logo__dash" data-piece="dash">-</span><span class="logo__cia" data-piece="cia">cía</span><span class="logo__br logo__br--r" data-piece="br">]</span><sup class="logo__r" data-piece="r">®</sup>
+        </span>
+      </div>
+
+      <h1 class="hero__title" id="hero-title">
+        <span class="row">
+          <span class="mask"><span class="word" data-word>Concept</span></span>
+          <span class="pill pill--red" data-pill aria-hidden="true"></span>
+        </span>
+        <span class="row">
+          <span class="pill pill--yellow pill--short" data-pill aria-hidden="true"></span>
+          <span class="mask"><span class="word" data-word>&amp; Vision</span></span>
+        </span>
+        <span class="row">
+          <span class="mask"><span class="word" data-word>Translator</span></span>
+          <span class="pill pill--blue" data-pill aria-hidden="true"></span>
+        </span>
+        <span class="visually-hidden"> — Lucía Deregibus Mongardi</span>
+      </h1>
+
+      <!-- Imágenes de presentación con parallax (data-speed = intensidad) -->
+      <div class="hero__gallery" aria-label="Aplicaciones de la marca">
+        <figure class="shot shot--a" data-speed="0.12">
+          <img src="assets/img/mockup-tote.webp" alt="Bolsa de tela con el logo [Lu-] estampado" width="506" height="759" loading="eager">
+        </figure>
+        <figure class="shot shot--b" data-speed="-0.06">
+          <img src="assets/img/mockup-subte.webp" alt="Afiche azul con el logo [Lu-] en un vagón de subte" width="957" height="717" loading="lazy">
+        </figure>
+        <figure class="shot shot--c" data-speed="0.2">
+          <img src="assets/img/mockup-medias.webp" alt="Medias azules con etiqueta [Lu-]" width="567" height="675" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== B. ÁREAS ===================== -->
+    <section class="areas" id="areas" aria-labelledby="areas-title">
+      <h2 class="visually-hidden" id="areas-title">Áreas</h2>
+
+      <!-- Títulos display que se desplazan en horizontal con el scroll -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track" data-marquee="-1">Fotografía · Fashion Films · Tendencias · Diseño Editorial · Branding &amp; Marketing ·</div>
+        <div class="marquee__track marquee__track--outline" data-marquee="1">Volver a lo básico · Ironía + básico · Sistema ·</div>
+      </div>
+
+      <!-- Paneles: los genera js/main.js desde SITE_CONFIG.services -->
+      <div class="panels" data-panels></div>
+
+      <footer class="panel-foot" aria-hidden="true">
+        <span>Lucía Deregibus Mongardi</span><span>PR producer — Concept &amp; Vision translator</span><span>[Lu-]®</span>
+      </footer>
+    </section>
+
+    <!-- ===================== C. ABOUT ===================== -->
+    <section class="about" id="about" aria-labelledby="about-title">
+
+      <!-- Bloque de texto grande y justificado (energía del panel amarillo de la referencia) -->
+      <div class="about__statement" data-reveal="wipe">
+        <h2 class="label" id="about-title">Q U I É N &nbsp; S O Y &nbsp; .</h2>
+        <p class="statement">Yo soy mi nombre. Soy Lucía. Parece obvio, pero justamente por eso me gusta.</p>
+        <footer class="panel-foot panel-foot--light" aria-hidden="true">
+          <span>Lucía Deregibus Mongardi</span><span>Reducción de manifiesto</span><span>[Lu-]®</span>
+        </footer>
+      </div>
+
+      <div class="about__grid">
+        <figure class="about__photo" data-reveal="clip" data-tilt>
+          <img src="assets/img/lucia-imagen-creativa.webp" alt="Imagen creativa: Lucía hoy señala con el dedo una foto suya de cuando era chica, con la misma remera blanca" width="981" height="787" loading="lazy">
+          <figcaption class="label">Imagen creativa . Antes / ahora. La misma pregunta.</figcaption>
+        </figure>
+
+        <div class="about__bio" data-reveal>
+          <p class="lead">PR producer y <em>Concept &amp; Vision translator</em>. Traduzco ideas a cosas que existen: sesiones, eventos, films, marcas.</p>
+          <p>Estudio Diseño y Gestión de Estéticas para la Moda, con un minor en Relaciones Públicas e Institucionales. Vengo de la producción de eventos y de la experiencia del cliente, que es una forma elegante de decir que sé qué pasa cuando algo sale mal y cómo hacer que no se note.</p>
+          <p>¿Por qué nunca me alcanza con la primera vista de las cosas? No tengo una respuesta útil. Tengo un método: volver a las bases.</p>
+        </div>
+      </div>
+
+      <!-- Manifiesto: toggle Resumen / Completo (js/main.js §7) -->
+      <div class="manifesto" data-reveal>
+        <div class="manifesto__head">
+          <h3 class="display display--md">Manifiesto<span class="dot">.</span></h3>
+          <div class="toggle" role="group" aria-label="Versión del manifiesto">
+            <button type="button" class="toggle__btn" aria-pressed="true" data-manifesto="summary">Resumen</button>
+            <button type="button" class="toggle__btn" aria-pressed="false" data-manifesto="full">Manifiesto completo</button>
+          </div>
+        </div>
+
+        <div class="manifesto__body" data-manifesto-panel="summary">
+          <p class="manifesto__text">Lo evidente me interesa demasiado. Nada me alcanza ni me cierra del todo. Volvamos a las bases, porque ahí, por alguna razón bastante sospechosa, suele empezar todo.</p>
+        </div>
+        <div class="manifesto__body" data-manifesto-panel="full" hidden>
+          <p class="manifesto__text" data-split>Yo soy mi nombre, soy Lucía, parece obvio pero justamente por eso me gusta. Porque todos lo dan por hecho y yo lo hice un nuevo discurso. A partir de ahí me pregunté, ¿por qué nunca me alcanza con la primera vista de las cosas? Y, como la ironía me destaca, no me respondí nada útil.</p>
+          <p class="manifesto__text" data-split>Lo evidente me interesa demasiado. No por rebeldía estética, sino porque ya lo dan por hecho y eso lo hace interesante. Nada me alcanza ni me cierra del todo. Y no, no es una frase linda. Es más bien un problema de fábrica.</p>
+          <p class="manifesto__text" data-split>Quiero equivocarme con estilo o sin él. Encontrar preguntas mejores que las anteriores y seguir mirando donde aparentemente no hay nada que mirar. Volvamos a las bases, porque ahí, por alguna razón bastante sospechosa, suele empezar todo.</p>
+        </div>
+      </div>
+
+      <!-- Bloques del partido conceptual (textos literales del PDF) -->
+      <div class="concepts">
+        <article class="concept concept--red" data-reveal>
+          <span class="sign sign--tri" aria-hidden="true"></span>
+          <h3>Volver a lo básico.</h3>
+          <p>Parto de formas, colores, planos y signos simples para construir algo que no lo sea tanto. Me interesa esa contradicción: cuanto más básico es el recurso, más espacio tengo para interpretarlo.</p>
+        </article>
+        <article class="concept concept--blue" data-reveal>
+          <span class="sign sign--square" aria-hidden="true"></span>
+          <h3>Ironía + básico.</h3>
+          <p>No busco diferenciarme agregando complejidad, sino interviniendo lo evidente. Tomo elementos que todos reconocemos y los desplazo apenas para generar una segunda lectura.</p>
+        </article>
+        <article class="concept concept--yellow" data-reveal>
+          <span class="sign sign--circle" aria-hidden="true"></span>
+          <h3>Sistema.</h3>
+          <p>Color, tipografía, signos, planos y composición funcionan como un mismo lenguaje. Construyo algo complejo a partir de recursos simples. Ahí está la ironía del sistema: volver a las bases para llegar a un lugar menos básico.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== D. CONTACTO ===================== -->
+    <section class="contact" id="contacto" aria-labelledby="contact-title">
+      <h2 class="visually-hidden" id="contact-title">Contacto</h2>
+
+      <div class="contact__grid">
+        <!-- Tarjeta identitaria: cambia de variante sola (js/main.js §10) y también con clic -->
+        <div class="variants" data-reveal>
+          <p class="label">T A R J E T A &nbsp; I D E N T I T A R I A &nbsp; .</p>
+          <button type="button" class="variant-card" data-variant="0" aria-label="Cambiar variante de color del logo">
+            <span class="logo logo--card" aria-hidden="true"><span class="logo__br">[</span><span class="logo__lu">Lu</span><span class="logo__dash">-</span><span class="logo__cia">cía</span><span class="logo__br">]</span><sup class="logo__r">®</sup></span>
+            <span class="variant-card__meta"><span>Lucía Deregibus Mongardi</span><span>PR producer - Concept &amp; Vision translator</span></span>
+          </button>
+        </div>
+
+        <div class="contact__side" data-reveal>
+          <p class="contact__q">¿Hablamos? <span class="muted">Prometo una segunda lectura.</span></p>
+
+          <!-- Opciones (acordeón). Las redes salen de SITE_CONFIG.socials -->
+          <ul class="options" data-options>
+            <li class="option option--red">
+              <h3>
+                <button type="button" class="option__btn" aria-expanded="false" aria-controls="opt-mail" id="opt-mail-btn">
+                  <span class="option__num">01</span><span class="option__label">Enviar mensaje</span><span class="option__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="option__panel" id="opt-mail" role="region" aria-labelledby="opt-mail-btn" hidden>
+                <form class="form" data-form novalidate>
+                  <div class="form__row">
+                    <label for="f-name">Nombre</label>
+                    <input id="f-name" name="name" type="text" autocomplete="name" required>
+                  </div>
+                  <div class="form__row">
+                    <label for="f-email">Email</label>
+                    <input id="f-email" name="email" type="email" autocomplete="email" required>
+                  </div>
+                  <div class="form__row form__row--full">
+                    <label for="f-subject">Asunto</label>
+                    <input id="f-subject" name="subject" type="text" required>
+                  </div>
+                  <div class="form__row form__row--full">
+                    <label for="f-message">Mensaje</label>
+                    <textarea id="f-message" name="message" rows="5" required></textarea>
+                  </div>
+                  <div class="form__actions">
+                    <button type="submit" class="btn">Enviar <span aria-hidden="true">→</span></button>
+                    <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+                  </div>
+                </form>
+              </div>
+            </li>
+            <!-- Instagram / LinkedIn / Behance se insertan acá desde config.js -->
+          </ul>
+        </div>
+      </div>
+
+      <footer class="site-foot">
+        <span>Lucía Deregibus Mongardi</span>
+        <span>PR producer — Concept &amp; Vision translator</span>
+        <span>[Lu - cía]® <span data-year></span></span>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Cursor personalizado (solo punteros finos; se oculta en touch) -->
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>
