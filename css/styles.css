@@ -546,7 +546,7 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   font-weight: 700; text-transform: uppercase;
   font-size: clamp(2rem, 6.6vw, 7.2rem);
   line-height: .92; letter-spacing: -.035em;
-  text-align: justify; text-align-last: justify;
+  text-align: left; /* marginado a la izquierda, en bandera a la derecha */
   hyphens: manual;
 }
 .panel-foot--light { padding-left: 0; padding-right: 0; margin-top: clamp(20px, 4vh, 48px); }
@@ -750,7 +750,11 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 
 @media (max-width: 760px) {
   .nav { left: 12px; right: 12px; transform: none; justify-content: space-between; padding-left: 16px; }
-  .nav__list > li > a { padding: 8px 10px; font-size: 13px; }
+  .nav__list > li > a { padding: 8px 6px; font-size: 12px; letter-spacing: -.01em; }
+  .nav { gap: 4px; padding: 6px 6px 6px 12px; }
+  .nav__list { gap: 0; }
+  .logo--mini { font-size: 21px; }
+  .backstage-toggle { flex: none; width: 30px; height: 30px; }
   .nav__sub { display: none; } /* en celular: navegación simple */
 
   .hero { padding-top: 88px; }
@@ -771,7 +775,6 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .panel__media { aspect-ratio: 4/3; height: auto; }
 
   .about__grid { grid-template-columns: 1fr; }
-  .statement { text-align: left; text-align-last: left; }
   .concepts { grid-template-columns: 1fr; }
   .concept, .concept:nth-child(3) { grid-column: auto; min-height: 0; }
   .variant-card { min-height: 240px; }

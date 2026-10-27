@@ -69,8 +69,53 @@
   ];
   const BLOCK_ROWS = 10;
 
+  /* Libro (layout: "libro", p. ej. Diseño Editorial). Referencia: cuaderno
+     anillado visto desde arriba que se hojea en cortes secos (stop-motion).
+     images[0] = tapa; el resto = páginas en orden, de a dos por doble
+     página; al final, la contratapa. Los separadores de colores pasan del
+     borde derecho al izquierdo a medida que avanzan las páginas. */
+  const TAB_COLORS = ["blue", "red", "yellow", "green", "orange"];
+  const pageHTML = (img, k, label) => img
+    ? `<button type="button" class="book__page" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || label)}">${img.src
+        ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">`
+        : placeholder(label)}</button>`
+    : `<span class="book__page book__page--blank" aria-hidden="true"></span>`;
+
+  function bookHTML(p) {
+    const imgs = (p.images || []).map((img) => { const k = flatIndex++; allImages.push({ ...img, project: p.title }); return { img, k }; });
+    if (!imgs.length) return "";
+    const [cover, ...pages] = imgs;
+    const spreads = [];
+    for (let i = 0; i < pages.length; i += 2) spreads.push([pages[i], pages[i + 1]]);
+    const states = [
+      `<div class="book__state book__state--cover" data-state><span class="book__half book__half--right">${pageHTML(cover.img, cover.k, "Tapa")}</span></div>`,
+      ...spreads.map(([l, r], si) => `<div class="book__state" data-state>
+          <span class="book__half book__half--left">${pageHTML(l.img, l.k, `Página ${si * 2 + 1}`)}</span>
+          <span class="book__half book__half--right">${r ? pageHTML(r.img, r.k, `Página ${si * 2 + 2}`) : pageHTML(null)}</span>
+        </div>`),
+      `<div class="book__state book__state--back" data-state><span class="book__half book__half--left"><span class="book__page book__page--back" aria-hidden="true"><span class="book__mark">[Lu-]®</span></span></span></div>`
+    ].join("");
+    const tabs = TAB_COLORS.map((c, i) => `<span class="book__tab book__tab--${c}" style="--t:${i}" data-tab></span>`).join("");
+    const rings = Array.from({ length: 9 }, () => "<i></i>").join("");
+    return `<div class="book" data-book data-reveal>
+        <div class="book__stage">
+          <div class="book__object">
+            ${states}
+            <span class="book__rings" aria-hidden="true">${rings}</span>
+            <span class="book__tabs" aria-hidden="true">${tabs}</span>
+          </div>
+        </div>
+        <div class="book__controls">
+          <button type="button" class="book__btn" data-book-prev aria-label="Página anterior">←</button>
+          <span class="book__count" data-book-count aria-live="polite">Tapa</span>
+          <button type="button" class="book__btn" data-book-next aria-label="Página siguiente">→</button>
+        </div>
+      </div>`;
+  }
+
   const projectsHTML = projects.map((p, pi) => {
-    const items = (p.images || []).map((img, ii) => {
+    const isBook = area.layout === "libro";
+    const items = isBook ? "" : (p.images || []).map((img, ii) => {
       const k = flatIndex++;
       allImages.push({ ...img, project: p.title });
       const [col, span, row, rows, rot] = COLLAGE[ii % COLLAGE.length];
@@ -94,7 +139,7 @@
         </header>
         ${p.description ? `<p class="project__desc" data-reveal>${esc(p.description)}</p>` : ""}
         ${p.video ? `<div class="project__video-wrap" data-reveal>${videoHTML(p.video, p.title)}</div>` : ""}
-        ${items ? `<ul class="collage" role="list">${items}</ul>` : ""}
+        ${isBook ? bookHTML(p) : items ? `<ul class="collage" role="list">${items}</ul>` : ""}
       </article>`;
   }).join("");
 
@@ -209,6 +254,57 @@
   }
 
   /* ------------------------------------------------------------------------
+     3c. LIBRO: se hojea solo, en cortes secos como la referencia
+     Tapa (quieta un rato) → dobles páginas cada `PAGE_MS` → contratapa →
+     vuelve a empezar. Con el mouse encima se pausa; las flechas pasan
+     página a mano. Solo corre mientras está en pantalla. Con movimiento
+     reducido no se hojea solo (las flechas siguen andando).
+     ------------------------------------------------------------------------ */
+  function initBooks() {
+    const PAGE_MS = 420, COVER_MS = 1300, BACK_MS = 1000;
+    $$("[data-book]").forEach((book) => {
+      const states = $$("[data-state]", book);
+      const tabs = $$("[data-tab]", book);
+      const count = $("[data-book-count]", book);
+      const last = states.length - 1, spreads = last - 1;
+      let i = 0, timer = null, visible = false, hover = false;
+
+      const label = (n) => {
+        if (n === 0) return "Tapa";
+        if (n === last) return "Contratapa";
+        const a = n * 2 - 1, hasRight = !!$(".book__half--right .book__page:not(.book__page--blank)", states[n]);
+        return hasRight ? `Páginas ${a}–${a + 1}` : `Página ${a}`;
+      };
+      const show = (n) => {
+        i = (n + states.length) % states.length;
+        states.forEach((s, k) => s.classList.toggle("is-current", k === i));
+        book.dataset.mode = i === 0 ? "cover" : i === last ? "back" : "open";
+        // separadores: pasan a la izquierda a medida que se avanza
+        tabs.forEach((t, k) => {
+          const threshold = ((k + 1) * spreads) / (tabs.length + 1);
+          t.classList.toggle("is-left", i === last || (i > 0 && i > threshold));
+        });
+        count.textContent = label(i);
+      };
+      const tick = () => {
+        clearTimeout(timer);
+        if (reduceMotion || !visible || hover) return;
+        const wait = i === 0 ? COVER_MS : i === last ? BACK_MS : PAGE_MS;
+        timer = setTimeout(() => { show(i + 1); tick(); }, wait);
+      };
+
+      $("[data-book-prev]", book).addEventListener("click", () => { show(i - 1); });
+      $("[data-book-next]", book).addEventListener("click", () => { show(i + 1); });
+      book.addEventListener("mouseenter", () => { hover = true; clearTimeout(timer); });
+      book.addEventListener("mouseleave", () => { hover = false; tick(); });
+      book.addEventListener("focusin", () => { hover = true; clearTimeout(timer); });
+      book.addEventListener("focusout", () => { hover = false; tick(); });
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; tick(); }, { threshold: .35 }).observe(book);
+      show(0);
+    });
+  }
+
+  /* ------------------------------------------------------------------------
      4. ENTRADA DE LA PORTADA: el título sube desde una máscara
      ------------------------------------------------------------------------ */
   function animateHero() {
@@ -243,6 +339,7 @@
   initReveal();
   initLightbox();
   initCollageTilt();
+  initBooks();
   initWipeLinks();
   animateHero();
 })();

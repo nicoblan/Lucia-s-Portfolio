@@ -49,15 +49,12 @@ window.SITE_CONFIG = {
 
   /* ---------- Destacados (sección debajo del inicio) ----------
      Rectángulos que se abren y cierran solos; con el mouse se abre el que
-     está debajo del cursor. Recomendado: entre 4 y 7 imágenes verticales.
+     está debajo del cursor. Son 3 imágenes (se pueden sumar más).
      href: link opcional al hacer clic (ej. "area.html?a=fotografia") */
   destacados: [
     { src: "assets/img/mockup-tote.webp",      alt: "Bolsa de tela con el logo [Lu-] estampado",                   caption: "Tote bag",        href: "area.html?a=branding-marketing" },
     { src: "assets/img/mockup-subte.webp",     alt: "Afiche azul con el logo [Lu-] en un vagón de subte",          caption: "Vía pública",     href: "area.html?a=branding-marketing" },
-    { src: "assets/img/lucia-imagen-creativa.webp", alt: "Imagen creativa: Lucía hoy señala una foto suya de chica", caption: "Imagen creativa", href: "" },
-    { src: "assets/img/mockup-tarjeta.webp",   alt: "Tarjeta amarilla con el logo [Lu - cía] en la mano",          caption: "Tarjeta",         href: "area.html?a=branding-marketing" },
-    { src: "assets/img/mockup-medias.webp",    alt: "Medias azules con etiqueta [Lu-]",                            caption: "Packaging",       href: "area.html?a=branding-marketing" },
-    { src: "assets/img/mockup-caballete.webp", alt: "Cartel caballete con una persona y el logo [Lu-]",            caption: "Cartel",          href: "area.html?a=branding-marketing" }
+    { src: "assets/img/lucia-imagen-creativa.webp", alt: "Imagen creativa: Lucía hoy señala una foto suya de chica", caption: "Imagen creativa", href: "" }
   ],
   destacadosInterval: 2600, // ms entre aperturas automáticas
 
@@ -201,6 +198,7 @@ window.SITE_CONFIG = {
     },
     {
       id: "diseno-editorial",
+      layout: "libro",    // proyectos presentados como cuaderno que se hojea (ver README)
       title: "Diseño Editorial",
       color: "orange",
       kicker: "04",
