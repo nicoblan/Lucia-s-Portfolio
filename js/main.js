@@ -210,7 +210,8 @@
     const list = $("[data-options]");
     if (!list) return;
     const colors = ["blue", "green", "orange"];
-    (CONFIG.socials || []).forEach((s, k) => {
+    // Las redes que todavía tienen el placeholder "USUARIO" no se muestran
+    (CONFIG.socials || []).filter(s => s.url && !s.url.includes("USUARIO")).forEach((s, k) => {
       const li = document.createElement("li");
       li.className = `option option--${colors[k % colors.length]}`;
       li.innerHTML = `

@@ -18,8 +18,9 @@ window.SITE_CONFIG = {
 
   /* ---------- Redes ---------- */
   socials: [
-    { id: "instagram", label: "Instagram", url: "https://instagram.com/USUARIO" },
-    { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/USUARIO" },
+    { id: "instagram", label: "Instagram", url: "https://www.instagram.com/lderegibus____/" },
+    { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/lucia-belen-deregibus-mongardi-96272822a/" },
+    // Mientras tenga "USUARIO" no se muestra en el sitio. Reemplazar por el link real.
     { id: "behance",   label: "Behance",   url: "https://www.behance.net/USUARIO" }
   ],
 
