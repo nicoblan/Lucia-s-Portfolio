@@ -631,6 +631,9 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   align-items: center;
 }
 .about__grid[hidden] { display: none; }
+/* Con "Quién soy" cerrado, el manifiesto no queda pegado al bloque azul:
+   recibe el mismo aire que tendría la imagen abierta */
+.about__grid[hidden] + .manifesto { padding-top: clamp(56px, 11vh, 128px); }
 .about__photo img { transition: transform .8s var(--ease-out); }
 .about__photo { margin: 0; background: var(--paper); border-radius: var(--radius); overflow: hidden; will-change: transform; }
 .about__photo figcaption { padding: 12px 16px 16px; color: rgba(10,10,10,.65); }
