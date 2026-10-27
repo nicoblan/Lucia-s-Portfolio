@@ -129,6 +129,7 @@ Mientras falten los archivos, la consola del navegador muestra un 404 por cada u
 9. **Tarjeta identitaria** (`initVariants`): cambia sola cada `AUTO_MS` ms y también con clic. Lista `VARIANTS` (fondo, logo a color o blanco, color del texto chico).
 10. **Formulario** (`initForm`): sin `formspreeEndpoint` abre el cliente de correo con `mailto:`; con endpoint envía a Formspree sin salir de la página.
 11. **Destacados** (`initHighlights`): imágenes en `config.js` → `destacados`; cada cuánto se abre la siguiente en `destacadosInterval`.
+12. **De la semana** (`renderWeekly`): canción y película al lado del logo, en `config.js` → `semana`. Se cambia a mano cada semana; si un título queda vacío, esa ficha no se muestra.
 
 **`js/area.js`** (página de área): visor (`initLightbox`), entrada de la portada (`animateHero`) y links con transición (`initWipeLinks`).
 

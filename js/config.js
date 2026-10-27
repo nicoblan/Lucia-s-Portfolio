@@ -39,6 +39,14 @@ window.SITE_CONFIG = {
   ],
   backstageInterval: 7000, // ms entre imágenes
 
+  /* ---------- De la semana (al lado del logo, en el inicio) ----------
+     Se actualiza a mano cada semana. Si un título queda vacío, esa fila
+     no se muestra. url: link opcional (Spotify, YouTube, Letterboxd…). */
+  semana: [
+    { tipo: "Canción de la semana",  titulo: "HOUSEWIFE", detalle: "Tate McRae", url: "https://share.google/9JxN08hXVbgbTkjpz" }, // detalle: artista
+    { tipo: "Película de la semana", titulo: "Obsession", detalle: "Curry Barker, 2025", url: "" }  // detalle: director, año
+  ],
+
   /* ---------- Destacados (sección debajo del inicio) ----------
      Rectángulos que se abren y cierran solos; con el mouse se abre el que
      está debajo del cursor. Recomendado: entre 4 y 7 imágenes verticales.

@@ -528,11 +528,36 @@
   }
 
   /* ------------------------------------------------------------------------
+     12. DE LA SEMANA (al lado del logo)
+     Filas chicas desde SITE_CONFIG.semana. La primera usa el triángulo de
+     la marca como "play" con unas barritas de ecualizador; las demás, el
+     cuadrado. Las filas sin título no se muestran.
+     ------------------------------------------------------------------------ */
+  function renderWeekly() {
+    const list = $("[data-weekly]");
+    const items = (CONFIG.semana || []).filter(it => it.titulo);
+    if (!list || !items.length) return;
+    const esc = (str = "") => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+    list.innerHTML = items.map((it, i) => {
+      const isSong = /canci/i.test(it.tipo);
+      const icon = isSong
+        ? '<span class="weekly__icon"><span class="sign sign--tri"></span><span class="weekly__eq"><i></i><i></i><i></i></span></span>'
+        : `<span class="weekly__icon"><span class="sign ${i % 2 ? "sign--square" : "sign--circle"}"></span></span>`;
+      const body = `${icon}<span class="weekly__text"><span class="weekly__type">${esc(it.tipo)}</span><span class="weekly__title">${esc(it.titulo)}</span>${it.detalle ? `<span class="weekly__detail">${esc(it.detalle)}</span>` : ""}</span>`;
+      return `<li class="weekly__item">${it.url
+        ? `<a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${body}<span class="visually-hidden">(se abre en una pestaña nueva)</span></a>`
+        : `<span class="weekly__static">${body}</span>`}</li>`;
+    }).join("");
+    list.hidden = false;
+  }
+
+  /* ------------------------------------------------------------------------
      INIT
      ------------------------------------------------------------------------ */
   renderPanels();
   renderSocials();
   initHighlights();
+  renderWeekly();
   const year = $("[data-year]"); if (year) year.textContent = new Date().getFullYear();
 
   initBackstage();
