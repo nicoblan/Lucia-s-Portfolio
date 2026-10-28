@@ -91,48 +91,46 @@
   }
   const BLOCK_ROWS = 10;
 
-  /* Libro (layout: "libro", p. ej. Trendforecast). Referencia: cuaderno
-     anillado visto desde arriba que se hojea en cortes secos (stop-motion).
-     images[0] = tapa; el resto = páginas en orden, de a dos por doble
-     página; al final, la contratapa. Los separadores de colores pasan del
-     borde derecho al izquierdo a medida que avanzan las páginas. */
-  const TAB_COLORS = ["blue", "red", "yellow", "green", "orange"];
-  const pageHTML = (img, k, label) => img
-    ? `<button type="button" class="book__page" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || label)}">${img.src
-        ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">`
-        : placeholder(label)}</button>`
+  /* Libro (layout: "libro", p. ej. Trendforecast). Referencia: sketchbook
+     de tapa de cartón sobre fondo negro, con collages en cada página, que se
+     hojea dando vuelta las hojas en 3D. La tapa es de cartón con el título
+     del proyecto; las imágenes son las páginas en orden (de a dos por doble
+     página) y al final se cierra con la contratapa.
+     Cada hoja (.book__leaf) tiene frente y dorso: la tapa, las páginas y la
+     contratapa se reparten de a dos caras por hoja. */
+  const TAPES = ["red", "yellow", "blue", "green", "orange"];
+  const faceHTML = (img, k, label, n) => img
+    ? `<button type="button" class="book__page" data-open="${k}" style="--tape:var(--${TAPES[n % TAPES.length]})" aria-label="Ver en grande: ${esc(img.alt || label)}">
+        <span class="book__pic">${img.src
+          ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">`
+          : placeholder(label)}</span></button>`
     : `<span class="book__page book__page--blank" aria-hidden="true"></span>`;
 
   function bookHTML(p) {
-    const imgs = (p.images || []).map((img) => { const k = flatIndex++; allImages.push({ ...img, project: p.title }); return { img, k }; });
-    if (!imgs.length) return "";
-    const [cover, ...pages] = imgs;
-    const spreads = [];
-    for (let i = 0; i < pages.length; i += 2) spreads.push([pages[i], pages[i + 1]]);
-    const states = [
-      `<div class="book__state book__state--cover" data-state><span class="book__half book__half--right">${pageHTML(cover.img, cover.k, "Tapa")}</span></div>`,
-      ...spreads.map(([l, r], si) => `<div class="book__state" data-state>
-          <span class="book__half book__half--left">${pageHTML(l.img, l.k, `Página ${si * 2 + 1}`)}</span>
-          <span class="book__half book__half--right">${r ? pageHTML(r.img, r.k, `Página ${si * 2 + 2}`) : pageHTML(null)}</span>
-        </div>`),
-      `<div class="book__state book__state--back" data-state><span class="book__half book__half--left"><span class="book__page book__page--back" aria-hidden="true"><span class="book__mark">[Lu-]®</span></span></span></div>`
-    ].join("");
-    const tabs = TAB_COLORS.map((c, i) => `<span class="book__tab book__tab--${c}" style="--t:${i}" data-tab></span>`).join("");
-    const rings = Array.from({ length: 9 }, () => "<i></i>").join("");
-    return `<div class="book" data-book data-reveal>
+    const pages = (p.images || []).map((img) => { const k = flatIndex++; allImages.push({ ...img, project: p.title }); return { img, k }; });
+    if (!pages.length) return "";
+    const faces = [
+      `<span class="book__cover" aria-hidden="true"><span class="book__label">${esc(p.title)}</span></span>`,
+      ...pages.map(({ img, k }, n) => faceHTML(img, k, `Página ${n + 1}`, n))
+    ];
+    // la contratapa tiene que caer en el dorso de la última hoja
+    if (faces.length % 2 === 0) faces.push(faceHTML(null));
+    faces.push(`<span class="book__cover book__cover--back" aria-hidden="true"><span class="book__mark">[Lu-]®</span></span>`);
+    const leaves = [];
+    for (let i = 0; i < faces.length; i += 2) leaves.push(`<div class="book__leaf" data-leaf>
+          <div class="book__face book__face--front">${faces[i]}</div>
+          <div class="book__face book__face--back">${faces[i + 1]}</div>
+        </div>`);
+    return `<div class="book" data-book data-pages="${pages.length}" data-reveal>
         <div class="book__stage">
-          <div class="book__object">
-            ${states}
-            <span class="book__rings" aria-hidden="true">${rings}</span>
-            <span class="book__tabs" aria-hidden="true">${tabs}</span>
-          </div>
+          <div class="book__object">${leaves.join("")}</div>
         </div>
         <div class="book__controls">
           <button type="button" class="book__btn" data-book-prev aria-label="Página anterior">←</button>
           <span class="book__count" data-book-count aria-live="polite">Tapa</span>
           <button type="button" class="book__btn" data-book-next aria-label="Página siguiente">→</button>
         </div>
-        <p class="book__hint">Deslizá sobre el libro: ← abre · cierra →</p>
+        <p class="book__hint">Deslizá sobre el cuaderno: ← abre · cierra →</p>
       </div>`;
   }
 
@@ -307,44 +305,58 @@
   }
 
   /* ------------------------------------------------------------------------
-     3c. LIBRO: se hojea solo, en cortes secos como la referencia
-     Tapa (quieta un rato) → dobles páginas cada `PAGE_MS` → contratapa →
-     vuelve a empezar. Con el mouse encima se pausa y se hojea moviendo el
+     3c. LIBRO: se hojea solo, dando vuelta las hojas como la referencia
+     Tapa (quieta un rato) → una hoja cada `PAGE_MS` → contratapa → se cierra
+     y vuelve a empezar. Con el mouse encima se pausa y se hojea moviendo el
      cursor (derecha → izquierda abre, izquierda → derecha cierra); las
      flechas también pasan página. Solo corre mientras está en pantalla.
-     Con movimiento reducido no se hojea solo.
+     Con movimiento reducido no se hojea solo. El giro de cada hoja lo anima
+     el CSS (`FLIP_MS` tiene que coincidir con la transición de .book__leaf).
      ------------------------------------------------------------------------ */
   function initBooks() {
-    const PAGE_MS = 420, COVER_MS = 1300, BACK_MS = 1000;
+    const PAGE_MS = 1150, COVER_MS = 1500, BACK_MS = 1400, FLIP_MS = 900;
     $$("[data-book]").forEach((book) => {
-      const states = $$("[data-state]", book);
-      const tabs = $$("[data-tab]", book);
+      const leaves = $$("[data-leaf]", book);
       const count = $("[data-book-count]", book);
-      const last = states.length - 1, spreads = last - 1;
+      const total = +book.dataset.pages;
+      const last = leaves.length; // estados: 0 = tapa … last = contratapa
       let i = 0, timer = null, visible = false, hover = false;
 
       const label = (n) => {
         if (n === 0) return "Tapa";
         if (n === last) return "Contratapa";
-        const a = n * 2 - 1, hasRight = !!$(".book__half--right .book__page:not(.book__page--blank)", states[n]);
-        return hasRight ? `Páginas ${a}–${a + 1}` : `Página ${a}`;
+        const a = n * 2 - 1, b = Math.min(a + 1, total);
+        return a >= b ? `Página ${a}` : `Páginas ${a}–${b}`;
       };
-      const show = (n) => {
-        i = (n + states.length) % states.length;
-        states.forEach((s, k) => s.classList.toggle("is-current", k === i));
-        book.dataset.mode = i === 0 ? "cover" : i === last ? "back" : "open";
-        // separadores: pasan a la izquierda a medida que se avanza
-        tabs.forEach((t, k) => {
-          const threshold = ((k + 1) * spreads) / (tabs.length + 1);
-          t.classList.toggle("is-left", i === last || (i > 0 && i > threshold));
+      // Orden de apilado: las hojas dadas vuelta, de abajo hacia arriba a la
+      // izquierda; las que faltan, al revés a la derecha. La hoja que gira
+      // va arriba de todo mientras dura el giro.
+      const stack = () => leaves.forEach((l, k) => {
+        if (!l.classList.contains("is-moving")) l.style.zIndex = k < i ? k + 1 : last - k;
+      });
+      const show = (n, wrap = false) => {
+        const next = wrap ? (n + last + 1) % (last + 1) : Math.max(0, Math.min(last, n));
+        if (next === i) return;
+        const forward = next > i;
+        const moving = forward ? leaves.slice(i, next) : leaves.slice(next, i).reverse();
+        i = next;
+        moving.forEach((l, d) => {
+          l.classList.add("is-moving");
+          l.style.zIndex = last + 10 + d;
+          l.style.transitionDelay = `${d * 70}ms`;
+          clearTimeout(l._t);
+          l._t = setTimeout(() => { l.classList.remove("is-moving"); l.style.transitionDelay = ""; stack(); }, FLIP_MS + d * 70);
         });
+        leaves.forEach((l, k) => l.classList.toggle("is-turned", k < i));
+        stack();
+        book.dataset.mode = i === 0 ? "cover" : i === last ? "back" : "open";
         count.textContent = label(i);
       };
       const tick = () => {
         clearTimeout(timer);
         if (reduceMotion || !visible || hover) return;
         const wait = i === 0 ? COVER_MS : i === last ? BACK_MS : PAGE_MS;
-        timer = setTimeout(() => { show(i + 1); tick(); }, wait);
+        timer = setTimeout(() => { show(i + 1, true); tick(); }, wait);
       };
 
       $("[data-book-prev]", book).addEventListener("click", () => { show(i - 1); });
@@ -353,10 +365,10 @@
       /* Hojear con el cursor (o el dedo): mover de DERECHA a IZQUIERDA abre
          (avanza páginas); de IZQUIERDA a DERECHA cierra (vuelve hacia la
          tapa). Cuenta el desplazamiento acumulado: cada `step` píxeles es
-         una página. No da la vuelta: frena en la tapa y en la contratapa. */
+         una hoja. No da la vuelta: frena en la tapa y en la contratapa. */
       const stage = $(".book__stage", book);
       let lastX = null, acc = 0;
-      const step = () => Math.max(36, stage.clientWidth / (states.length + 2));
+      const step = () => Math.max(40, stage.clientWidth / (last + 3));
       stage.addEventListener("pointermove", (e) => {
         if (e.pointerType === "mouse" && !finePointer.matches) return;
         if (lastX === null) { lastX = e.clientX; return; }
@@ -376,7 +388,8 @@
       book.addEventListener("focusin", () => { hover = true; clearTimeout(timer); });
       book.addEventListener("focusout", () => { hover = false; tick(); });
       new IntersectionObserver(([e]) => { visible = e.isIntersecting; tick(); }, { threshold: .35 }).observe(book);
-      show(0);
+      stack();
+      book.dataset.mode = "cover";
     });
   }
 

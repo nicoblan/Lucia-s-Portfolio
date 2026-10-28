@@ -133,65 +133,92 @@
 .area-empty { padding: 60px 0; font-weight: 700; font-size: 18px; }
 
 /* ---------- Libro (layout "libro": Trendforecast) ----------
-   Cuaderno anillado visto desde arriba sobre fondo oscuro, como la
-   referencia. Cada estado (tapa / doble página / contratapa) es una capa;
-   js/area.js muestra una sola por vez, en corte seco. */
+   Sketchbook de tapa de cartón sobre fondo negro, como la referencia.
+   Cada .book__leaf es una hoja con frente y dorso que gira sobre el lomo
+   (rotateY). Cerrado, el cuaderno se corre para quedar centrado. */
 .book { margin-top: clamp(8px, 2vh, 20px); }
 .book__stage {
   touch-action: pan-y; /* el dedo puede hojear en horizontal sin trabar el scroll */
   position: relative; display: grid; place-items: center;
-  background: #0d0d0d; border-radius: var(--radius);
-  height: min(76vh, 58vw); padding: clamp(28px, 6%, 64px) clamp(28px, 8%, 96px);
-  overflow: hidden;
+  background: #050505; border-radius: var(--radius);
+  height: min(76vh, 56vw); padding: clamp(28px, 7%, 72px) clamp(20px, 6%, 80px);
+  overflow: hidden; perspective: 2200px;
 }
 /* dos páginas 3:4 = doble página 3:2; se ajusta al alto del escenario */
-.book__object { position: relative; height: 100%; max-width: 100%; aspect-ratio: 3 / 2; }
-.book__state { position: absolute; inset: 0; visibility: hidden; }
-.book__state.is-current { visibility: visible; }
-.book__half {
-  position: absolute; top: 0; bottom: 0; width: 50%;
-  box-shadow: 0 18px 40px -12px rgba(0,0,0,.7);
+.book__object {
+  position: relative; height: 100%; max-width: 100%; aspect-ratio: 3 / 2;
+  transform-style: preserve-3d; transition: translate .9s cubic-bezier(.45,.05,.25,1);
 }
-.book__half--left { left: 0; }
-.book__half--right { left: 50%; }
+.book[data-mode="cover"] .book__object { translate: -25% 0; }
+.book[data-mode="back"] .book__object { translate: 25% 0; }
+.book__leaf {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 50%;
+  transform-origin: left center; transform-style: preserve-3d;
+  transition: transform .9s cubic-bezier(.45,.05,.25,1);
+}
+.book__leaf.is-turned { transform: rotateY(-180deg); }
+.book__face {
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  box-shadow: 0 22px 46px -16px rgba(0,0,0,.9);
+}
+.book__face--back { transform: rotateY(180deg); }
+/* sombra que recorre la hoja mientras gira */
+.book__face::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  transition: opacity .45s ease;
+}
+.book__face--front::after { background: linear-gradient(to right, rgba(0,0,0,.28), transparent 40%); }
+.book__face--back::after { background: linear-gradient(to left, rgba(0,0,0,.28), transparent 40%); }
+.book__leaf.is-moving .book__face::after { opacity: 1; }
+
+/* Página de collage: papel blanco, la imagen pegada con cinta */
 .book__page {
   all: unset; box-sizing: border-box; position: relative; display: block; width: 100%; height: 100%;
-  background: #f3f0e8; overflow: hidden; cursor: zoom-in;
+  background: #f6f4ef; overflow: hidden; cursor: zoom-in; padding: 7% 8%;
+  border-radius: 2px 4px 4px 2px;
 }
-.book__page img, .book__page .ph { width: 100%; height: 100%; object-fit: cover; }
+.book__face--back .book__page { border-radius: 4px 2px 2px 4px; }
+.book__pic { display: block; width: 100%; height: 100%; rotate: -.6deg; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+.book__face--back .book__pic { rotate: .7deg; }
+.book__pic img, .book__pic .ph { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* cintas de papel (washi) en dos esquinas, del color de la paleta */
+.book__page:not(.book__page--blank)::before, .book__page:not(.book__page--blank)::after {
+  content: ""; position: absolute; z-index: 2; width: 22%; height: 5%;
+  background: var(--tape, var(--yellow)); opacity: .82; mix-blend-mode: multiply;
+}
+.book__page::before { top: 4.5%; left: 3%; rotate: -32deg; }
+.book__page::after { bottom: 4.5%; right: 3%; rotate: -28deg; }
 .book__page:focus-visible { outline: 3px solid var(--yellow); outline-offset: -3px; }
-/* sombra del lomo: oscurece apenas el borde que toca los anillos */
-.book__half--left .book__page::after, .book__half--right .book__page::after {
-  content: ""; position: absolute; top: 0; bottom: 0; width: 9%; pointer-events: none;
-}
-.book__half--left .book__page::after { right: 0; background: linear-gradient(to left, rgba(0,0,0,.18), transparent); }
-.book__half--right .book__page::after { left: 0; background: linear-gradient(to right, rgba(0,0,0,.18), transparent); }
-.book__page--blank, .book__page--back { cursor: default; }
-.book__page--back { display: grid; place-items: end start; padding: 8%; }
-.book__mark { font-weight: 700; font-size: clamp(10px, 1.1vw, 14px); color: var(--blue); letter-spacing: -.02em; }
+.book__page--blank { cursor: default; }
+/* sombra del lomo */
+.book__face--front .book__page { box-shadow: inset 14px 0 18px -14px rgba(0,0,0,.35); }
+.book__face--back .book__page { box-shadow: inset -14px 0 18px -14px rgba(0,0,0,.35); }
 
-/* Anillos sobre el lomo */
-.book__rings {
-  position: absolute; left: 50%; top: 3%; bottom: 3%; translate: -50% 0; z-index: 3;
-  display: flex; flex-direction: column; justify-content: space-between; pointer-events: none;
+/* Tapa y contratapa de cartón kraft */
+.book__cover {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  border-radius: 2px 5px 5px 2px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.12), transparent 55%),
+    repeating-linear-gradient(97deg, rgba(90,60,20,.05) 0 2px, transparent 2px 5px),
+    #c7a46c;
+  box-shadow: inset 6px 0 10px -6px rgba(0,0,0,.45), inset -2px 0 0 rgba(0,0,0,.12);
 }
-.book__rings i {
-  display: block; width: clamp(12px, 1.6vw, 22px); height: clamp(4px, .5vw, 7px); border-radius: 4px;
-  background: linear-gradient(#f2f2f2, #9a9a9a); box-shadow: 0 1px 2px rgba(0,0,0,.6);
+.book__cover--back { border-radius: 5px 2px 2px 5px; place-items: end start; padding: 9%; box-shadow: inset -6px 0 10px -6px rgba(0,0,0,.45); }
+.book__label {
+  max-width: 70%; padding: .7em 1em; background: #f6f4ef; rotate: -1.5deg;
+  font-weight: 700; font-size: clamp(10px, 1.05vw, 14px); letter-spacing: .02em; text-align: center;
+  text-transform: uppercase; color: var(--black); box-shadow: 0 1px 3px rgba(0,0,0,.25);
 }
-/* Separadores de colores: en el borde derecho; con .is-left, en el izquierdo */
-.book__tabs { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.book__tab {
-  position: absolute; top: calc(7% + var(--t) * 13%); height: 11%; width: 3%;
-  right: -3%; border-radius: 0 6px 6px 0;
-  background: var(--c, var(--blue));
+.book__mark { font-weight: 700; font-size: clamp(10px, 1.1vw, 14px); color: #5b4320; letter-spacing: -.02em; }
+
+@media (max-width: 760px) {
+  /* en celular el cuaderno abierto ocupa todo el ancho */
+  .book__stage { height: auto; aspect-ratio: 4 / 3; padding: 22px 10px; }
 }
-.book__tab.is-left { right: auto; left: -3%; border-radius: 6px 0 0 6px; }
-.book__tab--blue { --c: #7d8cf0; }
-.book__tab--red { --c: var(--red); }
-.book__tab--yellow { --c: var(--yellow); }
-.book__tab--green { --c: var(--green); }
-.book__tab--orange { --c: var(--orange); }
+@media (prefers-reduced-motion: reduce) {
+  .book__object, .book__leaf { transition-duration: .01ms; }
+}
 
 .book__controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 14px; }
 .book__hint { margin: 8px 0 0; text-align: center; font-size: 11px; letter-spacing: .04em; color: rgba(10,10,10,.55); }
