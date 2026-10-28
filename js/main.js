@@ -560,34 +560,51 @@
   }
 
   /* ------------------------------------------------------------------------
-     12. DE LA SEMANA (al lado del logo)
-     Filas chicas desde SITE_CONFIG.semana. La primera usa el triángulo de
-     la marca como "play" con unas barritas de ecualizador; las demás, el
-     cuadrado. Las filas sin título no se muestran.
+     12. DE LA SEMANA (laterales de la barra, solo en el home)
+     Canción a la izquierda del menú y película a la derecha. El título de
+     cada una es una MÁSCARA del video del home: las letras dejan ver el
+     mismo video que corre dentro del logo [Lu -].
+     - La máscara es un SVG con el texto (mask-image), igual que el logo.
+     - La canción con `youtube` es el botón de play / pausa (§13).
+     - Si un título queda vacío en config.js, ese lateral no se muestra.
      ------------------------------------------------------------------------ */
+  const MASK_FONT = '700 17px "Helvetica Neue", Helvetica, Arial, sans-serif';
+  const esc = (str = "") => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+  // Arma la máscara SVG del texto, con el ancho justo de las letras
+  function maskTitle(el, text) {
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx.font = MASK_FONT;
+    const w = Math.ceil(ctx.measureText(text).width) + 2, h = 22;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><text x="0" y="17" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="17" letter-spacing="0" fill="#fff">${esc(text)}</text></svg>`;
+    const url = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+    el.style.width = `${w}px`; el.style.height = `${h}px`;
+    el.style.webkitMaskImage = url; el.style.maskImage = url;
+  }
+
   function renderWeekly() {
-    const list = $("[data-weekly]");
+    const slots = $$("[data-week-slot]");
     const items = (CONFIG.semana || []).filter(it => it.titulo);
-    if (!list || !items.length) return;
-    const esc = (str = "") => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-    list.innerHTML = items.map((it, i) => {
-      const isSong = /canci/i.test(it.tipo);
-      const icon = isSong
-        ? '<span class="weekly__icon"><span class="sign sign--tri"></span><span class="weekly__eq"><i></i><i></i><i></i></span></span>'
-        : `<span class="weekly__icon"><span class="sign ${i % 2 ? "sign--square" : "sign--circle"}"></span></span>`;
-      const body = `${icon}<span class="weekly__text"><span class="weekly__type">${esc(it.tipo)}</span><span class="weekly__title">${esc(it.titulo)}</span>${it.detalle ? `<span class="weekly__detail">${esc(it.detalle)}</span>` : ""}</span>`;
-      // Canción con video de YouTube: la ficha es el botón de play/pausa (§13)
-      // y, mientras suena, el ícono se reemplaza por la portada
-      if (isSong && it.youtube) {
-        const cover = `<span class="weekly__cover" aria-hidden="true"><img src="${esc(songCover(it))}" alt="" loading="lazy"></span>`;
-        return `<li class="weekly__item"><button type="button" class="weekly__play" data-music-toggle aria-pressed="false">${cover}${body}<span class="visually-hidden" data-music-sr>Reproducir</span></button></li>`;
-      }
-      return `<li class="weekly__item">${it.url
-        ? `<a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${body}<span class="visually-hidden">(se abre en una pestaña nueva)</span></a>`
-        : `<span class="weekly__static">${body}</span>`}</li>`;
-    }).join("");
-    list.hidden = false;
-    matchWeeklyWidth();
+    if (!slots.length || !items.length) return;
+    const homeVideo = $("[data-home-video]");
+    const sources = homeVideo ? $$("source", homeVideo).map(s => `<source src="${s.getAttribute("src")}" type="${s.type}">`).join("") : "";
+    items.slice(0, slots.length).forEach((it, i) => {
+      const isSong = /canci/i.test(it.tipo) && it.youtube;
+      const video = sources ? `<video muted loop playsinline autoplay preload="metadata" aria-hidden="true" tabindex="-1">${sources}</video>` : "";
+      const inner = `
+        <span class="nav-week__type">${esc(it.tipo)}</span>
+        <span class="nav-week__title" data-mask-title>${video}</span>
+        <span class="visually-hidden">${esc(it.titulo)}${it.detalle ? " — " + esc(it.detalle) : ""}</span>`;
+      slots[i].innerHTML = isSong
+        ? `<button type="button" class="nav-week__item" data-music-toggle aria-pressed="false">${inner}<span class="visually-hidden" data-music-sr>Reproducir</span></button>`
+        : it.url
+          ? `<a class="nav-week__item" href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${inner}<span class="visually-hidden">(se abre en una pestaña nueva)</span></a>`
+          : `<span class="nav-week__item">${inner}</span>`;
+      maskTitle($("[data-mask-title]", slots[i]), it.titulo);
+      slots[i].classList.add("has-item");
+      // Respeta movimiento reducido: el video de las letras queda quieto
+      const v = $("video", slots[i]); if (v && reduceMotion) { v.removeAttribute("autoplay"); v.pause(); }
+    });
   }
 
   // Portada de la canción: `portada` en config.js; si no hay, la miniatura
@@ -596,23 +613,35 @@
     return it.portada || `https://i.ytimg.com/vi/${encodeURIComponent(it.youtube)}/hqdefault.jpg`;
   }
 
-  // El bloque "de la semana" mide lo mismo que la píldora roja de abajo y
-  // termina en el mismo borde derecho. Si no entra al lado del logo (celular),
-  // baja y ocupa todo el ancho.
-  function matchWeeklyWidth() {
-    const side = $(".hero__side"), pill = $(".pill--red"), row = $(".hero__logo"), logo = $(".logo--hero");
-    if (!side || !pill || !row || !logo) return;
-    const sync = () => {
-      const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
-      const free = row.clientWidth - logo.offsetWidth - gap;
-      const w = pill.offsetWidth; // offsetWidth ignora el scaleX de la animación de entrada
-      // si por pocos píxeles no entra (según el ancho de pantalla), usa el
-      // espacio libre: el borde derecho sigue alineado con la píldora
-      side.style.width = w > 0 && w <= free ? `${w}px` : w > 0 && w - free <= 24 ? `${Math.floor(free)}px` : "";
+  /* ------------------------------------------------------------------------
+     12b. BARRA EN EL HOME: mismo largo que el logo [Lu -]
+     Mientras el home está a la vista, la barra se estira hasta el ancho del
+     logo y muestra la canción y la película en sus laterales. Al bajar,
+     vuelve a su tamaño compacto. El cambio de ancho lo anima el CSS.
+     ------------------------------------------------------------------------ */
+  function initHomeNav() {
+    const nav = $("[data-nav]"), home = $(".home"), logo = $(".home__logo");
+    if (!nav || !home || !logo) return;
+    const desktop = window.matchMedia("(min-width: 761px)");
+    let compact = 0, onHome = true;
+    const measure = () => {
+      nav.classList.remove("nav--home");
+      nav.style.width = "";
+      compact = nav.getBoundingClientRect().width;   // ancho natural (sin laterales)
+      apply(true);
     };
-    sync();
-    window.addEventListener("resize", sync);
-    if (document.fonts) document.fonts.ready.then(sync);
+    const apply = (instant) => {
+      const wide = onHome && desktop.matches;
+      nav.classList.toggle("nav--home", onHome);
+      if (!desktop.matches) { nav.style.width = ""; return; }
+      if (instant) nav.style.transition = "none";
+      nav.style.width = `${wide ? Math.round(logo.getBoundingClientRect().width) : Math.ceil(compact)}px`;
+      if (instant) { nav.offsetWidth; nav.style.transition = ""; }
+    };
+    new IntersectionObserver(([e]) => { onHome = e.intersectionRatio > 0.45; apply(false); }, { threshold: [0, 0.45, 1] }).observe(home);
+    window.addEventListener("resize", measure);
+    if (document.fonts) document.fonts.ready.then(measure);
+    measure();
   }
 
   /* ------------------------------------------------------------------------
@@ -794,8 +823,40 @@
   }
 
   /* ------------------------------------------------------------------------
+     17. ENTRADA DEL HOME (cada vez que se carga o se recarga la página)
+     1. El logo se descubre de abajo hacia arriba (recorte) mientras el
+        video adentro se acerca hasta su tamaño.
+     2. El subtítulo sube y aparece.
+     3. El pie de página entra en cascada.
+     4. La barra baja desde arriba.
+     Si la intro de círculos está corriendo, espera a que termine.
+     El estado inicial (oculto) lo pone html.home-enter desde el <head>.
+     ------------------------------------------------------------------------ */
+  function initHomeEntrance() {
+    const root = document.documentElement;
+    if (!$(".home") || reduceMotion) { root.classList.remove("home-enter"); return; }
+    const EASE = "cubic-bezier(.45,0,.15,1)";
+    const run = () => {
+      const box = $(".home__video"), vid = $(".home__video video"), sub = $(".home__sub"), nav = $("[data-nav]");
+      const opts = (delay, duration) => ({ delay, duration, easing: EASE, fill: "backwards" });
+      root.classList.remove("home-enter");
+      box.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], opts(0, 1300));
+      if (vid) vid.animate([{ transform: "scale(1.25)" }, { transform: "scale(1)" }], opts(0, 1900));
+      sub.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "none" }], opts(650, 900));
+      $$(".home__foot span").forEach((s, i) =>
+        s.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], opts(950 + i * 120, 800)));
+      if (nav) nav.animate([{ opacity: 0, translate: "0 -24px" }, { opacity: 1, translate: "0 0" }], opts(400, 900));
+    };
+    if (root.classList.contains("intro-running")) {
+      const mo = new MutationObserver(() => { if (!root.classList.contains("intro-running")) { mo.disconnect(); run(); } });
+      mo.observe(root, { attributes: true, attributeFilter: ["class"] });
+    } else run();
+  }
+
+  /* ------------------------------------------------------------------------
      INIT
      ------------------------------------------------------------------------ */
+  initHomeEntrance();
   initHomeVideo();
   renderPanels();
   renderSocials();
@@ -804,6 +865,7 @@
   if (cvBtn) { const cv = (CONFIG.contact || {}).cv; if (cv) cvBtn.href = cv; else cvBtn.hidden = true; }
   initHighlights();
   renderWeekly();
+  initHomeNav();
   initMusic();
   const year = $("[data-year]"); if (year) year.textContent = new Date().getFullYear();
 
