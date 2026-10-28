@@ -66,7 +66,7 @@
 .project__meta { display: flex; gap: 24px; margin: 0; padding-top: .6em; }
 .project__meta dt { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: rgba(10,10,10,.6); }
 .project__meta dd { margin: 2px 0 0; font-size: 13px; font-weight: 700; }
-.project__desc { white-space: pre-line; /* respeta los saltos de línea de config.js */ margin: 0 0 clamp(20px, 4vh, 40px); max-width: 60ch; font-size: clamp(13px, 1vw, 15px); line-height: 1.55; }
+.project__desc { white-space: pre-line; /* respeta los saltos de línea de config.js */ margin: 0 0 clamp(20px, 4vh, 40px); max-width: 60ch; font-size: 12px; line-height: 1.6; text-align: justify; hyphens: auto; }
 .project__video-wrap { margin-bottom: 10px; border-radius: var(--radius); overflow: hidden; background: var(--black); aspect-ratio: 16/9; }
 .project__video { display: block; width: 100%; height: 100%; border: 0; object-fit: cover; }
 

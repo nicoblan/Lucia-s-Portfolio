@@ -105,7 +105,7 @@ window.SITE_CONFIG = {
         ]
       },
       {
-        title: "Shooting conceptual — Waldeinsamkeit",
+        title: "Shooting conceptual",
         year: "",
         client: "Materia Fotografía de moda",
         role: "Dirección de arte, estilismo y fotografía",
