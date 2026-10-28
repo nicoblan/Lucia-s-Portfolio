@@ -425,7 +425,7 @@
     const form = $("[data-form]");
     if (!form) return;
     const status = $("[data-form-status]", form);
-    const { email = "", formspreeEndpoint = "", envio = "" } = CONFIG.contact || {};
+    const { email = "", formspreeEndpoint = "", envio = "", web3formsKey = "" } = CONFIG.contact || {};
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     form.addEventListener("submit", async (e) => {
@@ -448,39 +448,62 @@
       const data = Object.fromEntries(new FormData(form));
       const btn = $("button[type='submit']", form);
 
-      // Envío directo al mail: Formspree (si hay endpoint) o formsubmit.co
-      // (manda a CONFIG.contact.email; la primera vez pide activar por mail)
-      const direct = formspreeEndpoint || (envio === "formsubmit" && email ? `https://formsubmit.co/ajax/${email}` : "");
-      if (direct) {
-        btn.disabled = true;
-        status.textContent = "Enviando…"; status.dataset.state = "";
-        try {
-          const payload = formspreeEndpoint ? new FormData(form) : JSON.stringify({
-            name: data.name, email: data.email, _replyto: data.email,
-            _subject: `Portfolio — ${data.subject}`, message: data.message,
-            _template: "table", _captcha: "false"
-          });
-          const res = await fetch(direct, {
-            method: "POST", body: payload,
-            headers: formspreeEndpoint ? { Accept: "application/json" } : { "Content-Type": "application/json", Accept: "application/json" }
-          });
-          if (!res.ok) throw new Error(res.status);
-          form.reset();
-          status.textContent = "Mensaje enviado. Te respondo pronto (y con una segunda lectura).";
-          status.dataset.state = "ok";
-        } catch (err) {
-          status.textContent = `No se pudo enviar. Probá escribiendo directo a ${email}.`;
-          status.dataset.state = "error";
-        } finally {
-          btn.disabled = false;
-        }
+      // Plan B que nunca falla: abrir el correo de quien escribe con el
+      // mensaje ya armado, dirigido a CONFIG.contact.email
+      const openMail = () => {
+        const body = `${data.message}\n\n— ${data.name} (${data.email})`;
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent("Portfolio — " + data.subject)}&body=${encodeURIComponent(body)}`;
+      };
+
+      /* Envío directo al mail, en este orden:
+         1. Formspree (si hay `formspreeEndpoint`)
+         2. Web3Forms (si hay `web3formsKey`): el más confiable sin servidor
+         3. formsubmit.co (si `envio: "formsubmit"`)
+         Se manda como formulario común (sin JSON) para evitar el pedido
+         previo de permisos (CORS) que duplicaba la espera. Si el servicio
+         no contesta en `TIMEOUT_MS`, falla o pide activación, se abre el
+         correo con el mensaje listo: el mensaje nunca se pierde. */
+      const TIMEOUT_MS = 12000;
+      const subject = `Portfolio — ${data.subject}`;
+      let url = "", body = null;
+      if (formspreeEndpoint) {
+        url = formspreeEndpoint; body = new FormData(form);
+      } else if (web3formsKey) {
+        url = "https://api.web3forms.com/submit"; body = new FormData();
+        Object.entries({ access_key: web3formsKey, subject, from_name: data.name, name: data.name, email: data.email, replyto: data.email, message: data.message })
+          .forEach(([k, v]) => body.append(k, v));
+      } else if (envio === "formsubmit" && email) {
+        url = `https://formsubmit.co/ajax/${email}`;
+        body = new URLSearchParams({ name: data.name, email: data.email, _replyto: data.email, _subject: subject, message: data.message, _template: "table", _captcha: "false" });
+      }
+
+      if (!url) {
+        openMail();
+        status.textContent = `Se abrió tu correo con el mensaje listo. Si no pasó nada, escribime a ${email}.`;
+        status.dataset.state = "ok";
         return;
       }
 
-      const body = `${data.message}\n\n— ${data.name} (${data.email})`;
-      window.location.href = `mailto:${email}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(body)}`;
-      status.textContent = `Se abrió tu cliente de correo. Si no pasó nada, escribime a ${email}.`;
-      status.dataset.state = "ok";
+      btn.disabled = true;
+      status.textContent = "Enviando…"; status.dataset.state = "";
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+      try {
+        const res = await fetch(url, { method: "POST", body, headers: { Accept: "application/json" }, signal: ctrl.signal });
+        const json = await res.json().catch(() => ({}));
+        // formsubmit/web3forms responden 200 con success:false si algo falta (p. ej. activar)
+        if (!res.ok || json.success === false || json.success === "false") throw new Error(json.message || res.status);
+        form.reset();
+        status.textContent = "Mensaje enviado. Te respondo pronto (y con una segunda lectura).";
+        status.dataset.state = "ok";
+      } catch (err) {
+        openMail();
+        status.textContent = `El envío directo no respondió, así que se abrió tu correo con el mensaje listo para mandar a ${email}.`;
+        status.dataset.state = "error";
+      } finally {
+        clearTimeout(timer);
+        btn.disabled = false;
+      }
     });
 
     // Al corregir un campo se le saca la marca de error

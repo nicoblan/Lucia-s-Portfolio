@@ -46,7 +46,7 @@ Todo lo que cambia seguido está en **`js/config.js`**:
 | Qué | Dónde |
 | --- | --- |
 | Email de contacto | `contact.email` (hoy `luchyderegibus@gmail.com`) |
-| Envío del formulario | `contact.envio: "formsubmit"` manda cada mensaje directo al mail (formsubmit.co). **La primera vez llega un mail de activación: hay que confirmarlo una vez.** Alternativa: `contact.formspreeEndpoint` |
+| Envío del formulario | `contact.envio: "formsubmit"` manda cada mensaje directo al mail (formsubmit.co). **La primera vez llega un mail de activación: hay que confirmarlo una vez.** Más confiable: completar `contact.web3formsKey` (gratis en web3forms.com: se pone el mail y llega la clave). Alternativa: `contact.formspreeEndpoint`. Si el servicio no responde en 12 s, se abre el correo de quien escribe con el mensaje listo. |
 | CV para descargar | `contact.cv` (hoy `assets/cv/CV-Lucia-Deregibus-Mongardi.pdf`, armado desde la imagen del CV del PDF; conviene reemplazarlo por el PDF original) |
 | Instagram / LinkedIn / Behance | `socials[].url` |
 | Fotos de backstage del fondo | `backstage[]` → `src`, `alt`, `production` |

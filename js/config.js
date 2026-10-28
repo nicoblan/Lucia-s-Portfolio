@@ -15,6 +15,10 @@ window.SITE_CONFIG = {
     // formsubmit.co). La PRIMERA vez llega un mail de activación: hay que
     // confirmarlo una sola vez y desde ahí llegan todos los mensajes.
     envio: "formsubmit",
+    // Más confiable: Web3Forms (gratis). Entrá a https://web3forms.com, poné
+    // luchyderegibus@gmail.com y te llega por mail una "Access Key": pegala acá.
+    // Si está completa, se usa en lugar de formsubmit.
+    web3formsKey: "",
     // Alternativa: endpoint de Formspree (https://formspree.io/f/XXXX). Si se
     // completa, se usa en lugar de formsubmit.
     formspreeEndpoint: "",
