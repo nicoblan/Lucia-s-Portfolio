@@ -108,9 +108,9 @@ Mientras falten los archivos, la consola del navegador muestra un 404 por cada u
 
 ## Home: logo [Lu -] con video adentro
 
-Réplica de la plantilla  (1440 × 810, fondo #1800ad). Las formas del logo están en  (sacadas de la tipografía de la plantilla) y funcionan como **máscara** del video ( en , ).
+Réplica de la plantilla `[Lu -].pdf` (1440 × 810, fondo #1800ad). Las formas del logo están en `assets/logo/lu-mask.svg` (sacadas de la tipografía de la plantilla) y funcionan como **máscara** del video (`mask-image` en `.home__video`, `css/styles.css`).
 
-- **Cambiar el video**: reemplazá  (y , que Chrome y Firefox cargan primero) y el póster .
+- **Cambiar el video**: reemplazá `assets/video/home-loop.mp4` (y `home-loop.webm`, que Chrome y Firefox cargan primero) y el póster `assets/video/home-poster.jpg`.
 - **Peso**: el MP4 actual pesa 6,7 MB (lo usa Safari). Conviene comprimirlo con **HandBrake** → preset *Web*, 1280×720, calidad RF 28 (queda en 1–2 MB) y reemplazarlo con el mismo nombre. El WebM ya está liviano (1,5 MB).
 - Con *reducir movimiento* activado se muestra solo el póster.
 
