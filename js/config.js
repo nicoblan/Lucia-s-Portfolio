@@ -90,45 +90,60 @@ window.SITE_CONFIG = {
       imageAlt: "Muestra de estilismo y fotografía",
       projects: [
       {
-        title: "Proyecto de ejemplo 01",
+        title: "Las Pepas",
         year: "",
-        client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
+        client: "Materia Fotografía de moda",
+        role: "Estilismo",
+        resumen: "Campaña en exteriores y contenido para redes, sin perder los valores de la marca.",   // 1 línea para el carrusel del final
+        description: "Para este proyecto de la materia Fotografía de moda, bajo la consigna de crear una campaña en exteriores y material para redes sociales, con su partido conceptual, realizamos un mapa de diseño, moodboard, estilismo y análisis de campañas anteriores para crear una nueva temática e historia, manteniendo los valores y el concepto propio de la marca.",
         images: [
-          { src: null, alt: "Fotografía — imagen 1", caption: "" },
-          { src: null, alt: "Fotografía — imagen 2", caption: "" },
-          { src: null, alt: "Fotografía — imagen 3", caption: "" },
-          { src: null, alt: "Fotografía — imagen 4", caption: "" },
-          { src: null, alt: "Fotografía — imagen 5", caption: "" }
+          { src: null, alt: "Las Pepas — imagen 1", caption: "" },
+          { src: null, alt: "Las Pepas — imagen 2", caption: "" },
+          { src: null, alt: "Las Pepas — imagen 3", caption: "" },
+          { src: null, alt: "Las Pepas — imagen 4", caption: "" },
+          { src: null, alt: "Las Pepas — imagen 5", caption: "" }
         ]
       },
       {
-        title: "Proyecto de ejemplo 02",
+        title: "Shooting conceptual — Waldeinsamkeit",
         year: "",
-        client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
+        client: "Materia Fotografía de moda",
+        role: "Dirección de arte, estilismo y fotografía",
+        resumen: "Un shooting en exteriores a partir de una sola palabra: Waldeinsamkeit.",   // 1 línea para el carrusel del final
+        description: "Para este proyecto de la materia Fotografía de moda, bajo la consigna de realizar un shooting en exteriores partiendo de una palabra —en este caso, Waldeinsamkeit—, con su partido conceptual, realicé un mapa de diseño, moodboard y estilismo.\n\nWaldeinsamkeit: «El sentimiento de soledad y conexión con la naturaleza cuando se está a solas en el bosque».",
         images: [
-          { src: null, alt: "Fotografía — imagen 1", caption: "" },
-          { src: null, alt: "Fotografía — imagen 2", caption: "" },
-          { src: null, alt: "Fotografía — imagen 3", caption: "" },
-          { src: null, alt: "Fotografía — imagen 4", caption: "" }
+          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 1", caption: "" },
+          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 2", caption: "" },
+          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 3", caption: "" },
+          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 4", caption: "" }
         ]
       },
       {
-        title: "Proyecto de ejemplo 03",
+        title: "Shooting conceptual",
         year: "",
-        client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
+        client: "Fotografía digital",
+        role: "Dirección de arte, estilismo y fotografía",
+        resumen: "Fotos en crudo: una pequeña selección de fotografía digital.",   // 1 línea para el carrusel del final
+        description: "Fotos en crudo, pequeña selección de un trabajo práctico de fotografía digital.",
         images: [
-          { src: null, alt: "Fotografía — imagen 1", caption: "" },
-          { src: null, alt: "Fotografía — imagen 2", caption: "" },
-          { src: null, alt: "Fotografía — imagen 3", caption: "" }
+          { src: null, alt: "Shooting conceptual — imagen 1", caption: "" },
+          { src: null, alt: "Shooting conceptual — imagen 2", caption: "" },
+          { src: null, alt: "Shooting conceptual — imagen 3", caption: "" },
+          { src: null, alt: "Shooting conceptual — imagen 4", caption: "" }
+        ]
+      },
+      {
+        title: "Pre adolescentes",
+        year: "",
+        client: "Laboratorio de tendencias",
+        role: "Dirección de arte, estilismo, fotografía y casting",
+        resumen: "Fotos en crudo de la entrega final de laboratorio de tendencias.",   // 1 línea para el carrusel del final
+        description: "Fotos en crudo, pequeña selección de la entrega final de laboratorio de tendencias.",
+        images: [
+          { src: null, alt: "Pre adolescentes — imagen 1", caption: "" },
+          { src: null, alt: "Pre adolescentes — imagen 2", caption: "" },
+          { src: null, alt: "Pre adolescentes — imagen 3", caption: "" },
+          { src: null, alt: "Pre adolescentes — imagen 4", caption: "" }
         ]
       }
       ]

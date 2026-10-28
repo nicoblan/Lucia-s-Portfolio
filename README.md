@@ -82,7 +82,9 @@ projects: [
 - **Fashion Films** (`layout: "video"`): cada proyecto muestra su `video` en formato horizontal 16:9 con botón de pantalla completa; las imágenes van debajo como fotogramas.
 - Las imágenes se arman como un **collage 3D**: piezas superpuestas y apenas giradas, con marco tipo impresión; con el mouse se enderezan, se inclinan hacia el cursor y pasan al frente. El molde de posiciones es `COLLAGE` en `js/area.js`. Clic en cualquiera abre el visor (flechas del teclado o deslizar con el dedo).
 - **Trendforecast** (o cualquier área con `layout: "libro"`) presenta cada proyecto como un **cuaderno anillado que se hojea solo**, en cortes secos: tapa → dobles páginas → contratapa. Ahí la primera imagen es la **tapa** y las siguientes son las **páginas en orden** (de a dos por doble página); conviene subirlas verticales (3:4). Con el mouse encima se pausa y se hojea moviendo el cursor (derecha → izquierda abre, izquierda → derecha cierra; en celular, con el dedo); las flechas también pasan página. Tiempos en `PAGE_MS`, `COVER_MS` y `BACK_MS` (`js/area.js`).
-- `year`, `client` y `role` son opcionales: si quedan vacíos, no se muestran.
+- `year`, `client` (se muestra como "Contexto": materia, cliente, etc.) y `role` son opcionales: si quedan vacíos, no se muestran. En `description` se puede usar `
+
+` para separar párrafos.
 - Para YouTube usá el link "embed" (`https://www.youtube.com/embed/ID`); para Vimeo, `https://player.vimeo.com/video/ID`.
 - Hoy hay proyectos de ejemplo con placeholders (`src: null`) para que veas cómo queda. Dirección Artística ya tiene el proyecto real de la identidad [Lu - cía]® con los mockups del PDF.
 - Se pueden sumar o borrar proyectos e imágenes libremente; la página se arma sola.

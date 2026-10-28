@@ -46,7 +46,7 @@
     : `<iframe class="project__video" src="${esc(src)}" title="${esc(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
 
   const metaHTML = (p) => {
-    const rows = [["Año", p.year], ["Cliente", p.client], ["Rol", p.role]].filter(([, v]) => v);
+    const rows = [["Año", p.year], ["Contexto", p.client], ["Rol", p.role]].filter(([, v]) => v);
     return rows.length
       ? `<dl class="project__meta">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>`
       : "";
