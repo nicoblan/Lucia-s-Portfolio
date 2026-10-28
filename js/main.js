@@ -772,8 +772,31 @@
   }
 
   /* ------------------------------------------------------------------------
+     16. VIDEO DEL HOME (dentro del logo [Lu -])
+     - Movimiento reducido: no se reproduce; queda el póster quieto.
+     - Si el navegador bloquea la reproducción, queda el póster.
+     - Fuera de pantalla se pausa, para no gastar batería ni datos.
+     ------------------------------------------------------------------------ */
+  function initHomeVideo() {
+    const video = $("[data-home-video]");
+    if (!video) return;
+    if (reduceMotion) {
+      video.removeAttribute("autoplay");
+      video.preload = "none";
+      video.pause();
+      video.load(); // vuelve a mostrar el póster
+      return;
+    }
+    const tryPlay = () => { const p = video.play(); if (p && p.catch) p.catch(() => {}); };
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => (e.isIntersecting ? tryPlay() : video.pause()), { threshold: 0.05 }).observe(video);
+    } else tryPlay();
+  }
+
+  /* ------------------------------------------------------------------------
      INIT
      ------------------------------------------------------------------------ */
+  initHomeVideo();
   renderPanels();
   renderSocials();
   // Botón "Descargar CV": toma el archivo de config.js (o lo oculta si no hay)

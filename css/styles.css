@@ -302,7 +302,56 @@ button { font: inherit; color: inherit; }
 .sign--square { background: var(--blue); }
 
 /* ==========================================================================
-   A. HERO
+   A. HOME — réplica de la plantilla "[Lu -].pdf" (1440 × 810)
+   Todas las medidas salen de la plantilla, en % de ese marco, para que
+   el logo escale con el ancho manteniendo proporciones y espacios.
+   ========================================================================== */
+.home {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: grid; place-items: center;
+  background: var(--blue); /* #1800ad, el azul exacto de la plantilla */
+  overflow: hidden;
+}
+/* El marco tiene la proporción de la plantilla y entra entero en pantalla */
+.home__frame {
+  position: relative;
+  width: min(100vw, calc(100vh * 1440 / 810));
+  aspect-ratio: 1440 / 810;
+}
+/* Caja del logo [Lu -]: posición y tamaño exactos de la plantilla */
+.home__logo {
+  position: absolute;
+  left: calc(54.52 / 1440 * 100%); top: calc(156.14 / 810 * 100%);
+  width: calc(1313.37 / 1440 * 100%); height: calc(554.83 / 810 * 100%);
+}
+/* Máscara: las formas blancas del SVG dejan ver el video; el resto es azul */
+.home__video {
+  position: absolute; inset: 0;
+  -webkit-mask-image: url("../assets/logo/lu-mask.svg"); mask-image: url("../assets/logo/lu-mask.svg");
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  background: var(--white) url("../assets/video/home-poster.jpg") center / cover; /* mientras carga */
+}
+.home__video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.home__logo-solid { display: none; position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Navegadores sin máscaras: logo en blanco sólido, sin video */
+@supports not ((mask-image: url("x.svg")) or (-webkit-mask-image: url("x.svg"))) {
+  .home__video { display: none; }
+  .home__logo-solid { display: block; }
+}
+/* Subtítulo: centrado, apoyado sobre la base de los corchetes */
+.home__sub {
+  position: absolute; display: block;
+  left: calc(462.5 / 1440 * 100%); top: calc(678.75 / 810 * 100%);
+  width: calc(516.65 / 1440 * 100%); height: auto;
+}
+
+/* Canción / película de la semana: franja debajo del home */
+.weekly-strip { padding: clamp(20px, 4vh, 36px) var(--gutter) 0; display: flex; justify-content: center; }
+.weekly-strip .weekly { width: min(100%, 620px); }
+
+/* ==========================================================================
+   A'. HERO ANTERIOR (ya no se usa en el home; queda para referencia)
    ========================================================================== */
 .hero {
   position: relative;
@@ -815,6 +864,10 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 }
 
 @media (max-width: 760px) {
+  /* Home en celular vertical: el logo sigue a todo el ancho; el subtítulo
+     baja debajo del logo y crece para leerse bien */
+  .home__sub { left: 10%; width: 80%; top: calc(100% + 14px); }
+  .home__frame { margin-bottom: 40px; }
   .nav { left: 12px; right: 12px; transform: none; justify-content: space-between; padding-left: 16px; }
   .nav__list > li > a { padding: 8px 6px; font-size: 12px; letter-spacing: -.01em; }
   .nav { gap: 4px; padding: 6px 6px 6px 12px; }
