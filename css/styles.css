@@ -321,37 +321,6 @@ button { font: inherit; color: inherit; }
    píldora roja de abajo ("CONCEPT ━━━"), así los bordes quedan alineados */
 .hero__side { display: flex; flex-direction: column; gap: 14px; margin: 0 0 .9em auto; }
 
-/* Botón Bright / Dark (js/main.js §15) */
-.theme-switch {
-  align-self: flex-end; display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid rgba(10,10,10,.12); background: rgba(255,255,255,.8);
-  padding: 6px 10px; border-radius: var(--radius-pill); cursor: pointer;
-  font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-}
-.theme-switch:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
-.theme-switch__opt { opacity: .4; transition: opacity .3s; }
-.theme-switch[aria-checked="false"] .theme-switch__opt:first-child,
-.theme-switch[aria-checked="true"] .theme-switch__opt:nth-child(3) { opacity: 1; }
-.theme-switch__track { position: relative; width: 34px; height: 18px; border-radius: 9px; background: var(--black); }
-.theme-switch__knob {
-  position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
-  background: var(--yellow); transition: translate .45s var(--ease-organic);
-}
-.theme-switch[aria-checked="true"] .theme-switch__knob { translate: 16px 0; }
-
-/* ==========================================================================
-   MODO DARK = NEGATIVO de la paleta
-   invert(1) sobre todo el documento: cada color pasa a su opuesto exacto
-   (azul #1800ad → #e7ff52, rojo #ff3131 → #00cece, blanco → negro...).
-   Fotos, videos y el reproductor se vuelven a invertir para verse normales.
-   ========================================================================== */
-html.theme-dark { filter: invert(1); background: #000; }
-html.theme-dark :is(img, video, iframe) { filter: invert(1); }
-html.theme-dark .highlight__frame img { filter: invert(1) grayscale(.35); }
-html.theme-dark .highlight.is-open .highlight__frame img { filter: invert(1); }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .5s; }
-.hero__side .hero__tagline { margin: 0; }
-
 /* De la semana (js/main.js §12): filas chicas, como fichas */
 .weekly { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
 .weekly[hidden] { display: none; }
@@ -439,12 +408,15 @@ html.theme-dark .highlight.is-open .highlight__frame img { filter: invert(1); }
 /* ==========================================================================
    DESTACADOS — rectángulos que se abren y cierran solos (js/main.js §11)
    ========================================================================== */
-.highlights { padding: clamp(64px, 10vh, 120px) 0 0; overflow-x: clip; }
+/* Más chica y apaisada: el abierto queda como rectángulo horizontal, con
+   bastante aire arriba y abajo */
+.highlights { padding: clamp(96px, 16vh, 180px) 0; overflow-x: clip; }
+.highlights__head, .highlights__list { max-width: 1120px; margin-left: auto; margin-right: auto; }
 .highlights__head { padding: 0 var(--gutter); margin-bottom: 18px; }
 .highlights__list {
-  list-style: none; margin: 0; padding: 0 var(--gutter);
+  list-style: none; padding: 0 var(--gutter); margin-top: 0; margin-bottom: 0;
   display: flex; gap: 10px;
-  height: clamp(380px, 68vh, 720px);
+  height: clamp(220px, 34vh, 380px);
 }
 .highlight {
   position: relative; flex: 1 1 0; min-width: 0;
@@ -770,6 +742,22 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 .form [aria-invalid="true"] { border-color: #c40000; background: #fff3f3; }
 .btn:disabled { opacity: .6; cursor: progress; }
 
+/* Descargar CV */
+.cv-btn {
+  display: inline-flex; align-items: center; gap: 12px; margin-top: clamp(20px, 3vh, 32px);
+  padding: 12px 14px 12px 22px; border-radius: var(--radius-pill);
+  background: var(--blue); color: var(--white); text-decoration: none; font-weight: 700; font-size: 15px;
+  transition: background .35s var(--ease-out), color .35s var(--ease-out), translate .5s var(--ease-organic);
+}
+.cv-btn__icon {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--yellow); color: var(--black); transition: translate .5s var(--ease-organic);
+}
+.cv-btn:hover, .cv-btn:focus-visible { background: var(--red); color: var(--black); }
+.cv-btn:hover .cv-btn__icon { translate: 0 3px; }
+.cv-btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.cv-btn[hidden] { display: none; }
+
 .site-foot {
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
   padding: 28px var(--gutter) 40px; font-size: 11px; letter-spacing: .04em;
@@ -839,8 +827,8 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .hero { padding-top: 88px; }
   .row { gap: .08em; }
   .pill__text { display: none; }
-  /* Destacados en columna: se abren hacia abajo */
-  .highlights__list { flex-direction: column; height: 82vh; }
+  /* Recent projects: también en fila y apaisado */
+  .highlights__list { height: clamp(170px, 48vw, 260px); }
 
   /* Paneles apilados */
   .panels { flex-direction: column; height: auto; }

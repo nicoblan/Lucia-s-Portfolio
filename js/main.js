@@ -425,7 +425,7 @@
     const form = $("[data-form]");
     if (!form) return;
     const status = $("[data-form-status]", form);
-    const { email = "", formspreeEndpoint = "" } = CONFIG.contact || {};
+    const { email = "", formspreeEndpoint = "", envio = "" } = CONFIG.contact || {};
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     form.addEventListener("submit", async (e) => {
@@ -448,12 +448,21 @@
       const data = Object.fromEntries(new FormData(form));
       const btn = $("button[type='submit']", form);
 
-      if (formspreeEndpoint) {
+      // Envío directo al mail: Formspree (si hay endpoint) o formsubmit.co
+      // (manda a CONFIG.contact.email; la primera vez pide activar por mail)
+      const direct = formspreeEndpoint || (envio === "formsubmit" && email ? `https://formsubmit.co/ajax/${email}` : "");
+      if (direct) {
         btn.disabled = true;
         status.textContent = "Enviando…"; status.dataset.state = "";
         try {
-          const res = await fetch(formspreeEndpoint, {
-            method: "POST", body: new FormData(form), headers: { Accept: "application/json" }
+          const payload = formspreeEndpoint ? new FormData(form) : JSON.stringify({
+            name: data.name, email: data.email, _replyto: data.email,
+            _subject: `Portfolio — ${data.subject}`, message: data.message,
+            _template: "table", _captcha: "false"
+          });
+          const res = await fetch(direct, {
+            method: "POST", body: payload,
+            headers: formspreeEndpoint ? { Accept: "application/json" } : { "Content-Type": "application/json", Accept: "application/json" }
           });
           if (!res.ok) throw new Error(res.status);
           form.reset();
@@ -740,33 +749,13 @@
   }
 
   /* ------------------------------------------------------------------------
-     15. MODO BRIGHT / DARK
-     El modo oscuro es el NEGATIVO exacto de la paleta (filter: invert en
-     css/styles.css): el azul pasa a amarillo verdoso, el rojo a cian, el
-     blanco a negro, etc. Las fotos y videos se vuelven a invertir para que
-     se vean normales. La elección se guarda en este navegador
-     (localStorage "lu-theme") y vale también en las páginas de área.
-     ------------------------------------------------------------------------ */
-  function initTheme() {
-    const btn = $("[data-theme-toggle]");
-    if (!btn) return;
-    const root = document.documentElement;
-    const sync = () => btn.setAttribute("aria-checked", String(root.classList.contains("theme-dark")));
-    btn.addEventListener("click", () => {
-      const dark = !root.classList.contains("theme-dark");
-      const apply = () => { root.classList.toggle("theme-dark", dark); sync(); };
-      // Fundido suave entre modos donde el navegador lo permite
-      if (document.startViewTransition && !reduceMotion) document.startViewTransition(apply); else apply();
-      try { localStorage.setItem("lu-theme", dark ? "dark" : "bright"); } catch (e) {}
-    });
-    sync();
-  }
-
-  /* ------------------------------------------------------------------------
      INIT
      ------------------------------------------------------------------------ */
   renderPanels();
   renderSocials();
+  // Botón "Descargar CV": toma el archivo de config.js (o lo oculta si no hay)
+  const cvBtn = $("[data-cv]");
+  if (cvBtn) { const cv = (CONFIG.contact || {}).cv; if (cv) cvBtn.href = cv; else cvBtn.hidden = true; }
   initHighlights();
   renderWeekly();
   initMusic();
@@ -783,7 +772,6 @@
   initVariants();
   initForm();
   initAboutPhoto();
-  initTheme();
 
   if (!reduceMotion) {
     animateLogo();

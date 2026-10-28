@@ -28,8 +28,6 @@
        nunca con movimiento reducido) antes de pintar, para que no parpadee -->
   <script>
     document.documentElement.classList.add('js');
-    // Modo oscuro guardado (js/main.js §15)
-    try { if (localStorage.getItem('lu-theme') === 'dark') document.documentElement.classList.add('theme-dark'); } catch (e) {}
     try {
       if (!/intro-frame=/.test(location.search) &&
           (sessionStorage.getItem('lu-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches))
@@ -81,13 +79,6 @@
           <span class="logo__br logo__br--l" data-piece="bl">[</span><span class="logo__lu" data-piece="lu">Lu</span><span class="logo__dash" data-piece="dash">-</span><span class="logo__cia" data-piece="cia">cía</span><span class="logo__br logo__br--r" data-piece="br">]</span><sup class="logo__r" data-piece="r">®</sup>
         </span>
         <div class="hero__side">
-          <!-- Bright / Dark: invierte los colores de todo el sitio (js/main.js §15) -->
-          <button type="button" class="theme-switch" role="switch" aria-checked="false" data-theme-toggle>
-            <span class="theme-switch__opt">Bright</span>
-            <span class="theme-switch__track" aria-hidden="true"><span class="theme-switch__knob"></span></span>
-            <span class="theme-switch__opt">Dark</span>
-            <span class="visually-hidden">Modo oscuro</span>
-          </button>
           <!-- Canción / película de la semana: sale de SITE_CONFIG.semana (js/main.js §12) -->
           <ul class="weekly" data-weekly data-hero-fade aria-label="De la semana" hidden></ul>
         </div>
@@ -255,6 +246,12 @@
             </li>
             <!-- Instagram / LinkedIn / Behance se insertan acá desde config.js -->
           </ul>
+          <!-- CV: el archivo se define en SITE_CONFIG.contact.cv -->
+          <a class="cv-btn" href="assets/cv/CV-Lucia-Deregibus-Mongardi.pdf" download data-cv>
+            <span class="cv-btn__text">Descargar CV</span>
+            <span class="cv-btn__icon" aria-hidden="true">↓</span>
+            <span class="visually-hidden">(PDF)</span>
+          </a>
         </div>
       </div>
 

@@ -70,11 +70,9 @@
 .project__video-wrap { margin-bottom: 10px; border-radius: var(--radius); overflow: hidden; background: var(--black); aspect-ratio: 16/9; }
 .project__video { display: block; width: 100%; height: 100%; border: 0; object-fit: cover; }
 
-/* ---------- Collage 3D: piezas superpuestas, apenas giradas ----------
-   Inspiración: collage de estampillas/impresos apoyados unos sobre otros.
-   Cada pieza tiene marco blanco tipo impresión, sombra en capas y un giro
-   de reposo (--rot, lo define js/area.js). Con el mouse se endereza, se
-   inclina hacia el cursor (--rx/--ry), se levanta y pasa al frente. */
+/* ---------- Collage 3D: imágenes superpuestas, derechas y sin marco ----------
+   Sombra en capas para dar profundidad. Con el mouse cada imagen se inclina
+   hacia el cursor (--rx/--ry), se levanta y pasa al frente. */
 .collage {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(12, 1fr);
@@ -87,22 +85,21 @@
 .collage__card {
   all: unset; box-sizing: border-box; cursor: zoom-in;
   position: absolute; inset: 0;
-  display: block; padding: clamp(6px, .7vw, 10px);
-  background: #fffdf8; border-radius: 6px;
+  display: block; border-radius: 4px;
   /* sombra en capas: contacto + caída larga = sensación de objeto */
   box-shadow: 0 1px 1px rgba(10,10,10,.08), 0 6px 12px -4px rgba(10,10,10,.18), 0 24px 40px -18px rgba(10,10,10,.35);
   transform-style: preserve-3d;
-  transform: rotate(var(--rot)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform .9s var(--ease-organic), box-shadow .9s var(--ease-organic);
   will-change: transform;
 }
 .collage__card:hover, .collage__card:focus-visible {
-  transform: rotate(0deg) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(40px) scale(1.04);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(40px) scale(1.04);
   box-shadow: 0 2px 2px rgba(10,10,10,.06), 0 18px 30px -10px rgba(10,10,10,.25), 0 50px 80px -30px rgba(10,10,10,.45);
   transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out);
 }
 .collage__card:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
-.collage__img { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 3px; background: var(--paper); }
+.collage__img { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 4px; background: var(--paper); }
 .collage__img img { width: 100%; height: 100%; object-fit: cover; }
 /* brillo que sigue al cursor: refuerza el volumen */
 .collage__img::after {
@@ -116,8 +113,8 @@
   font-size: 11px; font-weight: 700; background: rgba(255,255,255,.9); padding: 4px 10px; border-radius: var(--radius-pill);
   transform: translateZ(20px);
 }
-/* Entrada: cada pieza "cae" en su lugar (el giro vive en .collage__card) */
-.js .collage__cell[data-reveal] { transform: translateY(60px) rotate(var(--rot)); }
+/* Entrada: cada imagen sube a su lugar */
+.js .collage__cell[data-reveal] { transform: translateY(60px); }
 .js .collage__cell[data-reveal].is-in { transform: none; }
 
 /* Placeholder de imagen: color del área en versión clara + signos */
@@ -135,7 +132,7 @@
 .ph__label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
 .area-empty { padding: 60px 0; font-weight: 700; font-size: 18px; }
 
-/* ---------- Libro (layout "libro": Diseño Editorial) ----------
+/* ---------- Libro (layout "libro": Trendforecast) ----------
    Cuaderno anillado visto desde arriba sobre fondo oscuro, como la
    referencia. Cada estado (tapa / doble página / contratapa) es una capa;
    js/area.js muestra una sola por vez, en corte seco. */
@@ -205,6 +202,58 @@
 .book__btn:hover, .book__btn:focus-visible { background: var(--black); color: var(--white); }
 .book__count { min-width: 9ch; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 
+/* ---------- Video horizontal (layout "video": Fashion Films) ---------- */
+.vplayer { position: relative; margin-top: clamp(8px, 2vh, 20px); }
+.vplayer__frame {
+  position: relative; aspect-ratio: 16 / 9; width: 100%;
+  border-radius: var(--radius); overflow: hidden; background: var(--black);
+}
+.vplayer__frame > iframe, .vplayer__frame > video, .vplayer__empty { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+.vplayer__frame > video { object-fit: contain; background: var(--black); }
+.vplayer__frame:fullscreen { border-radius: 0; }
+.vplayer__full {
+  position: absolute; right: 14px; bottom: 14px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer;
+  padding: 9px 14px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.92); font: inherit; font-size: 13px; font-weight: 700;
+  transition: background .3s;
+}
+.vplayer__full:hover, .vplayer__full:focus-visible { background: var(--yellow); }
+.vstills { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.vstill {
+  all: unset; box-sizing: border-box; display: block; width: 100%; aspect-ratio: 16 / 9;
+  border-radius: 4px; overflow: hidden; cursor: zoom-in; background: var(--paper);
+}
+.vstill img { width: 100%; height: 100%; object-fit: cover; transition: scale .8s var(--ease-organic); }
+.vstill:hover img { scale: 1.04; }
+.vstill:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+/* ---------- Resumen en carrusel (al final de cada área) ---------- */
+.recap { padding: clamp(64px, 12vh, 140px) 0 0; }
+.recap__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; }
+.recap__nav { display: flex; gap: 8px; }
+.recap__track {
+  list-style: none; margin: 0; padding: 0 0 12px;
+  display: grid; grid-auto-flow: column; grid-auto-columns: clamp(240px, 28vw, 360px); gap: 14px;
+  overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.recap__card { scroll-snap-align: start; }
+.recap__link {
+  display: flex; flex-direction: column; gap: 6px; height: 100%;
+  text-decoration: none; color: inherit;
+  background: rgba(255,255,255,.75); border: 1px solid rgba(10,10,10,.08);
+  border-radius: var(--radius); padding: 10px 10px 16px;
+  transition: translate .5s var(--ease-organic), background .3s;
+}
+.recap__link:hover, .recap__link:focus-visible { translate: 0 -4px; background: var(--white); }
+.recap__link:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.recap__thumb { display: block; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: var(--paper); margin-bottom: 6px; }
+.recap__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.recap__num { font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 0 4px; }
+.recap__title { font-weight: 700; font-size: 18px; letter-spacing: -.02em; line-height: 1.1; padding: 0 4px; }
+.recap__text { font-size: 13px; line-height: 1.45; color: rgba(10,10,10,.65); padding: 0 4px; }
+
 /* ---------- Área anterior / siguiente ---------- */
 .area-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: clamp(64px, 12vh, 140px) 0 0; }
 .area-pager__link {
@@ -256,6 +305,8 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 760px) {
+  .vstills { grid-template-columns: 1fr 1fr; }
+  .recap__track { grid-auto-columns: 78vw; }
   .area { padding-top: 80px; }
   .area-hero { min-height: 70vh; border-radius: 36px; }
   .area-hero__foot { grid-template-columns: 1fr; }
@@ -263,7 +314,7 @@
   .project__head { grid-template-columns: auto minmax(0, 1fr); }
   .project__meta { grid-column: 1 / -1; flex-wrap: wrap; padding-top: 0; }
   .collage { grid-auto-rows: 8.5vw; }
-  .collage__card { padding: 5px; }
+
   .area-pager { grid-template-columns: 1fr; }
   .area-pager__link:last-child { text-align: left; }
   .lightbox__frame { padding: 64px 12px 96px; }

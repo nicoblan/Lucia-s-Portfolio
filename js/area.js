@@ -56,20 +56,42 @@
   let flatIndex = 0; // índice global de imagen para el visor
   const allImages = [];
 
-  /* Collage: las imágenes se superponen como piezas impresas apoyadas
-     unas sobre otras (inspiración: collage de estampillas). Cada grupo de 5
-     usa este molde sobre una grilla de 12 columnas; el grupo siguiente se
-     apila debajo. [columna, ancho, fila, alto, giro en grados] */
+  /* Collage: las imágenes se superponen unas sobre otras, derechas y sin
+     marco. Cada grupo de 5 usa este molde sobre una grilla de 12 columnas;
+     el grupo siguiente se apila debajo.
+     [columna, ancho, fila, alto, giro en grados (0 = derecha)] */
   const COLLAGE = [
-    [1, 6, 1, 6, -3],
-    [6, 4, 2, 5, 4],
-    [9, 4, 1, 4, -2.5],
-    [2, 4, 6, 5, 2.5],
-    [7, 5, 6, 5, -3.5]
+    [1, 6, 1, 6, 0],
+    [6, 4, 2, 5, 0],
+    [9, 4, 1, 4, 0],
+    [2, 4, 6, 5, 0],
+    [7, 5, 6, 5, 0]
   ];
+
+  /* Video (layout: "video", Fashion Films): cada proyecto muestra su video
+     en formato horizontal 16:9, con botón de pantalla completa. Si todavía
+     no hay video, un placeholder 16:9. Las imágenes del proyecto se muestran
+     debajo como fotogramas horizontales. */
+  function videoProjectHTML(p) {
+    const player = p.video
+      ? videoHTML(p.video, p.title)
+      : `<span class="vplayer__empty">${placeholder("Video próximamente")}</span>`;
+    const stills = (p.images || []).map((img, ii) => {
+      const k = flatIndex++;
+      allImages.push({ ...img, project: p.title });
+      return `<li><button type="button" class="vstill" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || `fotograma ${ii + 1}`)}">${img.src
+        ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">`
+        : placeholder(img.caption || `Fotograma ${ii + 1}`)}</button></li>`;
+    }).join("");
+    return `<div class="vplayer" data-vplayer data-reveal>
+        <div class="vplayer__frame">${player}</div>
+        ${p.video ? `<button type="button" class="vplayer__full" data-fullscreen aria-label="Ver ${esc(p.title)} en pantalla completa"><span aria-hidden="true">⤢</span> Pantalla completa</button>` : ""}
+      </div>
+      ${stills ? `<ul class="vstills" role="list">${stills}</ul>` : ""}`;
+  }
   const BLOCK_ROWS = 10;
 
-  /* Libro (layout: "libro", p. ej. Diseño Editorial). Referencia: cuaderno
+  /* Libro (layout: "libro", p. ej. Trendforecast). Referencia: cuaderno
      anillado visto desde arriba que se hojea en cortes secos (stop-motion).
      images[0] = tapa; el resto = páginas en orden, de a dos por doble
      página; al final, la contratapa. Los separadores de colores pasan del
@@ -115,8 +137,8 @@
   }
 
   const projectsHTML = projects.map((p, pi) => {
-    const isBook = area.layout === "libro";
-    const items = isBook ? "" : (p.images || []).map((img, ii) => {
+    const isBook = area.layout === "libro", isVideo = area.layout === "video";
+    const items = isBook || isVideo ? "" : (p.images || []).map((img, ii) => {
       const k = flatIndex++;
       allImages.push({ ...img, project: p.title });
       const [col, span, row, rows, rot] = COLLAGE[ii % COLLAGE.length];
@@ -139,10 +161,38 @@
           ${metaHTML(p)}
         </header>
         ${p.description ? `<p class="project__desc" data-reveal>${esc(p.description)}</p>` : ""}
-        ${p.video ? `<div class="project__video-wrap" data-reveal>${videoHTML(p.video, p.title)}</div>` : ""}
-        ${isBook ? bookHTML(p) : items ? `<ul class="collage" role="list">${items}</ul>` : ""}
+        ${p.video && !isVideo ? `<div class="project__video-wrap" data-reveal>${videoHTML(p.video, p.title)}</div>` : ""}
+        ${isVideo ? videoProjectHTML(p) : isBook ? bookHTML(p) : items ? `<ul class="collage" role="list">${items}</ul>` : ""}
       </article>`;
   }).join("");
+
+  /* Resumen al final: carrusel con una tarjeta por trabajo (imagen, título
+     y `resumen` del proyecto en config.js). Clic → va a ese proyecto. */
+  const summaryHTML = projects.length ? `
+    <section class="recap" aria-labelledby="recap-title" data-recap>
+      <div class="recap__head">
+        <h2 class="label" id="recap-title">R E S U M E N &nbsp; .</h2>
+        <div class="recap__nav">
+          <button type="button" class="book__btn" data-recap-prev aria-label="Anterior">←</button>
+          <button type="button" class="book__btn" data-recap-next aria-label="Siguiente">→</button>
+        </div>
+      </div>
+      <ul class="recap__track" data-recap-track role="list">
+        ${projects.map((p, pi) => {
+          const first = (p.images || [])[0];
+          const thumb = first && first.src ? `<img src="${esc(first.src)}" alt="" loading="lazy" decoding="async">` : placeholder(pad(pi + 1));
+          const text = p.resumen || (p.description || "").slice(0, 110);
+          return `<li class="recap__card">
+            <a href="#proyecto-${pi + 1}" class="recap__link">
+              <span class="recap__thumb">${thumb}</span>
+              <span class="recap__num">${pad(pi + 1)}</span>
+              <span class="recap__title">${esc(p.title)}</span>
+              ${text ? `<span class="recap__text">${esc(text)}</span>` : ""}
+            </a>
+          </li>`;
+        }).join("")}
+      </ul>
+    </section>` : "";
 
   const prev = services[(index - 1 + services.length) % services.length];
   const next = services[(index + 1) % services.length];
@@ -169,6 +219,8 @@
     <div class="projects">
       ${projectsHTML || `<p class="area-empty">Todavía no hay proyectos cargados. Lo obvio: pronto.</p>`}
     </div>
+
+    ${summaryHTML}
 
     <nav class="area-pager" aria-label="Otras áreas">
       <a class="area-pager__link area-pager__link--${prev.color}" href="area.html?a=${prev.id}" data-wipe="${prev.color}">
@@ -329,6 +381,39 @@
   }
 
   /* ------------------------------------------------------------------------
+     3d. VIDEOS: botón de pantalla completa
+     Con un .mp4 usa el video (en iPhone, su modo de pantalla completa
+     propio); con YouTube/Vimeo pone en pantalla completa el recuadro.
+     ------------------------------------------------------------------------ */
+  function initVideos() {
+    $$("[data-vplayer]").forEach((box) => {
+      const btn = $("[data-fullscreen]", box);
+      if (!btn) return;
+      btn.addEventListener("click", () => {
+        const video = $("video", box), frame = $(".vplayer__frame", box);
+        if (video && video.webkitEnterFullscreen && !video.requestFullscreen) return video.webkitEnterFullscreen();
+        const el = video || frame;
+        (el.requestFullscreen || el.webkitRequestFullscreen || (() => {})).call(el);
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     3e. RESUMEN EN CARRUSEL (al final de cada área)
+     Tarjetas en fila con scroll horizontal y "imán" (scroll-snap); las
+     flechas avanzan de a una tarjeta. Se puede arrastrar con el dedo o
+     con el trackpad.
+     ------------------------------------------------------------------------ */
+  function initRecap() {
+    const recap = $("[data-recap]");
+    if (!recap) return;
+    const track = $("[data-recap-track]", recap);
+    const step = () => { const c = $(".recap__card", track); return c ? c.getBoundingClientRect().width + 14 : 300; };
+    $("[data-recap-prev]", recap).addEventListener("click", () => track.scrollBy({ left: -step(), behavior: reduceMotion ? "auto" : "smooth" }));
+    $("[data-recap-next]", recap).addEventListener("click", () => track.scrollBy({ left: step(), behavior: reduceMotion ? "auto" : "smooth" }));
+  }
+
+  /* ------------------------------------------------------------------------
      4. ENTRADA DE LA PORTADA: el título sube desde una máscara
      ------------------------------------------------------------------------ */
   function animateHero() {
@@ -364,6 +449,8 @@
   initLightbox();
   initCollageTilt();
   initBooks();
+  initVideos();
+  initRecap();
   initWipeLinks();
   animateHero();
 })();

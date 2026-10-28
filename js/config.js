@@ -10,10 +10,15 @@
 window.SITE_CONFIG = {
   /* ---------- Contacto ---------- */
   contact: {
-    email: "contacto@ejemplo.com",        // ← reemplazar por el email real
-    // Si completás un endpoint de Formspree (https://formspree.io/f/XXXX),
-    // el formulario lo usa en lugar de abrir el cliente de correo (mailto).
-    formspreeEndpoint: ""
+    email: "luchyderegibus@gmail.com",   // a dónde llegan los mensajes del formulario
+    // envio: "formsubmit" manda el mensaje directo a ese mail (servicio gratuito
+    // formsubmit.co). La PRIMERA vez llega un mail de activación: hay que
+    // confirmarlo una sola vez y desde ahí llegan todos los mensajes.
+    envio: "formsubmit",
+    // Alternativa: endpoint de Formspree (https://formspree.io/f/XXXX). Si se
+    // completa, se usa en lugar de formsubmit.
+    formspreeEndpoint: "",
+    cv: "assets/cv/CV-Lucia-Deregibus-Mongardi.pdf"   // botón "Descargar CV" en Contacto
   },
 
   /* ---------- Redes ---------- */
@@ -52,10 +57,10 @@ window.SITE_CONFIG = {
   /* ---------- Destacados (sección debajo del inicio) ----------
      Rectángulos que se abren y cierran solos; con el mouse se abre el que
      está debajo del cursor. Son 3 imágenes (se pueden sumar más).
-     href: link opcional al hacer clic (ej. "area.html?a=fotografia") */
+     href: link opcional al hacer clic (ej. "area.html?a=estilismo-fotografia") */
   destacados: [
-    { src: "assets/img/mockup-tote.webp",      alt: "Bolsa de tela con el logo [Lu-] estampado",                   caption: "Tote bag",        href: "area.html?a=branding-marketing" },
-    { src: "assets/img/mockup-subte.webp",     alt: "Afiche azul con el logo [Lu-] en un vagón de subte",          caption: "Vía pública",     href: "area.html?a=branding-marketing" },
+    { src: "assets/img/mockup-tote.webp",      alt: "Bolsa de tela con el logo [Lu-] estampado",                   caption: "Tote bag",        href: "area.html?a=direccion-artistica" },
+    { src: "assets/img/mockup-subte.webp",     alt: "Afiche azul con el logo [Lu-] en un vagón de subte",          caption: "Vía pública",     href: "area.html?a=direccion-artistica" },
     { src: "assets/img/lucia-imagen-creativa.webp", alt: "Imagen creativa: Lucía hoy señala una foto suya de chica", caption: "Imagen creativa", href: "" }
   ],
   destacadosInterval: 2600, // ms entre aperturas automáticas
@@ -70,21 +75,22 @@ window.SITE_CONFIG = {
      image: imagen de muestra (null = placeholder con los signos de la marca) */
   services: [
     {
-      id: "fotografia",
-      title: "Fotografía",
+      id: "estilismo-fotografia",
+      title: "Estilismo & Fotografía",
       color: "red",
       kicker: "01",
-      subtitle: "Concepto, equipo y set",   // se ve en el menú desplegable de "Áreas"
+      subtitle: "Concepto, estilismo y set",   // se ve en el menú desplegable de "Áreas"
       text: "Producción de sesiones de principio a fin: concepto, equipo, locación y set. La foto dura un instante; lo que la sostiene lleva semanas. ¿Quién se acuerda de eso? Yo.",
-      tags: ["Concepto", "Casting", "Locación", "Set", "Equipo"],
+      tags: ["Estilismo","Producción de moda","Dirección de fotografía","Casting","Scouting de locaciones","Coordinación de set","Curaduría de looks"],   // 7 palabras clave: roles
       image: null,
-      imageAlt: "Muestra de producción fotográfica",
+      imageAlt: "Muestra de estilismo y fotografía",
       projects: [
       {
         title: "Proyecto de ejemplo 01",
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
           { src: null, alt: "Fotografía — imagen 1", caption: "" },
@@ -99,6 +105,7 @@ window.SITE_CONFIG = {
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
           { src: null, alt: "Fotografía — imagen 1", caption: "" },
@@ -112,6 +119,7 @@ window.SITE_CONFIG = {
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
           { src: null, alt: "Fotografía — imagen 1", caption: "" },
@@ -123,12 +131,13 @@ window.SITE_CONFIG = {
     },
     {
       id: "fashion-films",
+      layout: "video",  // videos horizontales (16:9) con pantalla completa
       title: "Fashion Films",
       color: "blue",
       kicker: "02",
       subtitle: "Visiones que se mueven",   // se ve en el menú desplegable de "Áreas"
       text: "Traduzco una visión en algo que se mueve. Ordeno ideas, tiempos y personas para que la pieza diga lo que tiene que decir, y no un poco más.",
-      tags: ["Preproducción", "Guion", "Rodaje", "Dirección de arte", "Postproducción"],
+      tags: ["Producción ejecutiva","Guion","Dirección creativa","Casting","Coordinación de rodaje","Dirección de arte","Supervisión de edición"],   // 7 palabras clave: roles
       image: null,
       imageAlt: "Muestra de fashion film",
       projects: [
@@ -137,8 +146,9 @@ window.SITE_CONFIG = {
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
-        video: null,           // ej. "https://www.youtube.com/embed/ID" o "assets/video/film.mp4"
+        video: null,   // URL "embed" de YouTube/Vimeo o un .mp4 (ej. "assets/video/film.mp4")
         images: [
           { src: null, alt: "Fashion film — imagen 1", caption: "" },
           { src: null, alt: "Fashion film — imagen 2", caption: "" },
@@ -150,8 +160,9 @@ window.SITE_CONFIG = {
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
-        video: null,
+        video: null,   // URL "embed" de YouTube/Vimeo o un .mp4 (ej. "assets/video/film.mp4")
         images: [
           { src: null, alt: "Fashion film — imagen 1", caption: "" },
           { src: null, alt: "Fashion film — imagen 2", caption: "" },
@@ -161,21 +172,23 @@ window.SITE_CONFIG = {
       ]
     },
     {
-      id: "tendencias",
-      title: "Tendencias",
+      id: "trendforecast",
+      layout: "libro",  // proyectos presentados como cuaderno que se hojea (ver README)
+      title: "Trendforecast",
       color: "green",
       kicker: "03",
       subtitle: "Lo evidente, dos veces",   // se ve en el menú desplegable de "Áreas"
       text: "Miro donde aparentemente no hay nada que mirar. Leo lo evidente dos veces, porque la segunda lectura suele ser la interesante.",
-      tags: ["Investigación", "Moodboards", "Lectura cultural", "Forecasting", "Referencias"],
+      tags: ["Investigación de tendencias","Coolhunting","Análisis cultural","Lectura de consumo","Moodboards","Reportes de tendencias","Forecasting"],   // 7 palabras clave: roles
       image: null,
-      imageAlt: "Muestra de investigación de tendencias",
+      imageAlt: "Muestra de trendforecast",
       projects: [
       {
         title: "Investigación de ejemplo 01",
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
           { src: null, alt: "Tendencias — imagen 1", caption: "" },
@@ -189,6 +202,7 @@ window.SITE_CONFIG = {
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
           { src: null, alt: "Tendencias — imagen 1", caption: "" },
@@ -199,53 +213,54 @@ window.SITE_CONFIG = {
       ]
     },
     {
-      id: "diseno-editorial",
-      layout: "libro",    // proyectos presentados como cuaderno que se hojea (ver README)
-      title: "Diseño Editorial",
+      id: "postproduccion",
+      title: "Postproducción",
       color: "orange",
       kicker: "04",
-      subtitle: "El vacío también construye",   // se ve en el menú desplegable de "Áreas"
-      text: "Dejo espacio para que los elementos respiren. Si todo llama la atención, nada realmente destaca. El vacío también construye ritmo, jerarquía y tensión.",
-      tags: ["Retícula", "Tipografía", "Composición", "Jerarquía", "Ritmo"],
+      subtitle: "Lo que no se ve, también se edita",   // se ve en el menú desplegable de "Áreas"
+      text: "La parte que no se ve y que hace que todo se vea. Selecciono, retoco y ajusto hasta que la imagen diga lo que tenía que decir, y no un poco más.",
+      tags: ["Selección de material","Retoque fotográfico","Corrección de color","Edición","Montaje","Adaptación de formatos","Entrega final"],   // 7 palabras clave: roles
       image: null,
-      imageAlt: "Muestra de diseño editorial",
+      imageAlt: "Muestra de postproducción",
       projects: [
       {
-        title: "Pieza editorial de ejemplo 01",
+        title: "Proyecto de ejemplo 01",
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
-          { src: null, alt: "Diseño editorial — imagen 1", caption: "" },
-          { src: null, alt: "Diseño editorial — imagen 2", caption: "" },
-          { src: null, alt: "Diseño editorial — imagen 3", caption: "" },
-          { src: null, alt: "Diseño editorial — imagen 4", caption: "" },
-          { src: null, alt: "Diseño editorial — imagen 5", caption: "" }
+          { src: null, alt: "Postproducción — imagen 1", caption: "" },
+          { src: null, alt: "Postproducción — imagen 2", caption: "" },
+          { src: null, alt: "Postproducción — imagen 3", caption: "" },
+          { src: null, alt: "Postproducción — imagen 4", caption: "" },
+          { src: null, alt: "Postproducción — imagen 5", caption: "" }
         ]
       },
       {
-        title: "Pieza editorial de ejemplo 02",
+        title: "Proyecto de ejemplo 02",
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
-          { src: null, alt: "Diseño editorial — imagen 1", caption: "" },
-          { src: null, alt: "Diseño editorial — imagen 2", caption: "" },
-          { src: null, alt: "Diseño editorial — imagen 3", caption: "" }
+          { src: null, alt: "Postproducción — imagen 1", caption: "" },
+          { src: null, alt: "Postproducción — imagen 2", caption: "" },
+          { src: null, alt: "Postproducción — imagen 3", caption: "" }
         ]
       }
       ]
     },
     {
-      id: "branding-marketing",
-      title: "Branding & Marketing",
+      id: "direccion-artistica",
+      title: "Dirección Artística",
       color: "yellow",
       kicker: "05",
-      subtitle: "Sistema, signos y comunicación",   // se ve en el menú desplegable de "Áreas"
+      subtitle: "Sistema, signos y concepto",   // se ve en el menú desplegable de "Áreas"
       text: "Construyo algo complejo a partir de recursos simples. Color, tipografía, signos y composición funcionando como un mismo lenguaje. Esta marca es la prueba.",
-      tags: ["Identidad", "Sistema", "Comunicación", "RR.PP.", "Estrategia"],
+      tags: ["Dirección artística","Concepto creativo","Identidad visual","Estrategia de marca","Campañas","Relaciones públicas","Comunicación"],   // 7 palabras clave: roles
       image: "assets/img/mockup-tarjeta.webp",
       imageAlt: "Tarjeta amarilla con el logo [Lu - cía] sostenida en la mano",
       projects: [
@@ -254,14 +269,15 @@ window.SITE_CONFIG = {
         year: "",
         client: "Proyecto propio",
         role: "Concepto, identidad y sistema",
+        resumen: "Mi nombre convertido en sistema: logo, color, signos y aplicaciones.",   // 1 línea para el carrusel del final
         description: "Mi nombre es mi identidad. No necesito construir un símbolo que me represente: parto de lo más literal. Tomo mi propio nombre y lo convierto en materia gráfica. Color, tipografía, signos, planos y composición funcionan como un mismo lenguaje.",
         images: [
-          { src: "assets/img/mockup-subte.webp",     alt: "Afiche azul con el logo [Lu-] en un vagón de subte", caption: "Vía pública" },
-          { src: "assets/img/mockup-tote.webp",      alt: "Bolsa de tela con el logo [Lu-] estampado", caption: "Tote bag" },
-          { src: "assets/img/mockup-tarjeta.webp",   alt: "Tarjeta amarilla con el logo [Lu - cía] sostenida en la mano", caption: "Tarjeta" },
-          { src: "assets/img/mockup-medias.webp",    alt: "Medias azules con etiqueta [Lu-]", caption: "Packaging" },
+          { src: "assets/img/mockup-subte.webp", alt: "Afiche azul con el logo [Lu-] en un vagón de subte", caption: "Vía pública" },
+          { src: "assets/img/mockup-tote.webp", alt: "Bolsa de tela con el logo [Lu-] estampado", caption: "Tote bag" },
+          { src: "assets/img/mockup-tarjeta.webp", alt: "Tarjeta amarilla con el logo [Lu - cía] sostenida en la mano", caption: "Tarjeta" },
+          { src: "assets/img/mockup-medias.webp", alt: "Medias azules con etiqueta [Lu-]", caption: "Packaging" },
           { src: "assets/img/mockup-caballete.webp", alt: "Cartel caballete con una persona y el logo [Lu-]", caption: "Cartel" },
-          { src: "assets/img/mockup-cartel.webp",    alt: "Cartel en la entrada del subte con los signos triángulo, círculo y cuadrado", caption: "Signos" },
+          { src: "assets/img/mockup-cartel.webp", alt: "Cartel en la entrada del subte con los signos triángulo, círculo y cuadrado", caption: "Signos" },
           { src: "assets/img/lucia-imagen-creativa.webp", alt: "Imagen creativa: Lucía hoy señala una foto suya de chica", caption: "Imagen creativa" }
         ]
       },
@@ -270,6 +286,7 @@ window.SITE_CONFIG = {
         year: "",
         client: "",
         role: "",
+        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
         description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
         images: [
           { src: null, alt: "Branding — imagen 1", caption: "" },

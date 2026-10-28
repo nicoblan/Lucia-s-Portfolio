@@ -15,7 +15,7 @@ HTML + CSS + JavaScript **vanilla**, sin build ni dependencias.
 
 ```
 index.html            Página principal: estructura y textos fijos de las secciones
-area.html             Página de cada área (area.html?a=fotografia, etc.)
+area.html             Página de cada área (area.html?a=estilismo-fotografia, etc.)
 css/styles.css        Estilos generales, tokens de color, responsive y movimiento reducido
 css/area.css          Estilos solo de la página de área (portada, galería, visor)
 js/config.js          ← CONFIGURACIÓN CENTRAL (email, redes, backstage, áreas y proyectos)
@@ -45,8 +45,9 @@ Todo lo que cambia seguido está en **`js/config.js`**:
 
 | Qué | Dónde |
 | --- | --- |
-| Email de contacto | `contact.email` (hoy `contacto@ejemplo.com`) |
-| Formulario con Formspree | `contact.formspreeEndpoint` (vacío = abre el cliente de correo) |
+| Email de contacto | `contact.email` (hoy `luchyderegibus@gmail.com`) |
+| Envío del formulario | `contact.envio: "formsubmit"` manda cada mensaje directo al mail (formsubmit.co). **La primera vez llega un mail de activación: hay que confirmarlo una vez.** Alternativa: `contact.formspreeEndpoint` |
+| CV para descargar | `contact.cv` (hoy `assets/cv/CV-Lucia-Deregibus-Mongardi.pdf`, armado desde la imagen del CV del PDF; conviene reemplazarlo por el PDF original) |
 | Instagram / LinkedIn / Behance | `socials[].url` |
 | Fotos de backstage del fondo | `backstage[]` → `src`, `alt`, `production` |
 | Textos, tags e imagen de cada área | `services[]` |
@@ -77,11 +78,13 @@ projects: [
 ```
 
 - Las imágenes van en una carpeta por área, por ejemplo `assets/img/fotografia/`.
+- **Resumen**: al final de cada área hay un carrusel con una tarjeta por trabajo (primera imagen, título y `resumen` del proyecto).
+- **Fashion Films** (`layout: "video"`): cada proyecto muestra su `video` en formato horizontal 16:9 con botón de pantalla completa; las imágenes van debajo como fotogramas.
 - Las imágenes se arman como un **collage 3D**: piezas superpuestas y apenas giradas, con marco tipo impresión; con el mouse se enderezan, se inclinan hacia el cursor y pasan al frente. El molde de posiciones es `COLLAGE` en `js/area.js`. Clic en cualquiera abre el visor (flechas del teclado o deslizar con el dedo).
-- **Diseño Editorial** (o cualquier área con `layout: "libro"`) presenta cada proyecto como un **cuaderno anillado que se hojea solo**, en cortes secos: tapa → dobles páginas → contratapa. Ahí la primera imagen es la **tapa** y las siguientes son las **páginas en orden** (de a dos por doble página); conviene subirlas verticales (3:4). Con el mouse encima se pausa y se hojea moviendo el cursor (derecha → izquierda abre, izquierda → derecha cierra; en celular, con el dedo); las flechas también pasan página. Tiempos en `PAGE_MS`, `COVER_MS` y `BACK_MS` (`js/area.js`).
+- **Trendforecast** (o cualquier área con `layout: "libro"`) presenta cada proyecto como un **cuaderno anillado que se hojea solo**, en cortes secos: tapa → dobles páginas → contratapa. Ahí la primera imagen es la **tapa** y las siguientes son las **páginas en orden** (de a dos por doble página); conviene subirlas verticales (3:4). Con el mouse encima se pausa y se hojea moviendo el cursor (derecha → izquierda abre, izquierda → derecha cierra; en celular, con el dedo); las flechas también pasan página. Tiempos en `PAGE_MS`, `COVER_MS` y `BACK_MS` (`js/area.js`).
 - `year`, `client` y `role` son opcionales: si quedan vacíos, no se muestran.
 - Para YouTube usá el link "embed" (`https://www.youtube.com/embed/ID`); para Vimeo, `https://player.vimeo.com/video/ID`.
-- Hoy hay proyectos de ejemplo con placeholders (`src: null`) para que veas cómo queda. Branding & Marketing ya tiene el proyecto real de la identidad [Lu - cía]® con los mockups del PDF.
+- Hoy hay proyectos de ejemplo con placeholders (`src: null`) para que veas cómo queda. Dirección Artística ya tiene el proyecto real de la identidad [Lu - cía]® con los mockups del PDF.
 - Se pueden sumar o borrar proyectos e imágenes libremente; la página se arma sola.
 
 **Textos de hero, About, manifiesto y bloques conceptuales:** están directamente en `index.html` (son textos literales del PDF y cambian poco).
@@ -133,7 +136,6 @@ Mientras falten los archivos, la consola del navegador muestra un 404 por cada u
 12. **De la semana** (`renderWeekly`): canción y película al lado del logo, en `config.js` → `semana`. Se cambia a mano cada semana; si un título queda vacío, esa ficha no se muestra.
 13. **Canción de fondo** (`initMusic`): si la canción tiene `youtube` (ID del video), suena desde el primer clic, toque o tecla en la página y aparece un mini reproductor en la esquina (pausa / cerrar). La ficha de la canción es el botón de play. Los navegadores no permiten que suene sola sin ese primer gesto, y YouTube exige que el reproductor esté visible (200×200 px como mínimo). Al sonar se ve la portada (`portada` en `config.js`; si no hay, la miniatura del video). El botón amarillo de la barra es play / pausa de la canción.
 14. **Quién soy** (`initAboutPhoto`): la imagen creativa y la bio aparecen al hacer clic en el bloque azul "Quién soy" (o en "Quién soy" del menú About).
-15. **Bright / Dark** (`initTheme`): el botón del home invierte todos los colores (negativo exacto de la paleta); las fotos y videos se vuelven a invertir para verse normales. La elección queda guardada en el navegador.
 
 **`js/area.js`** (página de área): visor (`initLightbox`), entrada de la portada (`animateHero`) y links con transición (`initWipeLinks`).
 
