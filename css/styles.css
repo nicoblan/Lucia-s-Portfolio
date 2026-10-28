@@ -367,7 +367,7 @@ button.nav-week__item, a.nav-week__item { cursor: pointer; }
 .home__logo {
   position: absolute;
   left: calc(54.52 / 1440 * 100%); top: calc(156.14 / 810 * 100%);
-  width: calc(1313.37 / 1440 * 100%); height: calc(554.83 / 810 * 100%);
+  width: calc(1376.48 / 1440 * 100%); height: calc(554.83 / 810 * 100%); /* incluye la ® */
 }
 /* Máscara: las formas blancas del SVG dejan ver el video; el resto es azul */
 .home__video {
