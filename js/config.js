@@ -7,6 +7,15 @@
    también abriendo index.html con doble clic.
    ========================================================================== */
 
+/* Páginas de un cuaderno (Trendforecast): assets/img/trend/<carpeta>/01.jpg,
+   02.jpg… hasta `n`, en orden. */
+function paginas(carpeta, n, titulo) {
+  return Array.from({ length: n }, (_, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    return { src: `assets/img/trend/${carpeta}/${num}.jpg`, alt: `${titulo} — página ${i + 1}`, caption: "" };
+  });
+}
+
 window.SITE_CONFIG = {
   /* ---------- Contacto ---------- */
   contact: {
@@ -119,17 +128,17 @@ window.SITE_CONFIG = {
         ]
       },
       {
-        title: "Shooting conceptual",
+        title: "Foto beauty",
         year: "",
         client: "Fotografía digital",
         role: "Dirección de arte, estilismo y fotografía",
         resumen: "Fotos en crudo: una pequeña selección de fotografía digital.",   // 1 línea para el carrusel del final
         description: "Fotos en crudo, pequeña selección de un trabajo práctico de fotografía digital.",
         images: [
-          { src: null, alt: "Shooting conceptual — imagen 1", caption: "" },
-          { src: null, alt: "Shooting conceptual — imagen 2", caption: "" },
-          { src: null, alt: "Shooting conceptual — imagen 3", caption: "" },
-          { src: null, alt: "Shooting conceptual — imagen 4", caption: "" }
+          { src: null, alt: "Foto beauty — imagen 1", caption: "" },
+          { src: null, alt: "Foto beauty — imagen 2", caption: "" },
+          { src: null, alt: "Foto beauty — imagen 3", caption: "" },
+          { src: null, alt: "Foto beauty — imagen 4", caption: "" }
         ]
       },
       {
@@ -198,24 +207,58 @@ window.SITE_CONFIG = {
       color: "green",
       kicker: "03",
       subtitle: "Lo evidente, dos veces",   // se ve en el menú desplegable de "Áreas"
-      text: "Miro donde aparentemente no hay nada que mirar. Leo lo evidente dos veces, porque la segunda lectura suele ser la interesante.",
+      text: "Relevamiento de diseñadores y temporadas anteriores, diferentes universos para relacionar tipologías, texturas, premisas y conceptos. Análisis de tipologías y campañas para poder detectar futuras tendencias (micro y macro). Cartas de materiales, partidos morfológicos y conceptuales. Creación de diferentes tipologías y elementos que representen las nuevas tendencias.",
       tags: ["Investigación de tendencias","Coolhunting","Análisis cultural","Lectura de consumo","Moodboards","Reportes de tendencias","Forecasting"],   // 7 palabras clave: roles
       image: null,
       imageAlt: "Muestra de trendforecast",
+      /* En los cuadernos: `images` son las páginas del PDF (con paginas()),
+         `pageRatio` es ancho ÷ alto de UNA página y `pdf` es el archivo que
+         se descarga con el botón "Descargar PDF". */
       projects: [
       {
         title: "Pre adolescentes",
+        etiqueta: "Trabajo destacado",
+        year: "2027/2028",
+        client: "Trend report · Sector preadolescente",
+        role: "",
+        resumen: "Trend report 2027/2028 del sector preadolescente: los videojuegos como estilo de vida.",   // 1 línea para el carrusel del final
+        description: "Desarrollo de una macrotendencia nacida a partir de la idea de los videojuegos como nuevo estilo de vida preadolescente, donde cambia su manera de vincularse con el mundo, con sus pares, su familia y su manera de consumir.\n\nLo que derivó en tres microtendencias, cada una interpretada como un nivel de juego más que nos lleva a volver a vincularnos de manera física conviviendo con la tecnología.",
+        pdf: "assets/pdf/Pre-adolescentes-Trend-Report.pdf",
+        pageRatio: 0.707,
+        images: paginas("pre-adolescentes", 26, "Pre adolescentes")
+      },
+      {
+        title: "Ritos gastronómicos",
+        year: "2027/2028",
+        client: "Trend report · Sector gastronómico",
+        role: "",
+        resumen: "Trend report 2027/2028 del sector gastronómico: el café como experiencia de lujo.",   // 1 línea para el carrusel del final
+        description: "Desarrollo de una macrotendencia nacida a partir de la idea de “si hoy en día todos los cafés son de especialidad, ¿qué lo hace realmente especial?”.\n\nDonde encontramos como respuesta al café como una nueva experiencia sensorial de exclusividad y lujo, donde entendamos la trazabilidad del mismo, desde el grano hasta la bebida.",
+        pdf: "assets/pdf/Ritos-Gastronomicos-Trend-Report.pdf",
+        pageRatio: 1,
+        images: paginas("ritos-gastronomicos", 42, "Ritos gastronómicos")
+      },
+      {
+        title: "ArteBA",
         year: "",
-        client: "Laboratorio de tendencias",
-        role: "Dirección de arte, estilismo, fotografía y casting",
-        resumen: "Fotos en crudo de la entrega final de laboratorio de tendencias.",   // 1 línea para el carrusel del final
-        description: "Fotos en crudo, pequeña selección de la entrega final de laboratorio de tendencias.",
-        images: [
-          { src: null, alt: "Pre adolescentes — imagen 1", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 2", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 3", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 4", caption: "" }
-        ]
+        client: "Análisis de tendencias",
+        role: "",
+        resumen: "Libro de tendencias en formato horizontal.",   // 1 línea para el carrusel del final
+        description: "",
+        pdf: "assets/pdf/ArteBA.pdf",
+        pageRatio: 2,   // libro horizontal rectangular
+        images: paginas("arteba", 29, "ArteBA")
+      },
+      {
+        title: "La cosmética del futuro",
+        year: "2070",
+        client: "Investigación de tendencias · Cosmética",
+        role: "",
+        resumen: "La cosmética como herramienta de construcción de la imagen personal.",   // 1 línea para el carrusel del final
+        description: "La investigación de tendencias analizó el universo de la cosmética para identificar una posible macrotendencia orientada al consumo futuro de los preadolescentes en el año 2070. Se exploró la relación entre la ilusión, la simulación y el efecto placebo.\n\nLa investigación plantea que la cosmética podría dejar de cumplir una función exclusivamente práctica para convertirse en una herramienta de construcción de la imagen personal, donde la apariencia y la percepción adquieren mayor importancia que la funcionalidad real del producto.",
+        pdf: "assets/pdf/La-Cosmetica-del-Futuro.pdf",
+        pageRatio: 1,
+        images: paginas("cosmetica-del-futuro", 44, "La cosmética del futuro")
       }
       ]
     },

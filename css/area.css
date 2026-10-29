@@ -136,18 +136,21 @@
    Sketchbook de tapa de cartón sobre fondo negro, como la referencia.
    Cada .book__leaf es una hoja con frente y dorso que gira sobre el lomo
    (rotateY). Cerrado, el cuaderno se corre para quedar centrado. */
-.book { margin-top: clamp(8px, 2vh, 20px); }
+.book { --pr: .75; /* ancho ÷ alto de una página (pageRatio en config.js) */ margin-top: clamp(8px, 2vh, 20px); }
 .book__stage {
   touch-action: pan-y; /* el dedo puede hojear en horizontal sin trabar el scroll */
   position: relative; display: grid; place-items: center;
   background: #050505; border-radius: var(--radius);
-  height: min(76vh, 56vw); padding: clamp(28px, 7%, 72px) clamp(20px, 6%, 80px);
-  overflow: hidden; perspective: 2200px;
+  min-height: 240px; padding: clamp(28px, 7%, 72px) clamp(20px, 6%, 80px);
+  overflow: hidden;
 }
-/* dos páginas 3:4 = doble página 3:2; se ajusta al alto del escenario */
+/* doble página = 2 × --pr; el ancho sale del alto disponible de la pantalla */
 .book__object {
-  position: relative; height: 100%; max-width: 100%; aspect-ratio: 3 / 2;
-  transform-style: preserve-3d; transition: translate .9s cubic-bezier(.45,.05,.25,1);
+  position: relative; max-width: 100%; aspect-ratio: calc(2 * var(--pr));
+  width: min(100%, calc(min(62vh, 44vw) * 2 * var(--pr)));
+  perspective: 2200px; /* sin preserve-3d: así las hojas respetan el z-index */
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,.65)); /* sombra del cuaderno entero */
+  transition: translate .9s cubic-bezier(.45,.05,.25,1);
 }
 .book[data-mode="cover"] .book__object { translate: -25% 0; }
 .book[data-mode="back"] .book__object { translate: 25% 0; }
@@ -159,7 +162,6 @@
 .book__leaf.is-turned { transform: rotateY(-180deg); }
 .book__face {
   position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
-  box-shadow: 0 22px 46px -16px rgba(0,0,0,.9);
 }
 .book__face--back { transform: rotateY(180deg); }
 /* sombra que recorre la hoja mientras gira */
@@ -214,7 +216,8 @@
 
 @media (max-width: 760px) {
   /* en celular el cuaderno abierto ocupa todo el ancho */
-  .book__stage { height: auto; aspect-ratio: 4 / 3; padding: 22px 10px; }
+  .book__stage { min-height: 0; padding: 22px 10px; }
+  .book__object { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .book__object, .book__leaf { transition-duration: .01ms; }
@@ -349,3 +352,19 @@
   .lightbox__btn--prev { left: calc(50% - 64px); }
   .lightbox__btn--next { right: calc(50% - 64px); }
 }
+
+/* Cuadernos hechos con las páginas de un PDF: la página ocupa toda la hoja,
+   sin margen de papel ni cintas */
+.book--pdf .book__page { padding: 0; background: #fff; }
+.book--pdf .book__pic { rotate: none; box-shadow: none; }
+.book--pdf .book__pic img { object-fit: contain; }
+.book--pdf .book__page::before, .book--pdf .book__page::after { content: none; }
+
+/* Etiqueta junto al título ("Trabajo destacado") y botón de descarga */
+.project__tag {
+  display: inline-block; vertical-align: middle; margin-left: .4em; padding: .45em .9em;
+  border-radius: var(--radius-pill); background: var(--yellow); color: var(--black);
+  font-size: 11px; letter-spacing: .06em; text-transform: uppercase; line-height: 1;
+}
+.project__pdf { margin: 0 0 clamp(20px, 4vh, 36px); }
+.project__pdf .cv-btn { margin-top: 0; }

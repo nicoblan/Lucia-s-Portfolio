@@ -121,7 +121,9 @@
           <div class="book__face book__face--front">${faces[i]}</div>
           <div class="book__face book__face--back">${faces[i + 1]}</div>
         </div>`);
-    return `<div class="book" data-book data-pages="${pages.length}" data-reveal>
+    // `pageRatio` (ancho ÷ alto de una página) da la forma del cuaderno
+    const ratio = +p.pageRatio > 0 ? +p.pageRatio : 0.75;
+    return `<div class="book${p.pdf ? " book--pdf" : ""}" data-book data-pages="${pages.length}" style="--pr:${ratio}" data-reveal>
         <div class="book__stage">
           <div class="book__object">${leaves.join("")}</div>
         </div>
@@ -155,10 +157,13 @@
     return `<article class="project" id="proyecto-${pi + 1}" aria-labelledby="proyecto-${pi + 1}-t">
         <header class="project__head" data-reveal>
           <span class="project__num">${pad(pi + 1)}</span>
-          <h2 class="project__title" id="proyecto-${pi + 1}-t">${esc(p.title)}</h2>
+          <h2 class="project__title" id="proyecto-${pi + 1}-t">${esc(p.title)}${p.etiqueta ? ` <span class="project__tag">${esc(p.etiqueta)}</span>` : ""}</h2>
           ${metaHTML(p)}
         </header>
         ${p.description ? `<p class="project__desc" data-reveal>${esc(p.description)}</p>` : ""}
+        ${p.pdf ? `<p class="project__pdf" data-reveal><a class="cv-btn" href="${esc(p.pdf)}" download>
+            <span class="cv-btn__text">Descargar PDF</span><span class="cv-btn__icon" aria-hidden="true">↓</span>
+            <span class="visually-hidden">— ${esc(p.title)}</span></a></p>` : ""}
         ${p.video && !isVideo ? `<div class="project__video-wrap" data-reveal>${videoHTML(p.video, p.title)}</div>` : ""}
         ${isVideo ? videoProjectHTML(p) : isBook ? bookHTML(p) : items ? `<ul class="collage" role="list">${items}</ul>` : ""}
       </article>`;
