@@ -131,20 +131,6 @@ window.SITE_CONFIG = {
           { src: null, alt: "Shooting conceptual — imagen 3", caption: "" },
           { src: null, alt: "Shooting conceptual — imagen 4", caption: "" }
         ]
-      },
-      {
-        title: "Pre adolescentes",
-        year: "",
-        client: "Laboratorio de tendencias",
-        role: "Dirección de arte, estilismo, fotografía y casting",
-        resumen: "Fotos en crudo de la entrega final de laboratorio de tendencias.",   // 1 línea para el carrusel del final
-        description: "Fotos en crudo, pequeña selección de la entrega final de laboratorio de tendencias.",
-        images: [
-          { src: null, alt: "Pre adolescentes — imagen 1", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 2", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 3", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 4", caption: "" }
-        ]
       }
       ]
     },
@@ -203,30 +189,17 @@ window.SITE_CONFIG = {
       imageAlt: "Muestra de trendforecast",
       projects: [
       {
-        title: "Investigación de ejemplo 01",
+        title: "Pre adolescentes",
         year: "",
-        client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
+        client: "Laboratorio de tendencias",
+        role: "Dirección de arte, estilismo, fotografía y casting",
+        resumen: "Fotos en crudo de la entrega final de laboratorio de tendencias.",   // 1 línea para el carrusel del final
+        description: "Fotos en crudo, pequeña selección de la entrega final de laboratorio de tendencias.",
         images: [
-          { src: null, alt: "Tendencias — imagen 1", caption: "" },
-          { src: null, alt: "Tendencias — imagen 2", caption: "" },
-          { src: null, alt: "Tendencias — imagen 3", caption: "" },
-          { src: null, alt: "Tendencias — imagen 4", caption: "" }
-        ]
-      },
-      {
-        title: "Investigación de ejemplo 02",
-        year: "",
-        client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
-        images: [
-          { src: null, alt: "Tendencias — imagen 1", caption: "" },
-          { src: null, alt: "Tendencias — imagen 2", caption: "" },
-          { src: null, alt: "Tendencias — imagen 3", caption: "" }
+          { src: null, alt: "Pre adolescentes — imagen 1", caption: "" },
+          { src: null, alt: "Pre adolescentes — imagen 2", caption: "" },
+          { src: null, alt: "Pre adolescentes — imagen 3", caption: "" },
+          { src: null, alt: "Pre adolescentes — imagen 4", caption: "" }
         ]
       }
       ]
