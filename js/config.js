@@ -28,7 +28,7 @@ window.SITE_CONFIG = {
   /* ---------- Redes ---------- */
   socials: [
     { id: "instagram", label: "Instagram", url: "https://www.instagram.com/lderegibus____/" },
-    { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/lucia-belen-deregibus-mongardi-96272822a/" },
+    { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/lucia-deregibus-mongardi-96272822a/" },
     // Mientras tenga "USUARIO" no se muestra en el sitio. Reemplazar por el link real.
     { id: "behance",   label: "Behance",   url: "https://www.behance.net/USUARIO" }
   ],
@@ -86,8 +86,8 @@ window.SITE_CONFIG = {
       subtitle: "Concepto, estilismo y set",   // se ve en el menú desplegable de "Áreas"
       text: "Producción de sesiones de principio a fin: concepto, equipo, locación y set. La foto dura un instante; lo que la sostiene lleva semanas. ¿Quién se acuerda de eso? Yo.",
       tags: ["Estilismo","Producción de moda","Dirección de fotografía","Casting","Scouting de locaciones","Coordinación de set","Curaduría de looks"],   // 7 palabras clave: roles
-      image: null,
-      imageAlt: "Muestra de estilismo y fotografía",
+      image: "assets/img/portada-estilismo.jpg",
+      imageAlt: "Lucía sentada en el pasto bajo los árboles, con saco negro y pollera blanca",
       projects: [
       {
         title: "Las Pepas",
