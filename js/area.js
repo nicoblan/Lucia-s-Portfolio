@@ -37,6 +37,9 @@
      2. MARCADO
      ------------------------------------------------------------------------ */
   // Placeholder con los signos de la marca mientras no haya imagen
+  // Encuadre opcional de una foto recortada (`pos` en config.js, ej. "50% 20%")
+  const posStyle = (img) => img.pos ? ` style="object-position:${esc(img.pos)}"` : "";
+
   const placeholder = (label) =>
     `<span class="ph" aria-hidden="true"><span class="ph__signs"><span class="sign sign--tri"></span><span class="sign sign--circle"></span><span class="sign sign--square"></span></span><span class="ph__label">${esc(label)}</span></span>`;
 
@@ -144,7 +147,7 @@
       const [col, span, row, rows, rot] = COLLAGE[ii % COLLAGE.length];
       const r0 = row + Math.floor(ii / COLLAGE.length) * BLOCK_ROWS;
       const inner = img.src
-        ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async">`
+        ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"${posStyle(img)}>`
         : placeholder(img.caption || `Imagen ${ii + 1}`);
       return `<li class="collage__cell" data-reveal style="grid-column:${col} / span ${span};grid-row:${r0} / span ${rows};--rot:${rot}deg;--z:${ii + 1}">
           <button type="button" class="collage__card" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || img.caption || `imagen ${ii + 1}`)}">
@@ -183,7 +186,7 @@
       <ul class="recap__track" data-recap-track role="list">
         ${projects.map((p, pi) => {
           const first = (p.images || [])[0];
-          const thumb = first && first.src ? `<img src="${esc(first.src)}" alt="" loading="lazy" decoding="async">` : placeholder(pad(pi + 1));
+          const thumb = first && first.src ? `<img src="${esc(first.src)}" alt="" loading="lazy" decoding="async"${posStyle(first)}>` : placeholder(pad(pi + 1));
           const text = p.resumen || (p.description || "").slice(0, 110);
           return `<li class="recap__card">
             <a href="#proyecto-${pi + 1}" class="recap__link">

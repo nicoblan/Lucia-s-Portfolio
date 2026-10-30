@@ -82,7 +82,9 @@ window.SITE_CONFIG = {
      Cada área tiene su página (area.html?a=ID) con todos sus proyectos.
      projects[]: title, year, client, role, description,
                  video (opcional: URL de YouTube/Vimeo "embed" o un .mp4),
-                 images[]: { src, alt, caption }  (src null = placeholder)
+                 images[]: { src, alt, caption, pos }  (src null = placeholder)
+                 pos (opcional): qué parte de la foto se ve cuando el recuadro
+                 la recorta, ej. "50% 20%" = centrada y más arriba (la cara).
      La primera imagen de cada proyecto se muestra más grande.
      color: clave de la paleta (red | blue | yellow | green | orange)
      image: imagen de muestra (null = placeholder con los signos de la marca) */
@@ -106,7 +108,7 @@ window.SITE_CONFIG = {
         resumen: "Campaña en exteriores y contenido para redes, sin perder los valores de la marca.",   // 1 línea para el carrusel del final
         description: "Para este proyecto de la materia Fotografía de moda, bajo la consigna de crear una campaña en exteriores y material para redes sociales, con su partido conceptual, realizamos un mapa de diseño, moodboard, estilismo y análisis de campañas anteriores para crear una nueva temática e historia, manteniendo los valores y el concepto propio de la marca.",
         images: [
-          { src: "assets/img/pepas/01.jpg", alt: "Las Pepas — modelo agachada en el asfalto con camisa naranja con plumas y pantalón plateado", caption: "" },
+          { src: "assets/img/pepas/01.jpg", alt: "Las Pepas — modelo agachada en el asfalto con camisa naranja con plumas y pantalón plateado", caption: "", pos: "50% 20%" },
           { src: "assets/img/pepas/02.jpg", alt: "Las Pepas — detalle de puños de plumas lilas, pantalón plateado y zapatos atados", caption: "" },
           { src: "assets/img/pepas/03.jpg", alt: "Las Pepas — modelo con campera roja y pollera blanca apoyada en un farol dorado", caption: "" },
           { src: "assets/img/pepas/04.jpg", alt: "Las Pepas — las dos modelos en un puesto de flores", caption: "" },
