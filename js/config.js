@@ -301,16 +301,19 @@ window.SITE_CONFIG = {
         ]
       },
       {
-        title: "Proyecto de ejemplo 02",
+        title: "Cartas de materiales y colores",
         year: "",
         client: "",
         role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
-        images: [
-          { src: null, alt: "Postproducción — imagen 1", caption: "" },
-          { src: null, alt: "Postproducción — imagen 2", caption: "" },
-          { src: null, alt: "Postproducción — imagen 3", caption: "" }
+        resumen: "Cartas de materiales y colores para trend reports, con IA y Photoshop.",   // 1 línea para el carrusel del final
+        description: "Creación e identificación de cartas de materiales y colores para trend reports. Estas mismas fueron realizadas con herramientas de inteligencia artificial y Adobe Photoshop.",
+        images: [   // PORTFOLIO.pdf, diapositivas 6, 7 y 9
+          { src: "assets/img/cartas-materiales-colores/01.jpg", alt: "Cartas de materiales y colores — Territorio metafórico: composición de materiales numerados", caption: "" },
+          { src: "assets/img/cartas-materiales-colores/02.jpg", alt: "Cartas de materiales y colores — Territorio metafórico: carta de colores", caption: "" },
+          { src: "assets/img/cartas-materiales-colores/03.jpg", alt: "Cartas de materiales y colores — Territorio híbrido: composición de materiales numerados", caption: "" },
+          { src: "assets/img/cartas-materiales-colores/04.jpg", alt: "Cartas de materiales y colores — Territorio híbrido: carta de colores", caption: "" },
+          { src: "assets/img/cartas-materiales-colores/05.jpg", alt: "Cartas de materiales y colores — Núcleo esencial: manos cosechando granos de café", caption: "", forma: "h" },
+          { src: "assets/img/cartas-materiales-colores/06.jpg", alt: "Cartas de materiales y colores — Núcleo esencial: carta de materiales y colores", caption: "", forma: "h" }
         ]
       }
       ]
