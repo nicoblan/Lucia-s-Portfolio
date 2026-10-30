@@ -364,6 +364,19 @@ window.SITE_CONFIG = {
           { src: "assets/img/la-media-pena/11.jpg", alt: "La media pena — casting y vestuario de Camila", caption: "", forma: "l" },
           { src: "assets/img/la-media-pena/12.jpg", alt: "La media pena — paleta de colores de Hernán", caption: "", forma: "l" }
         ]
+      },
+      {
+        title: "Recreación obra pictórica",
+        year: "",
+        client: "",
+        role: "Utilería, estilismo y retoque digital",
+        resumen: "Una pintura recreada en foto: utilería, estilismo y retoque digital.",   // 1 línea para el carrusel del final
+        portadaPos: "50% 5%",   // encuadre de la portada en el resumen (centra la cara)
+        description: "Recreación de obra pictórica, manejo de utilería, estilismo, uso de herramientas digitales para retoques finales.",
+        images: [
+          { src: "assets/img/recreacion-obra-pictorica/01.jpg", alt: "Recreación obra pictórica — la pintura original: mujer con cofia y camisa celeste arreglando rosas en un florero", caption: "Obra original" },
+          { src: "assets/img/recreacion-obra-pictorica/02.jpg", alt: "Recreación obra pictórica — la recreación en foto, con la misma pose, vestuario y utilería", caption: "Recreación" }
+        ]
       }
       ]
     }
