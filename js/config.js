@@ -95,7 +95,8 @@ window.SITE_CONFIG = {
                  horizontal del resumen del final (si no está, usa el `pos` de la foto 1).
      La primera imagen de cada proyecto se muestra más grande.
      color: clave de la paleta (red | blue | yellow | green | orange)
-     image: imagen de muestra (null = placeholder con los signos de la marca) */
+     image: imagen de muestra (null = placeholder con los signos de la marca)
+     imagePos (opcional): qué parte de la portada se ve en el panel, ej. "64% 50%" */
   services: [
     {
       id: "estilismo-fotografia",
