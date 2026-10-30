@@ -147,7 +147,7 @@
       panel.className = `panel panel--${s.color}`;
       panel.dataset.reveal = "";
       const media = s.image
-        ? `<figure class="panel__media"><img src="${s.image}" alt="${s.imageAlt || ""}" loading="lazy"></figure>`
+        ? `<figure class="panel__media"><img src="${s.image}" alt="${s.imageAlt || ""}" loading="lazy"${s.imagePos ? ` style="object-position:${s.imagePos}"` : ""}></figure>`
         : `<figure class="panel__media">${placeholderSigns()}<figcaption class="visually-hidden">${s.imageAlt || ""}</figcaption></figure>`;
       panel.innerHTML = `
         <button type="button" class="panel__btn" aria-expanded="false" aria-controls="panel-${s.id}">

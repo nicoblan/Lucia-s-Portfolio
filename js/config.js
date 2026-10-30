@@ -183,8 +183,9 @@ window.SITE_CONFIG = {
       subtitle: "Visiones que se mueven",   // se ve en el menú desplegable de "Áreas"
       text: "Traduzco una visión en algo que se mueve. Ordeno ideas, tiempos y personas para que la pieza diga lo que tiene que decir, y no un poco más.",
       tags: ["Producción ejecutiva","Guion","Dirección creativa","Casting","Coordinación de rodaje","Dirección de arte","Supervisión de edición"],   // 7 palabras clave: roles
-      image: null,
-      imageAlt: "Muestra de fashion film",
+      image: "assets/img/portada-fashion-films.jpg",   // fotograma del segundo 8 de «Lo que ha sido pesado», en blanco y negro
+      imageAlt: "Fotograma en blanco y negro: una mujer con los ojos cerrados y la cabeza inclinada",
+      imagePos: "64% 50%",   // encuadre de la portada en el panel (centra la cara)
       projects: [
       {
         title: "Lo que ha sido pesado",
@@ -222,8 +223,8 @@ window.SITE_CONFIG = {
       subtitle: "Lo evidente, dos veces",   // se ve en el menú desplegable de "Áreas"
       text: "Relevamiento de diseñadores y temporadas anteriores, diferentes universos para relacionar tipologías, texturas, premisas y conceptos. Análisis de tipologías y campañas para poder detectar futuras tendencias (micro y macro). Cartas de materiales, partidos morfológicos y conceptuales. Creación de diferentes tipologías y elementos que representen las nuevas tendencias.",
       tags: ["Investigación de tendencias","Coolhunting","Análisis cultural","Lectura de consumo","Moodboards","Reportes de tendencias","Forecasting"],   // 7 palabras clave: roles
-      image: null,
-      imageAlt: "Muestra de trendforecast",
+      image: "assets/img/portada-trendforecast.jpg",   // página 3 de Pre adolescentes, en blanco y negro
+      imageAlt: "Nena con capucha tejida y trenzas, en blanco y negro",
       /* En los cuadernos: `images` son las páginas del PDF (con paginas()),
          `pageRatio` es ancho ÷ alto de UNA página y `pdf` es el archivo que
          se descarga con el botón "Descargar PDF". */
@@ -283,8 +284,9 @@ window.SITE_CONFIG = {
       subtitle: "Lo que no se ve, también se edita",   // se ve en el menú desplegable de "Áreas"
       text: "La parte que no se ve y que hace que todo se vea. Selecciono, retoco y ajusto hasta que la imagen diga lo que tenía que decir, y no un poco más.",
       tags: ["Selección de material","Retoque fotográfico","Corrección de color","Edición","Montaje","Adaptación de formatos","Entrega final"],   // 7 palabras clave: roles
-      image: null,
-      imageAlt: "Muestra de postproducción",
+      image: "assets/img/portada-postproduccion.jpg",   // imagen 4 de Limón, en blanco y negro
+      imageAlt: "Rodaja de limón dentro de un marco antiguo de espejo, en blanco y negro",
+      imagePos: "35% 50%",   // encuadre de la portada en el panel (muestra el marco entero)
       projects: [
       {
         title: "Limón",
@@ -327,8 +329,8 @@ window.SITE_CONFIG = {
       subtitle: "Sistema, signos y concepto",   // se ve en el menú desplegable de "Áreas"
       text: "Construyo algo complejo a partir de recursos simples. Color, tipografía, signos y composición funcionando como un mismo lenguaje. Esta marca es la prueba.",
       tags: ["Dirección artística","Concepto creativo","Identidad visual","Estrategia de marca","Campañas","Relaciones públicas","Comunicación"],   // 7 palabras clave: roles
-      image: "assets/img/mockup-tarjeta.webp",
-      imageAlt: "Tarjeta amarilla con el logo [Lu - cía] sostenida en la mano",
+      image: "assets/img/portada-direccion-artistica.jpg",   // imagen 2 de Recreación obra pictórica, en blanco y negro
+      imageAlt: "Recreación de una pintura: mujer con cofia arreglando rosas, en blanco y negro",
       projects: [
       {
         title: "[Lu - cía]® — Identidad de marca personal",
