@@ -526,7 +526,8 @@ button.nav-week__item, a.nav-week__item { cursor: pointer; }
   /* mismo movimiento orgánico que los paneles de Áreas */
   transition: flex-grow 1.1s var(--ease-organic);
 }
-.highlight.is-open { flex-grow: 7; }
+/* casi cuadrado al abrirse: las fotos (verticales) se recortan menos */
+.highlight.is-open { flex-grow: 3; }
 .highlight__frame {
   position: absolute; inset: 0; display: block; overflow: hidden;
   border-radius: 6px; color: inherit; text-decoration: none; background: var(--paper);
