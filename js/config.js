@@ -106,11 +106,11 @@ window.SITE_CONFIG = {
         resumen: "Campaña en exteriores y contenido para redes, sin perder los valores de la marca.",   // 1 línea para el carrusel del final
         description: "Para este proyecto de la materia Fotografía de moda, bajo la consigna de crear una campaña en exteriores y material para redes sociales, con su partido conceptual, realizamos un mapa de diseño, moodboard, estilismo y análisis de campañas anteriores para crear una nueva temática e historia, manteniendo los valores y el concepto propio de la marca.",
         images: [
-          { src: null, alt: "Las Pepas — imagen 1", caption: "" },
-          { src: null, alt: "Las Pepas — imagen 2", caption: "" },
-          { src: null, alt: "Las Pepas — imagen 3", caption: "" },
-          { src: null, alt: "Las Pepas — imagen 4", caption: "" },
-          { src: null, alt: "Las Pepas — imagen 5", caption: "" }
+          { src: "assets/img/pepas/01.jpg", alt: "Las Pepas — modelo agachada en el asfalto con camisa naranja con plumas y pantalón plateado", caption: "" },
+          { src: "assets/img/pepas/02.jpg", alt: "Las Pepas — detalle de puños de plumas lilas, pantalón plateado y zapatos atados", caption: "" },
+          { src: "assets/img/pepas/03.jpg", alt: "Las Pepas — modelo con campera roja y pollera blanca apoyada en un farol dorado", caption: "" },
+          { src: "assets/img/pepas/04.jpg", alt: "Las Pepas — las dos modelos en un puesto de flores", caption: "" },
+          { src: "assets/img/pepas/05.jpg", alt: "Las Pepas — detalle de campera roja, cinturón y pollera blanca junto al farol", caption: "" }
         ]
       },
       {
