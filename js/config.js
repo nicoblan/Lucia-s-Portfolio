@@ -72,9 +72,10 @@ window.SITE_CONFIG = {
      está debajo del cursor. Son 3 imágenes (se pueden sumar más).
      href: link opcional al hacer clic (ej. "area.html?a=estilismo-fotografia") */
   destacados: [
-    { src: "assets/img/mockup-tote.webp",      alt: "Bolsa de tela con el logo [Lu-] estampado",                   caption: "Tote bag",        href: "area.html?a=direccion-artistica" },
-    { src: "assets/img/mockup-subte.webp",     alt: "Afiche azul con el logo [Lu-] en un vagón de subte",          caption: "Vía pública",     href: "area.html?a=direccion-artistica" },
-    { src: "assets/img/lucia-imagen-creativa.webp", alt: "Imagen creativa: Lucía hoy señala una foto suya de chica", caption: "Imagen creativa", href: "" }
+    // pos (opcional): qué parte de la foto se ve en el rectángulo abierto (apaisado)
+    { src: "assets/img/limon/02.jpg",            alt: "Limón abierto con una esfera plateada adentro, sobre fondo lila", caption: "Limón",            href: "area.html?a=postproduccion",       pos: "50% 55%" },
+    { src: "assets/img/foto-beauty/02.jpg",      alt: "Modelo con el pelo en movimiento sobre fondo oscuro",           caption: "Foto beauty",      href: "area.html?a=estilismo-fotografia", pos: "50% 30%" },
+    { src: "assets/img/pre-adolescentes/04.jpg", alt: "Tres nenas mirando a cámara desde abajo",                        caption: "Pre adolescentes", href: "area.html?a=estilismo-fotografia", pos: "50% 40%" }
   ],
   destacadosInterval: 2600, // ms entre aperturas automáticas
 

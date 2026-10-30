@@ -528,7 +528,7 @@
       const href = d.href ? ` href="${d.href}"` : "";
       return `<li class="highlight" data-reveal>
         <${tag} class="highlight__frame"${href}>
-          <img src="${d.src}" alt="${d.alt || ""}" loading="lazy" decoding="async">
+          <img src="${d.src}" alt="${d.alt || ""}" loading="lazy" decoding="async"${d.pos ? ` style="object-position:${d.pos}"` : ""}>
           <span class="highlight__caption"><span>${String(i + 1).padStart(2, "0")}</span>${d.caption || ""}</span>
         </${tag}>
       </li>`;
