@@ -511,22 +511,22 @@ button.nav-week__item, a.nav-week__item { cursor: pointer; }
 /* ==========================================================================
    DESTACADOS — rectángulos que se abren y cierran solos (js/main.js §11)
    ========================================================================== */
-/* Más chica y apaisada: el abierto queda como rectángulo horizontal, con
-   bastante aire arriba y abajo */
+/* Grande: el abierto ocupa casi todo el ancho y buena parte de la pantalla,
+   para que la foto se vea bien al pasar el cursor */
 .highlights { padding: clamp(96px, 16vh, 180px) 0; overflow-x: clip; }
-.highlights__head, .highlights__list { max-width: 1120px; margin-left: auto; margin-right: auto; }
+.highlights__head, .highlights__list { max-width: 1440px; margin-left: auto; margin-right: auto; }
 .highlights__head { padding: 0 var(--gutter); margin-bottom: 18px; }
 .highlights__list {
   list-style: none; padding: 0 var(--gutter); margin-top: 0; margin-bottom: 0;
   display: flex; gap: 10px;
-  height: clamp(220px, 34vh, 380px);
+  height: clamp(380px, 70vh, 760px);
 }
 .highlight {
   position: relative; flex: 1 1 0; min-width: 0;
   /* mismo movimiento orgánico que los paneles de Áreas */
   transition: flex-grow 1.1s var(--ease-organic);
 }
-.highlight.is-open { flex-grow: 5; }
+.highlight.is-open { flex-grow: 7; }
 .highlight__frame {
   position: absolute; inset: 0; display: block; overflow: hidden;
   border-radius: 6px; color: inherit; text-decoration: none; background: var(--paper);
@@ -941,7 +941,7 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .row { gap: .08em; }
   .pill__text { display: none; }
   /* Recent projects: también en fila y apaisado */
-  .highlights__list { height: clamp(170px, 48vw, 260px); }
+  .highlights__list { height: clamp(300px, 92vw, 460px); }
 
   /* Paneles apilados */
   .panels { flex-direction: column; height: auto; }
