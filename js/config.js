@@ -297,15 +297,7 @@ window.SITE_CONFIG = {
           { src: "assets/img/limon/02.jpg", alt: "Limón — limón abierto con una esfera plateada adentro, sobre fondo lila", caption: "", forma: "c" },
           { src: "assets/img/limon/03.jpg", alt: "Limón — medio limón gris sobre fondo oscuro", caption: "" },
           { src: "assets/img/limon/04.jpg", alt: "Limón — rodaja de limón dentro de un marco antiguo de espejo", caption: "" },
-          { src: "assets/img/limon/05.jpg", alt: "Limón — rodajas de limón con hormigas en un plato blanco", caption: "" },
-          { src: "assets/img/limon/06.jpg", alt: "Limón — semillas de limón ordenadas en filas", caption: "" },
-          { src: "assets/img/limon/07.jpg", alt: "Limón — gajos de limón en columna", caption: "" },
-          { src: "assets/img/limon/08.jpg", alt: "Limón — gajos de limón y uno de lima en columna", caption: "" },
-          { src: "assets/img/limon/09.jpg", alt: "Limón — semillas saliendo de un gajo de limón", caption: "" },
-          { src: "assets/img/limon/10.jpg", alt: "Limón — trama de semillas con tres tiras de limón", caption: "" },
-          { src: "assets/img/limon/11.jpg", alt: "Limón — cuatro rodajas de limón formando un cuadrado", caption: "" },
-          { src: "assets/img/limon/12.jpg", alt: "Limón — cuatro rodajas de limón con un hueco cuadrado en el centro", caption: "" },
-          { src: "assets/img/limon/13.jpg", alt: "Limón — espirales de cáscara de limón en diagonal", caption: "" }
+          { src: "assets/img/limon/05.jpg", alt: "Limón — rodajas de limón con hormigas en un plato blanco", caption: "" }
         ]
       },
       {
