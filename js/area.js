@@ -215,7 +215,7 @@
         ${projects.map((p, pi) => {
           const first = (p.images || [])[0];
           // sin imágenes pero con un .mp4: un fotograma del video (a los 5 s)
-          const thumb = first && first.src ? `<img src="${esc(first.src)}" alt="" loading="lazy" decoding="async"${posStyle(first)}>`
+          const thumb = first && first.src ? `<img src="${esc(first.src)}" alt="" loading="lazy" decoding="async"${posStyle({ pos: p.portadaPos || first.pos })}>`
             : /\.(mp4|webm)$/i.test(p.video || "") ? `<video src="${esc(p.video)}#t=5" muted playsinline preload="metadata" aria-hidden="true"></video>`
             : placeholder(pad(pi + 1));
           const text = p.resumen || (p.description || "").slice(0, 110);

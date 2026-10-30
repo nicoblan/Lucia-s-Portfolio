@@ -87,6 +87,8 @@ window.SITE_CONFIG = {
                  forma (opcional): "h" si la foto es horizontal (por defecto, vertical).
                  pos (opcional): qué parte de la foto se ve cuando el recuadro
                  la recorta, ej. "50% 20%" = centrada y más arriba (la cara).
+                 portadaPos (opcional, del proyecto): lo mismo pero para la portada
+                 horizontal del resumen del final (si no está, usa el `pos` de la foto 1).
      La primera imagen de cada proyecto se muestra más grande.
      color: clave de la paleta (red | blue | yellow | green | orange)
      image: imagen de muestra (null = placeholder con los signos de la marca) */
@@ -123,6 +125,7 @@ window.SITE_CONFIG = {
         client: "Materia Fotografía de moda",
         role: "Dirección de arte, estilismo y fotografía",
         resumen: "Un shooting en exteriores a partir de una sola palabra: Waldeinsamkeit.",   // 1 línea para el carrusel del final
+        portadaPos: "50% 42%",   // encuadre de la portada en el resumen (centra la cara)
         description: "Para este proyecto de la materia Fotografía de moda, bajo la consigna de realizar un shooting en exteriores partiendo de una palabra —en este caso, Waldeinsamkeit—, con su partido conceptual, realicé un mapa de diseño, moodboard y estilismo.\n\nWaldeinsamkeit: «El sentimiento de soledad y conexión con la naturaleza cuando se está a solas en el bosque».",
         images: [
           { src: "assets/img/shooting-conceptual/01.jpg", alt: "Shooting conceptual — retrato de la modelo con saco negro en el bosque", caption: "", pos: "50% 30%" },
@@ -140,6 +143,7 @@ window.SITE_CONFIG = {
         client: "Fotografía digital",
         role: "Dirección de arte, estilismo y fotografía",
         resumen: "Fotos en crudo: una pequeña selección de fotografía digital.",   // 1 línea para el carrusel del final
+        portadaPos: "50% 18%",   // encuadre de la portada en el resumen (centra la cara)
         description: "",   // sin texto debajo del título
         images: [
           { src: "assets/img/foto-beauty/01.jpg", alt: "Foto beauty — modelo sentada con fondo oscuro", caption: "" },
