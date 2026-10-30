@@ -221,7 +221,7 @@ window.SITE_CONFIG = {
       color: "green",
       kicker: "03",
       subtitle: "Lo evidente, dos veces",   // se ve en el menú desplegable de "Áreas"
-      text: "Relevamiento de diseñadores y temporadas anteriores, diferentes universos para relacionar tipologías, texturas, premisas y conceptos. Análisis de tipologías y campañas para poder detectar futuras tendencias (micro y macro). Cartas de materiales, partidos morfológicos y conceptuales. Creación de diferentes tipologías y elementos que representen las nuevas tendencias.",
+      text: "Relevamiento de diseñadores y temporadas para detectar tendencias micro y macro, traducidas en cartas de materiales, conceptos y nuevas tipologías.",
       tags: ["Investigación de tendencias","Coolhunting","Análisis cultural","Lectura de consumo","Moodboards","Reportes de tendencias","Forecasting"],   // 7 palabras clave: roles
       image: "assets/img/portada-trendforecast.jpg",   // página 3 de Pre adolescentes, en blanco y negro
       imageAlt: "Nena con capucha tejida y trenzas, en blanco y negro",
