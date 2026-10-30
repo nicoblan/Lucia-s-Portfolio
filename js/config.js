@@ -179,32 +179,24 @@ window.SITE_CONFIG = {
       imageAlt: "Muestra de fashion film",
       projects: [
       {
-        title: "Fashion film de ejemplo 01",
+        title: "Lo que ha sido pesado",
         year: "",
         client: "",
         role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
-        video: null,   // URL "embed" de YouTube/Vimeo o un .mp4 (ej. "assets/video/film.mp4")
-        images: [
-          { src: null, alt: "Fashion film — imagen 1", caption: "" },
-          { src: null, alt: "Fashion film — imagen 2", caption: "" },
-          { src: null, alt: "Fashion film — imagen 3", caption: "" }
-        ]
+        resumen: "Fashion film académico sobre un objeto antimoda: la mancuerna.",   // 1 línea para el carrusel del final
+        description: "Fashion film académico con la consigna de trabajar un objeto antimoda, como lo fue en este caso la mancuerna.\n\nMi rol fue directora de fotografía, montaje, diseño sonoro y guionista.",
+        video: "assets/video/lo-que-ha-sido-pesado.mp4",
+        images: []
       },
       {
-        title: "Fashion film de ejemplo 02",
+        title: "Qué es la moda para mí",
         year: "",
         client: "",
         role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
-        video: null,   // URL "embed" de YouTube/Vimeo o un .mp4 (ej. "assets/video/film.mp4")
-        images: [
-          { src: null, alt: "Fashion film — imagen 1", caption: "" },
-          { src: null, alt: "Fashion film — imagen 2", caption: "" },
-          { src: null, alt: "Fashion film — imagen 3", caption: "" }
-        ]
+        resumen: "Fashion film experimental con estética de los años 60.",   // 1 línea para el carrusel del final
+        description: "Fashion film académico de carácter experimental bajo la consigna «¿Qué es la moda para mí?», ambientado y dirigido bajo una estética de los años 60.\n\nMi rol fue directora de fotografía, montaje, diseño sonoro y guionista.",
+        video: null,   // pendiente: falta el video (va como .mp4 en assets/video/)
+        images: []
       }
       ]
     },
