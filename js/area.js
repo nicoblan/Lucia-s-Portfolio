@@ -64,13 +64,14 @@
      (parejos: 7 → 4 + 3, 6 → 3 + 3) y cada grupo se apila debajo del
      anterior, con los escalones al revés para no repetirse (el orden de
      lectura siempre es de izquierda a derecha). Cada foto ocupa un recuadro con
-     su forma: vertical (por defecto), horizontal (`forma: "h"`) o lámina
+     su forma: vertical (por defecto), horizontal (`forma: "h"`), cuadrada
+     (`forma: "c"`) o lámina
      apaisada A4 (`forma: "l"`, para planos y moodboards con texto).
      `porFila` en el proyecto fija el máximo de fotos por grupo (si no, 5).
      Sirve para cualquier cantidad de fotos.
      Devuelve, por foto: [columna, ancho, fila, alto] */
   const COLS = 24;
-  const CELL = { v: [6, 8], h: [10, 5], l: [9, 6] };  // [columnas, filas] de cada forma
+  const CELL = { v: [6, 8], h: [10, 5], l: [9, 6], c: [8, 7] };  // [columnas, filas] de cada forma
   const DROP = [0, 2, 1, 3, 1];            // escalón vertical de cada foto del grupo
   function collageLayout(images, porFila = 5) {
     const n = images.length, groups = Math.ceil(n / porFila), out = [];

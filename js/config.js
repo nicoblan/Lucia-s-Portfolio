@@ -84,8 +84,9 @@ window.SITE_CONFIG = {
                  video (opcional: URL de YouTube/Vimeo "embed" o un .mp4),
                  images[]: { src, alt, caption, pos, forma }  (src null = placeholder)
                  Puede haber cualquier cantidad de fotos: el collage se arma solo.
-                 forma (opcional): "h" si la foto es horizontal, "l" si es una lámina
-                 apaisada con texto (planos, moodboards); por defecto, vertical.
+                 forma (opcional): "h" si la foto es horizontal, "c" si es cuadrada,
+                 "l" si es una lámina apaisada con texto (planos, moodboards);
+                 por defecto, vertical.
                  porFila (opcional, del proyecto): máximo de fotos por fila del collage.
                  pos (opcional): qué parte de la foto se ve cuando el recuadro
                  la recorta, ej. "50% 20%" = centrada y más arriba (la cara).
@@ -285,18 +286,26 @@ window.SITE_CONFIG = {
       imageAlt: "Muestra de postproducción",
       projects: [
       {
-        title: "Proyecto de ejemplo 01",
+        title: "Limón",
         year: "",
         client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
+        role: "Postproducción e inteligencia artificial",
+        resumen: "Un limón, palabras clave y fotógrafos de referencia: postproducción con IA.",   // 1 línea para el carrusel del final
+        description: "Desarrollo de postproducción y herramientas de inteligencia artificial bajo un desarrollo conceptual y creativo basado en palabras clave y fotógrafos reconocidos.",
         images: [
-          { src: null, alt: "Postproducción — imagen 1", caption: "" },
-          { src: null, alt: "Postproducción — imagen 2", caption: "" },
-          { src: null, alt: "Postproducción — imagen 3", caption: "" },
-          { src: null, alt: "Postproducción — imagen 4", caption: "" },
-          { src: null, alt: "Postproducción — imagen 5", caption: "" }
+          { src: "assets/img/limon/01.jpg", alt: "Limón — cáscara de limón en espiral con un gajo y semillas en el centro", caption: "" },
+          { src: "assets/img/limon/02.jpg", alt: "Limón — limón abierto con una esfera plateada adentro, sobre fondo lila", caption: "", forma: "c" },
+          { src: "assets/img/limon/03.jpg", alt: "Limón — medio limón gris sobre fondo oscuro", caption: "" },
+          { src: "assets/img/limon/04.jpg", alt: "Limón — rodaja de limón dentro de un marco antiguo de espejo", caption: "" },
+          { src: "assets/img/limon/05.jpg", alt: "Limón — rodajas de limón con hormigas en un plato blanco", caption: "" },
+          { src: "assets/img/limon/06.jpg", alt: "Limón — semillas de limón ordenadas en filas", caption: "" },
+          { src: "assets/img/limon/07.jpg", alt: "Limón — gajos de limón en columna", caption: "" },
+          { src: "assets/img/limon/08.jpg", alt: "Limón — gajos de limón y uno de lima en columna", caption: "" },
+          { src: "assets/img/limon/09.jpg", alt: "Limón — semillas saliendo de un gajo de limón", caption: "" },
+          { src: "assets/img/limon/10.jpg", alt: "Limón — trama de semillas con tres tiras de limón", caption: "" },
+          { src: "assets/img/limon/11.jpg", alt: "Limón — cuatro rodajas de limón formando un cuadrado", caption: "" },
+          { src: "assets/img/limon/12.jpg", alt: "Limón — cuatro rodajas de limón con un hueco cuadrado en el centro", caption: "" },
+          { src: "assets/img/limon/13.jpg", alt: "Limón — espirales de cáscara de limón en diagonal", caption: "" }
         ]
       },
       {
