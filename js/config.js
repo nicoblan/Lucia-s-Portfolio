@@ -84,7 +84,9 @@ window.SITE_CONFIG = {
                  video (opcional: URL de YouTube/Vimeo "embed" o un .mp4),
                  images[]: { src, alt, caption, pos, forma }  (src null = placeholder)
                  Puede haber cualquier cantidad de fotos: el collage se arma solo.
-                 forma (opcional): "h" si la foto es horizontal (por defecto, vertical).
+                 forma (opcional): "h" si la foto es horizontal, "l" si es una lámina
+                 apaisada con texto (planos, moodboards); por defecto, vertical.
+                 porFila (opcional, del proyecto): máximo de fotos por fila del collage.
                  pos (opcional): qué parte de la foto se ve cuando el recuadro
                  la recorta, ej. "50% 20%" = centrada y más arriba (la cara).
                  portadaPos (opcional, del proyecto): lo mismo pero para la portada
@@ -341,16 +343,26 @@ window.SITE_CONFIG = {
         ]
       },
       {
-        title: "Proyecto de ejemplo 02",
+        title: "La media pena",
         year: "",
-        client: "",
-        role: "",
-        resumen: "Resumen de una línea: qué es y qué hice.",   // 1 línea para el carrusel del final
-        description: "Texto del proyecto: qué se pidió, qué se hizo y qué se aprendió. Reemplazar en js/config.js.",
+        client: "Guion teatral",
+        role: "Dirección de arte",
+        resumen: "Dirección de arte para el guion teatral «La media pena»: espacios, personajes y utilería.",   // 1 línea para el carrusel del final
+        description: "Bajo el guion teatral «La media pena» realicé planos, moodboards contextuales, de personaje, elección de supuesto casting, ubicación, paleta de colores para cada personaje y espacio, texturas, utilería y mobiliario en sus categorías y espacios.",
+        porFila: 3,   // láminas de a 3, como en la presentación
         images: [
-          { src: null, alt: "Branding — imagen 1", caption: "" },
-          { src: null, alt: "Branding — imagen 2", caption: "" },
-          { src: null, alt: "Branding — imagen 3", caption: "" }
+          { src: "assets/img/la-media-pena/01.jpg", alt: "La media pena — planos 3D del despacho", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/02.jpg", alt: "La media pena — texturas del despacho: cuero, madera y terciopelo verde", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/03.jpg", alt: "La media pena — utilería no practicable del despacho", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/04.jpg", alt: "La media pena — planos 3D del baño", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/05.jpg", alt: "La media pena — texturas del baño: azulejos verdes, mármol y vidrio", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/06.jpg", alt: "La media pena — mobiliario del despacho", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/07.jpg", alt: "La media pena — moodboard contextual de Hernán", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/08.jpg", alt: "La media pena — casting y vestuario de Hernán", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/09.jpg", alt: "La media pena — paleta de colores de Camila", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/10.jpg", alt: "La media pena — moodboard contextual de Camila", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/11.jpg", alt: "La media pena — casting y vestuario de Camila", caption: "", forma: "l" },
+          { src: "assets/img/la-media-pena/12.jpg", alt: "La media pena — paleta de colores de Hernán", caption: "", forma: "l" }
         ]
       }
       ]

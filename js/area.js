@@ -64,23 +64,26 @@
      (parejos: 7 → 4 + 3, 6 → 3 + 3) y cada grupo se apila debajo del
      anterior, con los escalones al revés para no repetirse (el orden de
      lectura siempre es de izquierda a derecha). Cada foto ocupa un recuadro con
-     su forma: vertical (por defecto) u horizontal (`forma: "h"` en config.js).
+     su forma: vertical (por defecto), horizontal (`forma: "h"`) o lámina
+     apaisada A4 (`forma: "l"`, para planos y moodboards con texto).
+     `porFila` en el proyecto fija el máximo de fotos por grupo (si no, 5).
      Sirve para cualquier cantidad de fotos.
      Devuelve, por foto: [columna, ancho, fila, alto] */
   const COLS = 24;
-  const CELL = { v: [6, 8], h: [10, 5] };  // [columnas, filas] de cada forma
+  const CELL = { v: [6, 8], h: [10, 5], l: [9, 6] };  // [columnas, filas] de cada forma
   const DROP = [0, 2, 1, 3, 1];            // escalón vertical de cada foto del grupo
-  function collageLayout(images) {
-    const n = images.length, groups = Math.ceil(n / 5), out = [];
+  function collageLayout(images, porFila = 5) {
+    const n = images.length, groups = Math.ceil(n / porFila), out = [];
     let start = 0, top = 1;
     for (let g = 0; g < groups; g++) {
       const size = Math.ceil((n - start) / (groups - g));
-      let shapes = images.slice(start, start + size).map((img) => CELL[img.forma === "h" ? "h" : "v"]);
+      let shapes = images.slice(start, start + size).map((img) => CELL[img.forma] || CELL.v);
       // Los recuadros crecen (pocas fotos) o se achican (muchas) para que
       // el grupo llene el ancho pisándose apenas: 1 columna entre foto y foto
       const sum = shapes.reduce((s, [c]) => s + c, 0);
       const k = Math.min(1.35, (COLS + size - 1) / sum);
-      shapes = shapes.map(([c, r]) => [Math.floor(c * k), Math.round(r * k)]);
+      // el alto sigue al ancho ya redondeado, para no deformar el recuadro
+      shapes = shapes.map(([c, r]) => { const cols = Math.floor(c * k); return [cols, Math.round(r * cols / c)]; });
       const total = shapes.reduce((s, [c]) => s + c, 0);
       const gap = size > 1 ? Math.min(0, (COLS - total) / (size - 1)) : 0;
       // grupos impares: escalones invertidos, para no repetir el dibujo;
@@ -169,7 +172,7 @@
 
   const projectsHTML = projects.map((p, pi) => {
     const isBook = area.layout === "libro", isVideo = area.layout === "video";
-    const layout = isBook || isVideo ? [] : collageLayout(p.images || []);
+    const layout = isBook || isVideo ? [] : collageLayout(p.images || [], p.porFila);
     const items = isBook || isVideo ? "" : (p.images || []).map((img, ii) => {
       const k = flatIndex++;
       allImages.push({ ...img, project: p.title });
