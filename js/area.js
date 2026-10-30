@@ -60,16 +60,45 @@
   const allImages = [];
 
   /* Collage: las imágenes se superponen unas sobre otras, derechas y sin
-     marco. Cada grupo de 5 usa este molde sobre una grilla de 12 columnas;
-     el grupo siguiente se apila debajo.
-     [columna, ancho, fila, alto, giro en grados (0 = derecha)] */
-  const COLLAGE = [
-    [1, 6, 1, 6, 0],
-    [6, 4, 2, 5, 0],
-    [9, 4, 1, 4, 0],
-    [2, 4, 6, 5, 0],
-    [7, 5, 6, 5, 0]
-  ];
+     marco, en una grilla de 24 columnas. Se arman grupos de 3 a 5 fotos
+     (parejos: 7 → 4 + 3, 6 → 3 + 3) y cada grupo se apila debajo del
+     anterior, con los escalones al revés para no repetirse (el orden de
+     lectura siempre es de izquierda a derecha). Cada foto ocupa un recuadro con
+     su forma: vertical (por defecto) u horizontal (`forma: "h"` en config.js).
+     Sirve para cualquier cantidad de fotos.
+     Devuelve, por foto: [columna, ancho, fila, alto] */
+  const COLS = 24;
+  const CELL = { v: [6, 8], h: [10, 5] };  // [columnas, filas] de cada forma
+  const DROP = [0, 2, 1, 3, 1];            // escalón vertical de cada foto del grupo
+  function collageLayout(images) {
+    const n = images.length, groups = Math.ceil(n / 5), out = [];
+    let start = 0, top = 1;
+    for (let g = 0; g < groups; g++) {
+      const size = Math.ceil((n - start) / (groups - g));
+      let shapes = images.slice(start, start + size).map((img) => CELL[img.forma === "h" ? "h" : "v"]);
+      // Los recuadros crecen (pocas fotos) o se achican (muchas) para que
+      // el grupo llene el ancho pisándose apenas: 1 columna entre foto y foto
+      const sum = shapes.reduce((s, [c]) => s + c, 0);
+      const k = Math.min(1.35, (COLS + size - 1) / sum);
+      shapes = shapes.map(([c, r]) => [Math.floor(c * k), Math.round(r * k)]);
+      const total = shapes.reduce((s, [c]) => s + c, 0);
+      const gap = size > 1 ? Math.min(0, (COLS - total) / (size - 1)) : 0;
+      // grupos impares: escalones invertidos, para no repetir el dibujo;
+      // el más alto del grupo arranca justo debajo del grupo anterior
+      const drops = shapes.map((_, i) => g % 2 ? 3 - DROP[i % DROP.length] : DROP[i % DROP.length]);
+      const lift = Math.min(...drops);
+      let x = Math.max(0, (COLS - total - gap * (size - 1)) / 2), bottom = 0;
+      shapes.forEach(([cols, rows], i) => {
+        const col = Math.round(x) + 1;
+        const row = top + drops[i] - lift;
+        out.push([col, cols, row, rows]);
+        bottom = Math.max(bottom, row + rows);
+        x += cols + gap;
+      });
+      top = bottom; start += size;
+    }
+    return out;
+  }
 
   /* Video (layout: "video", Fashion Films): cada proyecto muestra su video
      en formato horizontal 16:9, con botón de pantalla completa. Si todavía
@@ -92,7 +121,6 @@
       </div>
       ${stills ? `<ul class="vstills" role="list">${stills}</ul>` : ""}`;
   }
-  const BLOCK_ROWS = 10;
 
   /* Libro (layout: "libro", p. ej. Trendforecast). Referencia: sketchbook
      de tapa de cartón sobre fondo negro, con collages en cada página, que se
@@ -141,15 +169,15 @@
 
   const projectsHTML = projects.map((p, pi) => {
     const isBook = area.layout === "libro", isVideo = area.layout === "video";
+    const layout = isBook || isVideo ? [] : collageLayout(p.images || []);
     const items = isBook || isVideo ? "" : (p.images || []).map((img, ii) => {
       const k = flatIndex++;
       allImages.push({ ...img, project: p.title });
-      const [col, span, row, rows, rot] = COLLAGE[ii % COLLAGE.length];
-      const r0 = row + Math.floor(ii / COLLAGE.length) * BLOCK_ROWS;
+      const [col, span, row, rows] = layout[ii];
       const inner = img.src
         ? `<img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"${posStyle(img)}>`
         : placeholder(img.caption || `Imagen ${ii + 1}`);
-      return `<li class="collage__cell" data-reveal style="grid-column:${col} / span ${span};grid-row:${r0} / span ${rows};--rot:${rot}deg;--z:${ii + 1}">
+      return `<li class="collage__cell" data-reveal style="grid-column:${col} / span ${span};grid-row:${row} / span ${rows};--rot:0deg;--z:${ii + 1}">
           <button type="button" class="collage__card" data-open="${k}" aria-label="Ver en grande: ${esc(img.alt || img.caption || `imagen ${ii + 1}`)}">
             <span class="collage__img">${inner}</span>
             ${img.caption ? `<span class="collage__caption">${esc(img.caption)}</span>` : ""}

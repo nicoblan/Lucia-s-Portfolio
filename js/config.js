@@ -82,7 +82,9 @@ window.SITE_CONFIG = {
      Cada área tiene su página (area.html?a=ID) con todos sus proyectos.
      projects[]: title, year, client, role, description,
                  video (opcional: URL de YouTube/Vimeo "embed" o un .mp4),
-                 images[]: { src, alt, caption, pos }  (src null = placeholder)
+                 images[]: { src, alt, caption, pos, forma }  (src null = placeholder)
+                 Puede haber cualquier cantidad de fotos: el collage se arma solo.
+                 forma (opcional): "h" si la foto es horizontal (por defecto, vertical).
                  pos (opcional): qué parte de la foto se ve cuando el recuadro
                  la recorta, ej. "50% 20%" = centrada y más arriba (la cara).
      La primera imagen de cada proyecto se muestra más grande.
@@ -123,10 +125,13 @@ window.SITE_CONFIG = {
         resumen: "Un shooting en exteriores a partir de una sola palabra: Waldeinsamkeit.",   // 1 línea para el carrusel del final
         description: "Para este proyecto de la materia Fotografía de moda, bajo la consigna de realizar un shooting en exteriores partiendo de una palabra —en este caso, Waldeinsamkeit—, con su partido conceptual, realicé un mapa de diseño, moodboard y estilismo.\n\nWaldeinsamkeit: «El sentimiento de soledad y conexión con la naturaleza cuando se está a solas en el bosque».",
         images: [
-          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 1", caption: "" },
-          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 2", caption: "" },
-          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 3", caption: "" },
-          { src: null, alt: "Shooting conceptual — Waldeinsamkeit — imagen 4", caption: "" }
+          { src: "assets/img/shooting-conceptual/01.jpg", alt: "Shooting conceptual — retrato de la modelo con saco negro en el bosque", caption: "", pos: "50% 30%" },
+          { src: "assets/img/shooting-conceptual/02.jpg", alt: "Shooting conceptual — modelo con vestido rojo agachada entre la vegetación", caption: "", forma: "h" },
+          { src: "assets/img/shooting-conceptual/03.jpg", alt: "Shooting conceptual — modelo acostada en el pasto, vista desde arriba", caption: "" },
+          { src: "assets/img/shooting-conceptual/04.jpg", alt: "Shooting conceptual — modelo recostada sobre la rama de un árbol", caption: "", forma: "h" },
+          { src: "assets/img/shooting-conceptual/05.jpg", alt: "Shooting conceptual — modelo apoyada en un árbol, en un claro del bosque", caption: "", forma: "h" },
+          { src: "assets/img/shooting-conceptual/06.jpg", alt: "Shooting conceptual — modelo de pie entre pastos altos", caption: "", forma: "h" },
+          { src: "assets/img/shooting-conceptual/07.jpg", alt: "Shooting conceptual — modelo con los brazos en alto bajo un tronco", caption: "", pos: "50% 30%" }
         ]
       },
       {
@@ -135,12 +140,11 @@ window.SITE_CONFIG = {
         client: "Fotografía digital",
         role: "Dirección de arte, estilismo y fotografía",
         resumen: "Fotos en crudo: una pequeña selección de fotografía digital.",   // 1 línea para el carrusel del final
-        description: "Fotos en crudo, pequeña selección de un trabajo práctico de fotografía digital.",
+        description: "",   // sin texto debajo del título
         images: [
-          { src: null, alt: "Foto beauty — imagen 1", caption: "" },
-          { src: null, alt: "Foto beauty — imagen 2", caption: "" },
-          { src: null, alt: "Foto beauty — imagen 3", caption: "" },
-          { src: null, alt: "Foto beauty — imagen 4", caption: "" }
+          { src: "assets/img/foto-beauty/01.jpg", alt: "Foto beauty — modelo sentada con fondo oscuro", caption: "" },
+          { src: "assets/img/foto-beauty/02.jpg", alt: "Foto beauty — modelo con el pelo en movimiento", caption: "" },
+          { src: "assets/img/foto-beauty/03.jpg", alt: "Foto beauty — primer plano de la mirada con pañuelo azul", caption: "" }
         ]
       },
       {
@@ -150,12 +154,14 @@ window.SITE_CONFIG = {
         client: "Laboratorio de tendencias",
         role: "Dirección de arte, estilismo, fotografía y casting",
         resumen: "Fotos en crudo de la entrega final de laboratorio de tendencias.",   // 1 línea para el carrusel del final
-        description: "Fotos en crudo, pequeña selección de la entrega final de laboratorio de tendencias.",
+        description: "",   // sin texto debajo del título
         images: [
-          { src: null, alt: "Pre adolescentes — imagen 1", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 2", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 3", caption: "" },
-          { src: null, alt: "Pre adolescentes — imagen 4", caption: "" }
+          { src: "assets/img/pre-adolescentes/01.jpg", alt: "Pre adolescentes — una nena sentada en el piso y otra agachada", caption: "" },
+          { src: "assets/img/pre-adolescentes/02.jpg", alt: "Pre adolescentes — tres nenas jugando, vistas desde arriba", caption: "" },
+          { src: "assets/img/pre-adolescentes/03.jpg", alt: "Pre adolescentes — dos nenas agachadas con abrigos de lana", caption: "" },
+          { src: "assets/img/pre-adolescentes/04.jpg", alt: "Pre adolescentes — tres nenas mirando a cámara desde abajo", caption: "" },
+          { src: "assets/img/pre-adolescentes/05.jpg", alt: "Pre adolescentes — tres nenas tirando de una prenda sobre baúles", caption: "" },
+          { src: "assets/img/pre-adolescentes/06.jpg", alt: "Pre adolescentes — tres nenas abrazadas sobre un baúl", caption: "" }
         ]
       }
       ]
