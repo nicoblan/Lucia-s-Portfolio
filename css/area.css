@@ -250,6 +250,7 @@
 }
 .vplayer__full:hover, .vplayer__full:focus-visible { background: var(--yellow); }
 .vstills { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.vstills--4 { grid-template-columns: repeat(4, 1fr); }  /* 4 fotogramas: una sola fila */
 .vstill {
   all: unset; box-sizing: border-box; display: block; width: 100%; aspect-ratio: 16 / 9;
   border-radius: 4px; overflow: hidden; cursor: zoom-in; background: var(--paper);
@@ -335,7 +336,7 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 760px) {
-  .vstills { grid-template-columns: 1fr 1fr; }
+  .vstills, .vstills--4 { grid-template-columns: 1fr 1fr; }
   .recap__track { grid-auto-columns: 78vw; }
   .area { padding-top: 80px; }
   .area-hero { min-height: 70vh; border-radius: 36px; }

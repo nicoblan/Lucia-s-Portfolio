@@ -190,7 +190,12 @@ window.SITE_CONFIG = {
         resumen: "Fashion film académico sobre un objeto antimoda: la mancuerna.",   // 1 línea para el carrusel del final
         description: "Fashion film académico con la consigna de trabajar un objeto antimoda, como lo fue en este caso la mancuerna.\n\nMi rol fue directora de fotografía, montaje, diseño sonoro y guionista.",
         video: "assets/video/lo-que-ha-sido-pesado.mp4",
-        images: []
+        images: [   // fotogramas del video (a los 20 s, 41 s, 56 s y 1:40)
+          { src: "assets/img/lo-que-ha-sido-pesado/01.jpg", alt: "Lo que ha sido pesado — manos sosteniendo la mancuerna violeta", caption: "" },
+          { src: "assets/img/lo-que-ha-sido-pesado/02.jpg", alt: "Lo que ha sido pesado — zapatos blancos sobre plumas rosas", caption: "" },
+          { src: "assets/img/lo-que-ha-sido-pesado/03.jpg", alt: "Lo que ha sido pesado — de traje, usando la mancuerna como teléfono", caption: "" },
+          { src: "assets/img/lo-que-ha-sido-pesado/04.jpg", alt: "Lo que ha sido pesado — recostada en el sillón mientras caen plumas rosas", caption: "" }
+        ]
       },
       {
         title: "Qué es la moda para mí",

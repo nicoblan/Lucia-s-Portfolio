@@ -119,7 +119,7 @@
         <div class="vplayer__frame">${player}</div>
         ${p.video ? `<button type="button" class="vplayer__full" data-fullscreen aria-label="Ver ${esc(p.title)} en pantalla completa"><span aria-hidden="true">⤢</span> Pantalla completa</button>` : ""}
       </div>
-      ${stills ? `<ul class="vstills" role="list">${stills}</ul>` : ""}`;
+      ${stills ? `<ul class="vstills${p.images.length === 4 ? " vstills--4" : ""}" role="list">${stills}</ul>` : ""}`;
   }
 
   /* Libro (layout: "libro", p. ej. Trendforecast). Referencia: sketchbook
