@@ -418,6 +418,26 @@
     }
     restart();
 
+    // Alto de la tarjeta = hasta la línea de abajo de la última opción de
+    // la derecha (con el acordeón cerrado), así las dos columnas terminan
+    // juntas. Se mide sin transforms (offsetTop) por las animaciones de entrada.
+    const options = $("[data-options]");
+    const docTop = (el) => { let t = 0; for (; el; el = el.offsetParent) t += el.offsetTop; return t; };
+    const fitHeight = () => {
+      // apilado (celular/tablet): las opciones van debajo, alto normal
+      const side = options && docTop(options) < docTop(card) + card.offsetHeight;
+      card.classList.toggle("is-fit", !!side);
+      if (!side) return;
+      let bottom = docTop(options) + parseFloat(getComputedStyle(options).borderTopWidth);
+      $$(".option", options).forEach((li) => {
+        bottom += li.firstElementChild.offsetHeight + parseFloat(getComputedStyle(li).borderBottomWidth);
+      });
+      card.style.setProperty("--card-h", `${Math.round(bottom - docTop(card))}px`);
+    };
+    fitHeight();
+    addEventListener("resize", fitHeight);
+    if (document.fonts) document.fonts.ready.then(fitHeight);
+
     // Con clic: cambia ya y reinicia el reloj. Con teclado (detail = 0)
     // el círculo sale del centro.
     card.addEventListener("click", (e) => {
