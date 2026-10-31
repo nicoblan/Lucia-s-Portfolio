@@ -606,17 +606,22 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 /* Panel abierto en dos columnas: a la izquierda título (arriba) y texto
    (abajo); a la derecha la imagen a toda la altura. Así nunca se pisan. */
 .panel__body {
-  position: absolute; inset: 0; padding: clamp(18px, 2vw, 32px);
+  /* Ancho fijo = ancho del panel abierto (--open-w lo calcula main.js):
+     el contenido no se reacomoda mientras el panel crece, el panel lo va
+     descubriendo como una cortina. */
+  position: absolute; inset: 0 auto 0 0; width: var(--open-w, 100%); padding: clamp(18px, 2vw, 32px);
   display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 32px);
   pointer-events: none; /* el clic/hover sigue llegando al botón de abajo */
   opacity: 0; visibility: hidden;
+  /* al cerrar se desvanece (en vez de cortarse) mientras el panel se achica */
+  transition: opacity .45s var(--ease-organic), visibility 0s .45s;
 }
 .panel__body { grid-template-rows: minmax(0, 1fr); }
 .panel__body > div { grid-column: 1; grid-row: 1; align-self: end; }
 .panel__body[hidden] { display: none; }
 /* Panel abierto: crece y muestra el detalle; el título pasa a horizontal */
 .panel.is-open { flex-grow: 5; border-radius: clamp(24px, 3vw, 48px); }
-.panel.is-open .panel__body { opacity: 1; visibility: visible; }
+.panel.is-open .panel__body { opacity: 1; visibility: visible; transition: opacity .5s .15s var(--ease-organic), visibility 0s; }
 
 /* El título cambia de vertical a horizontal: en vez de saltar, se disuelve
    y vuelve a aparecer (dos nombres de animación para que se reinicie
@@ -643,7 +648,7 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   writing-mode: horizontal-tb; transform: none;
   top: clamp(44px, 4.5vw, 64px); bottom: auto;
   /* ancho = columna izquierda, para no meterse en la imagen */
-  max-width: calc(50% - clamp(18px, 2vw, 32px) - clamp(8px, 1vw, 16px));
+  max-width: calc(var(--open-w, 100%) / 2 - clamp(18px, 2vw, 32px) - clamp(8px, 1vw, 16px));
   font-size: clamp(1.8rem, 3.2vw, 3.6rem); white-space: normal;
 }
 .panel__text { font-size: clamp(13px, .95vw, 15px); line-height: 1.5; max-width: 40ch; margin: 0 0 14px; }
@@ -772,7 +777,10 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
 .variant-card .logo { transition: color .3s; }
 .variant-card .logo > *, .variant-card .logo__r { transition: color .35s var(--ease-out); }
 .variant-card__meta { color: var(--card-meta, var(--white)); transition: color .4s; }
-.logo--card { font-size: clamp(3.2rem, 7.4vw, 8rem); }
+/* El logo mide 3.69em de ancho: con 23cqi ocupa ~85% del ancho de la
+   tarjeta, así tarjeta y logo quedan en proporción en cualquier pantalla */
+.variant-card { container-type: inline-size; }
+.logo--card { font-size: 23cqi; }
 .variant-card__meta { display: flex; flex-direction: column; font-size: 12px; }
 .hint { margin: 0; font-size: 12px; color: rgba(10,10,10,.6); }
 
@@ -951,7 +959,7 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .panel__kicker { position: static; order: -1; }
   .panel.is-open .panel__title { font-size: clamp(1.6rem, 7vw, 2.4rem); max-width: none; }
   .panel__title { position: static; writing-mode: horizontal-tb; transform: none; font-size: clamp(1.6rem, 7vw, 2.4rem); white-space: normal; }
-  .panel__body { position: static; grid-template-columns: 1fr; grid-template-rows: auto; padding-top: 0; }
+  .panel__body { position: static; width: auto; grid-template-columns: 1fr; grid-template-rows: auto; padding-top: 0; }
   .panel__body > div, .panel__media { grid-column: auto; grid-row: auto; }
   .panel__media { aspect-ratio: 4/3; height: auto; }
 

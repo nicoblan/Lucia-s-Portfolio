@@ -170,11 +170,25 @@
     const open = (target) => {
       panels.forEach((p) => {
         const isTarget = p === target;
+        const body = $(".panel__body", p);
         p.classList.toggle("is-open", isTarget);
         $(".panel__btn", p).setAttribute("aria-expanded", String(isTarget));
-        $(".panel__body", p).hidden = !isTarget;
+        // al cerrar, se oculta recién cuando terminó de desvanecerse (CSS)
+        clearTimeout(body._hideTimer);
+        if (isTarget) body.hidden = false;
+        else if (!body.hidden) body._hideTimer = setTimeout(() => { body.hidden = true; }, 460);
       });
     };
+    // Ancho del panel abierto (flex-grow 5 contra 1 de los demás), para que
+    // su contenido tenga ese ancho desde el principio y no se reacomode
+    const setOpenWidth = () => {
+      const cs = getComputedStyle(wrap);
+      const inner = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const gaps = (parseFloat(cs.columnGap) || 0) * (panels.length - 1);
+      wrap.style.setProperty("--open-w", `${(inner - gaps) * 5 / (5 + panels.length - 1)}px`);
+    };
+    setOpenWidth();
+    window.addEventListener("resize", setOpenWidth);
     const services = CONFIG.services || [];
     const goTo = (p, e) => {
       const s = services[panels.indexOf(p)];
