@@ -38,8 +38,7 @@ window.SITE_CONFIG = {
   socials: [
     { id: "instagram", label: "Instagram", url: "https://www.instagram.com/lderegibus____/" },
     { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/lucia-deregibus-mongardi-96272822a/" },
-    // Mientras tenga "USUARIO" no se muestra en el sitio. Reemplazar por el link real.
-    { id: "behance",   label: "Behance",   url: "https://www.behance.net/USUARIO" }
+    { id: "behance",   label: "Behance",   url: "https://www.behance.net/luciaderegibus" }
   ],
 
   /* ---------- Fondo global de backstage ----------
