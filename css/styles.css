@@ -952,9 +952,14 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .home__frame { margin-bottom: 110px; }
   /* Canción y película: segunda fila de la barra, solo en el home */
   .nav { flex-wrap: wrap; row-gap: 0; }
-  .nav-week { order: 5; flex: 1 1 45%; margin: 0; }
-  .nav-week--right { justify-content: flex-end; }
-  .nav--home .nav-week.has-item { max-width: none; }
+  .nav-week { order: 5; flex: 1 1 calc(50% - 8px); margin: 0; }
+  .nav--home { border-radius: 26px; }
+  /* Dos columnas iguales, alineadas a la izquierda y apenas separadas,
+     con una línea fina que las despega de los links de arriba */
+  .nav--home .nav-week.has-item { max-width: none; margin-top: 6px; padding: 7px 0 3px; border-top: 1px solid rgba(10,10,10,.14); }
+  .nav--home .nav-week--left.has-item { margin-right: 8px; }
+  .nav-week__item { padding: 0 2px; }
+  .nav-week__type { font-size: 8px; letter-spacing: .06em; }
   .nav { left: 12px; right: 12px; transform: none; justify-content: space-between; padding-left: 16px; }
   .nav__list > li > a { padding: 8px 6px; font-size: 12px; letter-spacing: -.01em; }
   .nav { gap: 4px; padding: 6px 6px 6px 12px; }
@@ -963,6 +968,10 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .logo--mini { font-size: 21px; }
   .backstage-toggle { flex: none; width: 30px; height: 30px; }
   .nav__sub { display: none; } /* en celular: navegación simple */
+  @media (max-width: 360px) { /* celulares muy angostos: que la fila de links entre entera */
+    .nav__list > li > a { padding: 8px 4px; font-size: 11px; }
+    .logo--mini { font-size: 18px; }
+  }
 
   .hero { padding-top: 88px; }
   .row { gap: .08em; }

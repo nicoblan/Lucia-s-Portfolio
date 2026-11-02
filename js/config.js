@@ -73,7 +73,7 @@ window.SITE_CONFIG = {
   destacados: [
     // pos (opcional): qué parte de la foto se ve en el rectángulo abierto (apaisado)
     { src: "assets/img/limon/02.jpg",            alt: "Limón abierto con una esfera plateada adentro, sobre fondo lila", caption: "Limón",            href: "area.html?a=postproduccion",       pos: "50% 55%" },
-    { src: "assets/img/foto-beauty/02.jpg",      alt: "Modelo con el pelo en movimiento sobre fondo oscuro",           caption: "Foto beauty",      href: "area.html?a=estilismo-fotografia", pos: "50% 30%" },
+    { src: "assets/img/foto-beauty/02.jpg",      alt: "Modelo con el pelo en movimiento sobre fondo oscuro",           caption: "Photo Beauty",      href: "area.html?a=estilismo-fotografia", pos: "50% 30%" },
     { src: "assets/img/pre-adolescentes/04.jpg", alt: "Tres nenas mirando a cámara desde abajo",                        caption: "Pre adolescentes", href: "area.html?a=estilismo-fotografia", pos: "50% 40%" }
   ],
   destacadosInterval: 2600, // ms entre aperturas automáticas
@@ -142,7 +142,7 @@ window.SITE_CONFIG = {
         ]
       },
       {
-        title: "Foto beauty",
+        title: "Photo Beauty",
         year: "",
         client: "Fotografía digital",
         role: "Dirección de arte, estilismo y fotografía",
@@ -150,9 +150,9 @@ window.SITE_CONFIG = {
         portadaPos: "50% 18%",   // encuadre de la portada en el resumen (centra la cara)
         description: "",   // sin texto debajo del título
         images: [
-          { src: "assets/img/foto-beauty/01.jpg", alt: "Foto beauty — modelo sentada con fondo oscuro", caption: "" },
-          { src: "assets/img/foto-beauty/02.jpg", alt: "Foto beauty — modelo con el pelo en movimiento", caption: "" },
-          { src: "assets/img/foto-beauty/03.jpg", alt: "Foto beauty — primer plano de la mirada con pañuelo azul", caption: "" }
+          { src: "assets/img/foto-beauty/01.jpg", alt: "Photo Beauty — modelo sentada con fondo oscuro", caption: "" },
+          { src: "assets/img/foto-beauty/02.jpg", alt: "Photo Beauty — modelo con el pelo en movimiento", caption: "" },
+          { src: "assets/img/foto-beauty/03.jpg", alt: "Photo Beauty — primer plano de la mirada con pañuelo azul", caption: "" }
         ]
       },
       {
@@ -191,9 +191,9 @@ window.SITE_CONFIG = {
         title: "Lo que ha sido pesado",
         year: "",
         client: "",
-        role: "",
+        role: "Directora de fotografía, montaje, diseño sonoro y guionista",
         resumen: "Fashion film académico sobre un objeto antimoda: la mancuerna.",   // 1 línea para el carrusel del final
-        description: "Fashion film académico con la consigna de trabajar un objeto antimoda, como lo fue en este caso la mancuerna.\n\nMi rol fue directora de fotografía, montaje, diseño sonoro y guionista.",
+        description: "Fashion film académico con la consigna de trabajar un objeto antimoda, como lo fue en este caso la mancuerna.",
         video: "assets/video/lo-que-ha-sido-pesado.mp4",
         images: [   // fotogramas del video (a los 20 s, 41 s, 56 s y 1:40)
           { src: "assets/img/lo-que-ha-sido-pesado/01.jpg", alt: "Lo que ha sido pesado — manos sosteniendo la mancuerna violeta", caption: "" },
