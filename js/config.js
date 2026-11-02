@@ -203,14 +203,20 @@ window.SITE_CONFIG = {
         ]
       },
       {
-        title: "Qué es la moda para mí",
+        title: "Clip Trend",
         year: "",
         client: "",
         role: "",
-        resumen: "Fashion film experimental con estética de los años 60.",   // 1 línea para el carrusel del final
-        description: "Fashion film académico de carácter experimental bajo la consigna «¿Qué es la moda para mí?», ambientado y dirigido bajo una estética de los años 60.\n\nMi rol fue directora de fotografía, montaje, diseño sonoro y guionista.",
-        video: null,   // pendiente: falta el video (va como .mp4 en assets/video/)
-        images: []
+        resumen: "Clip de desarrollo objetual y conceptual a partir de un relevamiento de tendencias 2025.",   // 1 línea para el carrusel del final
+        description: "Clip Trend de desarrollo objetual y conceptual de un relevamiento de tendencias 2025.",
+        video: "assets/video/clip-trend.mp4",
+        poster: "assets/img/clip-trend/01.jpg",   // imagen antes de darle play (el video arranca en blanco)
+        images: [   // fotogramas del video (a los 10 s, 28 s, 40 s y 44 s)
+          { src: "assets/img/clip-trend/01.jpg", alt: "Clip Trend — objeto de vidrio verde abierto como un libro", caption: "" },
+          { src: "assets/img/clip-trend/02.jpg", alt: "Clip Trend — remera blanca translúcida goteando", caption: "" },
+          { src: "assets/img/clip-trend/03.jpg", alt: "Clip Trend — primer plano de pelo castaño", caption: "" },
+          { src: "assets/img/clip-trend/04.jpg", alt: "Clip Trend — objeto transparente con perforaciones y su sombra", caption: "" }
+        ]
       }
       ]
     },

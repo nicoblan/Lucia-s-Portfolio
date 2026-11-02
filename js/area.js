@@ -44,8 +44,8 @@
     `<span class="ph" aria-hidden="true"><span class="ph__signs"><span class="sign sign--tri"></span><span class="sign sign--circle"></span><span class="sign sign--square"></span></span><span class="ph__label">${esc(label)}</span></span>`;
 
   // Video: .mp4 / .webm → <video>; cualquier otra URL → iframe (YouTube/Vimeo embed)
-  const videoHTML = (src, title) => /\.(mp4|webm)(\?|$)/i.test(src)
-    ? `<video class="project__video" src="${esc(src)}" controls playsinline preload="metadata"></video>`
+  const videoHTML = (src, title, poster) => /\.(mp4|webm)(\?|$)/i.test(src)
+    ? `<video class="project__video" src="${esc(src)}"${poster ? ` poster="${esc(poster)}"` : ""} controls playsinline preload="metadata"></video>`
     : `<iframe class="project__video" src="${esc(src)}" title="${esc(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
 
   const metaHTML = (p) => {
@@ -110,7 +110,7 @@
      debajo como fotogramas horizontales. */
   function videoProjectHTML(p) {
     const player = p.video
-      ? videoHTML(p.video, p.title)
+      ? videoHTML(p.video, p.title, p.poster)
       : `<span class="vplayer__empty">${placeholder("Video próximamente")}</span>`;
     const stills = (p.images || []).map((img, ii) => {
       const k = flatIndex++;
