@@ -88,6 +88,7 @@ window.SITE_CONFIG = {
                  "l" si es una lámina apaisada con texto (planos, moodboards);
                  por defecto, vertical.
                  porFila (opcional, del proyecto): máximo de fotos por fila del collage.
+                 porFilaCelular (opcional, del proyecto): lo mismo, solo en celular.
                  pos (opcional): qué parte de la foto se ve cuando el recuadro
                  la recorta, ej. "50% 20%" = centrada y más arriba (la cara).
                  portadaPos (opcional, del proyecto): lo mismo pero para la portada
@@ -110,6 +111,7 @@ window.SITE_CONFIG = {
       projects: [
       {
         title: "Las Pepas",
+        porFilaCelular: 3,   // en celular van de a 3 por fila (3 + 2), más grandes
         year: "",
         client: "Materia Fotografía de moda",
         role: "Estilismo",

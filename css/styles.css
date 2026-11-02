@@ -978,6 +978,10 @@ a.highlight__frame:focus-visible { outline: 3px solid var(--blue); outline-offse
   .pill__text { display: none; }
   /* Recent projects: también en fila y apaisado */
   .highlights__list { height: clamp(300px, 92vw, 460px); }
+  /* Menos aire entre Recent projects y Quién soy */
+  .highlights { padding-bottom: 24px; }
+  .about { padding-top: 24px; scroll-margin-top: 56px; } /* al ir desde el menú, no queda debajo de la barra */
+  #quien-soy { scroll-margin-top: 80px; }
 
   /* Paneles apilados */
   .panels { flex-direction: column; height: auto; }

@@ -67,7 +67,8 @@
      su forma: vertical (por defecto), horizontal (`forma: "h"`), cuadrada
      (`forma: "c"`) o lámina
      apaisada A4 (`forma: "l"`, para planos y moodboards con texto).
-     `porFila` en el proyecto fija el máximo de fotos por grupo (si no, 5).
+     `porFila` en el proyecto fija el máximo de fotos por grupo (si no, 5);
+     `porFilaCelular`, lo mismo solo en celular (fotos más grandes).
      Sirve para cualquier cantidad de fotos.
      Devuelve, por foto: [columna, ancho, fila, alto] */
   const COLS = 24;
@@ -173,7 +174,8 @@
 
   const projectsHTML = projects.map((p, pi) => {
     const isBook = area.layout === "libro", isVideo = area.layout === "video";
-    const layout = isBook || isVideo ? [] : collageLayout(p.images || [], p.porFila);
+    const enCelular = window.matchMedia("(max-width: 760px)").matches;
+    const layout = isBook || isVideo ? [] : collageLayout(p.images || [], (enCelular && p.porFilaCelular) || p.porFila);
     const items = isBook || isVideo ? "" : (p.images || []).map((img, ii) => {
       const k = flatIndex++;
       allImages.push({ ...img, project: p.title });
